@@ -1,10 +1,10 @@
 <?php
 $array = array(
 	'kind' =>  array(
-		'file' => '\\core\\drives\\log\\'
+		'file' => '\\Zero\\driver\\log\\'
 	),
 	'path' => array(
-		FRAME.'runtime/log/',
+		SITE_PATH.'runtime/log/',
 		'Ymd',
 		'd',
 	),

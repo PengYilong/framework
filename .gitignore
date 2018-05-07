@@ -1,5 +1,5 @@
-runtime
-vendor
+/runtime
 composer.*
 composer-setup.php
 temp.md
+/vendor

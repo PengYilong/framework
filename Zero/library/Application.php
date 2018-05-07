@@ -5,6 +5,12 @@ class Application
 {
 	function __construct()
 	{
-		echo 'Hello World';
-	}	
+
+	}
+
+	public static function run()
+	{
+					
+	}
+
 }
