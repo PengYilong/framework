@@ -4,7 +4,7 @@ $array = array(
 		'file' => '\\Zero\\driver\\log\\'
 	),
 	'path' => array(
-		SITE_PATH.'runtime/log/',
+		ROOT_PATH.'runtime/log/',
 		'Ymd',
 		'd',
 	),

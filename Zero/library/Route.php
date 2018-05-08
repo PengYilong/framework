@@ -39,7 +39,7 @@ class Route
     		$class = '\App\\'.$module.'\\Controller\\'.$controller;
 	    	$object = new $class($module, $controller, $action);
 
-            $object->$action();
+            $object->$action($module, $controller, $action);
 
     	}
     }

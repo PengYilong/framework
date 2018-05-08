@@ -11,7 +11,7 @@ class Loader
 			return true;
 		}
 
-		$file = SITE_PATH.str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
+		$file = ROOT_PATH.str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
 		if( file_exists($file) ){
 			include $file;
 			self::$classMap[$class] = $class;
