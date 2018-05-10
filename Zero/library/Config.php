@@ -4,7 +4,7 @@ namespace Zero\library;
 class Config
 {
 
-	static $path = NULL;
+	static $path = array();
 	static $configs = array(); //所有配置
 	static $extension = '';
 
@@ -21,11 +21,15 @@ class Config
 	static function get( $offset )
 	{
 		if(empty(self::$configs[$offset])){
-			$file = self::$path.$offset.self::$extension;
-			if( file_exists($file) ){
-				$config = include $file;
-				self::$configs[$offset] = $config;
+			//加载前台和后台的配置文件，以前台为准
+			$config = array();
+			foreach (self::$path as $key => $value) {
+				$file = $value.$offset.self::$extension;
+				if( file_exists($file) ){
+					$config = include $file;
+				}
 			}
+			self::$configs[$offset] = $config;
 		}
 		return self::$configs[$offset];
 	}

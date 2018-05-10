@@ -3,3 +3,4 @@ composer.*
 composer-setup.php
 temp.md
 /vendor
+configs/database.php

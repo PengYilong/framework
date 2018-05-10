@@ -9,7 +9,7 @@ class Controller
 
 	protected $smarty;
 
-	function __construct($module, $controller, $action)
+	public function __construct($module, $controller, $action)
 	{
 		// template init
 		$this->module = $module;
