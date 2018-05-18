@@ -21,6 +21,9 @@ class Factory
     {
         $key = 'database_'.$id;
         $database_config = Config::get('database');
+        if( empty($database_config) ){
+            return false;
+        }
         if( $id == 'master' ){
             $db_config = $database_config['master'];
         } else {
