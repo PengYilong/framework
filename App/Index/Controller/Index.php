@@ -10,7 +10,6 @@ class Index extends Controller
 	{
 		$model = Factory::getModel('Index');
 		$result = $model->getList();
-		p($result);
 		$this->assign('name', 'Nezumi');
 		$this->assign('title', 'HelloWorld');
 		$this->assign('code', 1);

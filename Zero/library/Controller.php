@@ -2,7 +2,7 @@
 namespace Zero\library;
 
 use Zero\library\Config;
-use Zero\library\Template;
+use TemplateEngine\TemplateEngine;
 
 class Controller
 {
@@ -17,7 +17,7 @@ class Controller
 		$this->action = $action; 
 		$template_config = Config::get('template');
 		$app_config = Config::get('app');
-		$this->smarty = new Template();
+		$this->smarty = new TemplateEngine();
 		$this->smarty->debug = $app_config['app_debug'];  //debug on
 		$this->smarty->setTemplateDir(APP_PATH.$this->module.DS.$template_config['template_dir'].DS.$this->controller.DS);
 		$this->smarty->setCompileDir(RUNTIME_PATH.$template_config['compie_dir'].DS.$this->controller.DS);
