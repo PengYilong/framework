@@ -1,7 +1,7 @@
 <?php
 namespace Zero\library;
 
-use Zero\driver\database\MySQLi;
+use mysql\MySQLi;
 
 class Factory
 {

@@ -17,6 +17,10 @@ spl_autoload_register('Zero\library\Loader::_autoload');
 //load functions
 include  ZERO_PATH.'common'.DS.'function'.EXT;
 
+//load composer
+if( file_exists(ROOT_PATH.'vendor/autoload.php') ){
+	require ROOT_PATH.'vendor/autoload.php';
+}
 
 $configs = array(
 	CORE_CONF_PATH,
