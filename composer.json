@@ -1,0 +1,20 @@
+{
+	"name": "yilongpeng/zero-php",
+	"description": "A PHP framework",
+	"minimum-stability": "dev",
+	"type": "Framework",
+	"keywords":[
+		"PHP","PHP Framework"	
+	],
+	"require":{
+		"php": ">=5.3.0",
+		"yilongpeng/template-engine": "dev-master",
+		"yilongpeng/mysql": "dev-master"
+	},
+	"repositories": {
+	    "packagist": {
+	        "type": "composer",
+	        "url": "https://packagist.phpcomposer.com"
+	    }
+	}
+}
