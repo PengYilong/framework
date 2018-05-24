@@ -1,8 +1,6 @@
 <?php
 namespace Zero\library;
 
-use mysql\MySQLi;
-
 class Factory
 {
 
@@ -10,14 +8,14 @@ class Factory
     static $controller;
     static $action;
 
-	public function __construct($module, $controller, $action)
-	{
-		self::$module = $module;	
-		self::$controller = $controller;
-		self::$action = $action;	
-	}	
+    public function __construct($module, $controller, $action)
+    {
+        self::$module = $module;    
+        self::$controller = $controller;
+        self::$action = $action;    
+    }   
 
-	public static function getDatabase( $id = 'master' )
+    public static function getDatabase( $id = 'master' )
     {
         $key = 'database_'.$id;
         $database_config = Config::get('database');
@@ -31,7 +29,19 @@ class Factory
         }
         $db = Register::get($key);
         if( !$db ){
-            $db = new MySQLi();
+            switch( $db_config['type'] ){
+                case 'mysql':
+                    $db = new \mysql\MySQL();
+                    break;
+                case 'mysqli':
+                    $db = new \mysql\MySQLi();
+                    break;
+                case 'pdo':
+                    $db = new \mysql\PDOMySql();
+                    break;
+                default:
+                $db = new \mysql\MySQLi();
+            }
             $db->open($db_config);
             Register::set($key, $db);
         }
@@ -50,5 +60,13 @@ class Factory
        return $model;
        
     }
-	
+
+    public static function getCache()
+    {
+        $cache = new cache\Memcached();
+        $cache_conf = Config::get('cache');
+        $cache->open($cache_conf);
+        return $cache;
+    } 
+    
 }

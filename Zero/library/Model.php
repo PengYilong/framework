@@ -10,6 +10,7 @@ class Model
 	public function __construct()
 	{
 		$this->db = Factory::getDatabase();
+		$this->cache = Factory::getCache();
 	}			
 
 
