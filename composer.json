@@ -9,7 +9,8 @@
 	"require":{
 		"php": ">=5.3.0",
 		"yilongpeng/template-engine": "dev-master",
-		"yilongpeng/mysql": "dev-master"
+		"yilongpeng/mysql": "dev-master",
+		"yilongpeng/cache": "dev-master"
 	},
 	"repositories": {
 	    "packagist": {

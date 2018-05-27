@@ -7,7 +7,7 @@ return array (
 		'password' => 'pyl',
 		'tablepre' => 'cms_',
 		'charset' => 'utf8',
-		'type' => 'mysql',
+		'type' => 'mysqli',
 		'debug' => true,
 		'pconnect' => 0,
 		'autoconnect' => 0,

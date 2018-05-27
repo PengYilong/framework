@@ -63,7 +63,7 @@ class Factory
 
     public static function getCache()
     {
-        $cache = new cache\Memcached();
+        $cache = new \cache\Memcached();
         $cache_conf = Config::get('cache');
         $cache->open($cache_conf);
         return $cache;
