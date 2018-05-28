@@ -1,5 +1,5 @@
 <?php
-//define constant
+//define ENV constant
 define('DS', DIRECTORY_SEPARATOR);
 define('SITE_PATH', dirname($_SERVER['SCRIPT_FILENAME']).DS);
 defined('APP_PATH') or define('APP_PATH', SITE_PATH.'App');
@@ -11,6 +11,8 @@ define('CORE_CONF_PATH', ZERO_PATH.'configs'.DS);
 define('CONF_EXT', '.php');
 define('RUNTIME_PATH', ROOT_PATH.'runtime'.DS);
 
+//common constant
+define('IS_POST', $_SERVER['REQUEST_METHOD']=='POST' ? true : false);
 
 //autoloading classes
 include ZERO_PATH.'library/Loader.php';
@@ -33,6 +35,8 @@ new Zero\library\Config($configs, CONF_EXT);
 
 //log init
 new Zero\library\Log();
+
+session_start();
 
 //route init
 new Zero\library\Route();
