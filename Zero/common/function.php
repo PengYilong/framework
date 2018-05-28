@@ -1,5 +1,5 @@
 <?php
-//公用函数库
+//common functions
 
 function p($var)
 {
@@ -13,7 +13,7 @@ function p($var)
 } 
 
 /**
- * APP返回操作信息.
+ * APP return 
  *
  * @author  Nezumi
  *
@@ -23,7 +23,7 @@ function p($var)
  *
  * @return array
  */
-function msg($msg = 'success', $status = 1, $data = false)
+function msg($msg = 'success', $status = 1, $data = FALSE)
 {
     return array(
         'result' => $msg,
@@ -38,22 +38,25 @@ function msg($msg = 'success', $status = 1, $data = false)
  * @author  Nezumi
  *
  * @param   $data = array(
- *                'likearrayName' => '模糊条件',
- *                'equalarrayName' => '等于条件'
- *                );
+*                    'likearrayName' => '模糊条件',
+*                    'equalarrayName' => '等于条件'
+*                );
  *
  * @return array
  */
 function search_condition($data = array())
 {
-    //声明
+    if( empty($data) ){
+        return FALSE;
+    }
+    //statement
     $likearrayName = !empty($data['likearrayName']) ? $data['likearrayName'] : array();     //模糊搜索
     $equalarrayName = !empty($data['equalarrayName']) ? $data['equalarrayName'] : array();   //确切搜索
     $cond = '1=1';
     $searcharray = array();
 
     foreach ($data as $key => $value) {
-        if ($value || 0 === $value || '0' === $value) {
+        if ($value) {
             if (array_key_exists($key, $equalarrayName)) {
                 $cond .= " AND $equalarrayName[$key] = '$value'";
                 $searcharray[$key] = $value;
@@ -65,7 +68,7 @@ function search_condition($data = array())
         }
     }
 
-    //返回
+    //return
     $result['cond'] = $cond;
     $result['searcharray'] = $searcharray;
 
@@ -83,7 +86,7 @@ function new_addslashes($params)
 		return addslashes($string);
 	}
 	if( empty($params) ){
-		return false;
+		return FALSE;
 	}
 	foreach ($params as $key => $value) {
 		$params[$key] = addslashes($value);			

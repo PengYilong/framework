@@ -20,7 +20,7 @@ class Controller
 		$this->smarty = new TemplateEngine();
 		$this->smarty->debug = $app_config['app_debug'];  //debug on
 		$this->smarty->setTemplateDir(APP_PATH.$this->module.DS.$template_config['template_dir'].DS.$this->controller.DS);
-		$this->smarty->setCompileDir(RUNTIME_PATH.$template_config['compie_dir'].DS.$this->controller.DS);
+		$this->smarty->setCompileDir(RUNTIME_PATH.$template_config['compie_dir'].DS.$module.DS.$this->controller.DS);
 		$this->smarty->left_delimiter = $template_config['left_delimiter'];
 		$this->smarty->right_delimiter = $template_config['right_delimiter'];
 	}
