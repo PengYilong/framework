@@ -10,11 +10,12 @@ class Index extends Controller
 	{
 		$model = Factory::getModel('Index');
 		$result = $model->getList();
-		$this->assign('name', 'Nezumi');
-		$this->assign('title', 'HelloWorld');
-		$this->assign('code', 1);
-		$this->assign('data', $result);
-		$this->display();	
+		return [
+			'name' => 'Nezumi',
+			'title' => 'HelloWorld',
+			'code'=> 1,
+			'data'=> $result,
+		];		
 	}
 
 	public function show()
