@@ -1,4 +1,10 @@
 <?php
+
+//php version must greater than 5.4
+if( phpversion()<'5.4' ){
+	exit('php version must greater that 5.4');
+}
+
 //define ENV constant
 define('DS', DIRECTORY_SEPARATOR);
 define('SITE_PATH', dirname($_SERVER['SCRIPT_FILENAME']).DS);
