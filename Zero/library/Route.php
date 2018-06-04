@@ -41,7 +41,7 @@ class Route
     {
         $this->url = isset($_GET['r']) ? $_GET['r'] : NULL;
         $url = $this->url;
-        if(  $url !== NULL || $_SERVER['REQUEST_URI']=='/'){
+        if(  $url !== NULL || $_SERVER['SCRIPT_NAME']=='/index.php'){
             //gets default config of route
             $route_conf = Config::get('route')['default'];
             $url = trim($url, '/'); //去掉左右两边的/
@@ -72,24 +72,27 @@ class Route
             $decorators = [];
             $decorators_conf = Config::get('decorators');
             $decorators = $decorators_conf['output_decorators'];
-
+            $dec_obj = [];
             //gets global object of  decorators 
-            if( !empty($decorators) ){
+            if( isset($_GET['app']) && !empty($decorators) ){
                 foreach ($decorators as $key => $value) {
                     $dec_obj[] = new $value($this->module, $this->controller, $this->action);
-                }  
+                } 
+                foreach ($dec_obj as $key => $value) {
+                    $value->before_request();
+                }
             }
             
-            foreach ($dec_obj as $key => $value) {
-                $value->before_request();
-            }
             $object = new $class($this->module, $this->controller, $this->action);
             new Factory($this->module, $this->controller, $this->action);
 
             $method = $this->action;
             $result = $object->$method($this->module, $this->controller, $this->action);
-            foreach ($dec_obj as $key => $value) {
-                $value->after_request($result);
+
+            if( isset($_GET['app']) && !empty($dec_obj)){
+                foreach ($dec_obj as $key => $value) {
+                    $value->after_request($result);
+                }
             }
         }
     }

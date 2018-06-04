@@ -13,7 +13,7 @@ class Json
 
 	public function after_request($result)
 	{
-		if( !isset($_GET['app']) ||  $_GET['app'] == 'json' ){
+		if( isset($_GET['app']) && $_GET['app'] == 'json' ){
 			echo json_encode($result);	
 		}	
 	}	
