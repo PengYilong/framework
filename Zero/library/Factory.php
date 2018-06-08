@@ -1,5 +1,9 @@
 <?php
 namespace Zero\library;
+use Nezumi\Memcached;
+use Nezumi\MySQL;
+use Nezumi\MySQLi;
+use Nezumi\PDOMySql;
 
 class Factory
 {
@@ -31,16 +35,16 @@ class Factory
         if( !$db ){
             switch( $db_config['type'] ){
                 case 'mysql':
-                    $db = new \mysql\MySQL();
+                    $db = new MySQL();
                     break;
                 case 'mysqli':
-                    $db = new \mysql\MySQLi();
+                    $db = new MySQLi();
                     break;
                 case 'pdo':
-                    $db = new \mysql\PDOMySql();
+                    $db = new PDOMySql();
                     break;
                 default:
-                $db = new \mysql\MySQLi();
+                $db = new MySQLi();
             }
             $db->open($db_config);
             Register::set($key, $db);
@@ -54,8 +58,13 @@ class Factory
        $model = Register::get($key);
        if(!$model){
             $class = 'App\\'.self::$module.'\\'.'Model\\'.$name;
-            $model = new $class();
-            Register::set($key, $model);
+            if( self::$module ){
+                $model = new $class();
+                Register::set($key, $model);
+            } else {
+                exit('The model doesn\'t exist');
+            }
+            
        }
        return $model;
        
@@ -63,7 +72,7 @@ class Factory
 
     public static function getCache()
     {
-        $cache = new \cache\Memcached();
+        $cache = new Memcached();
         $cache_conf = Config::get('cache');
         $cache->open($cache_conf);
         return $cache;

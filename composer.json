@@ -1,21 +1,24 @@
 {
 	"name": "yilongpeng/zero-php",
 	"description": "A PHP framework",
-	"minimum-stability": "dev",
+	"minimum-stability": "alpha",
 	"type": "Framework",
 	"keywords":[
 		"PHP","PHP Framework"	
 	],
 	"require":{
+		"php": ">=5.4"
+	},
+	"require-dev":{
 		"php": ">=5.4",
-		"yilongpeng/template-engine": "dev-master",
-		"yilongpeng/mysql": "dev-master",
-		"yilongpeng/cache": "dev-master"
+		"nezumi/template-engine": "dev-master",
+		"nezumi/cache": "dev-master",
+		"nezumi/mysql": "dev-master"
 	},
 	"repositories": {
 	    "packagist": {
 	        "type": "composer",
-	        "url": "https://packagist.phpcomposer.com"
+	        "url": "https://packagist.org"
 	    }
 	}
 }
