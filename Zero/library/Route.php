@@ -83,8 +83,8 @@ class Route
                 }
             }
             
-            $object = new $class($this->module, $this->controller, $this->action);
             new Factory($this->module, $this->controller, $this->action);
+            $object = new $class($this->module, $this->controller, $this->action);
 
             $method = $this->action;
             $result = $object->$method($this->module, $this->controller, $this->action);
