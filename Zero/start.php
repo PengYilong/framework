@@ -25,7 +25,8 @@ include ZERO_PATH.'library/Loader.php';
 spl_autoload_register('Zero\library\Loader::_autoload');
 
 //load functions
-include  ZERO_PATH.'common'.DS.'function'.EXT;
+include ZERO_PATH.'common'.DS.'function'.EXT;
+include APP_PATH.'Common'.DS.'Function'.DS.'function'.EXT;
 
 //load composer
 if( file_exists(ROOT_PATH.'vendor/autoload.php') ){
