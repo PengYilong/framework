@@ -1,6 +1,6 @@
 <?php
 namespace Zero\library;
-use ReflectionClass;
+use Nezumi\Paging;
 
 class Model
 {
@@ -15,7 +15,6 @@ class Model
 	 */
 	protected $table = NULL;
 	
-	protected $db; //a database instance
 
 	public function __construct()
 	{
@@ -23,7 +22,6 @@ class Model
 		$this->prefix = $db_config['tablepre']; 
 		$this->table = $this->get_table_name();
 		$this->db = Factory::getDatabase();
-		$this->cache = Factory::getCache();
 	}			
 
 	public function get_table_name()
@@ -32,4 +30,5 @@ class Model
 		$sub_class = end($sub_arr);
 		return 	$this->prefix.to_underscore($sub_class);
 	}
+
 }

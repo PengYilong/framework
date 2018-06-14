@@ -9,7 +9,7 @@ class Index extends Frontend
 	public function index()
 	{
 		$model = Factory::getModel('Account');
-		$result = $model->getList();
+		$result = $model->get_name();
 		$data = [
 			'name' => 'Nezumi',
 			'title' => 'HelloWorld',

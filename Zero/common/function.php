@@ -1,21 +1,27 @@
 <?php
-//common functions
+/**
+ * common functions
+ * 
+ */
 
+/**
+ * print_r
+ * 
+ */
 function p($var)
 {
-	if( is_bool($var) ){
-		var_dump($var);
-	} elseif( is_null($var) ){
-		var_dump(NULL);
-	} else {
-		echo '<pre style="position:relative;z-index:1000;padding:10px;border-radius:5px;background:#f5f5f5;border:1px solid #aaa;font-size:14px;line-height:18px;opacity:0.9;">'.print_r($var, true).'</pre>';
-	}
+    if( is_bool($var) ){
+        var_dump($var);
+    } elseif( is_null($var) ){
+        var_dump(NULL);
+    } else {
+        echo '<pre style="position:relative;z-index:1000;padding:10px;border-radius:5px;background:#f5f5f5;border:1px solid #aaa;font-size:14px;line-height:18px;opacity:0.9;">'.print_r($var, true).'</pre>';
+    }
 } 
 
 /**
  * APP return 
  *
- * @author  Nezumi
  *
  * @param string $msg
  * @param bool   $success
@@ -23,35 +29,34 @@ function p($var)
  *
  * @return array
  */
-function msg($msg = 'success', $status = 1, $data = FALSE)
+function msg($msg = 'success', $status = 0, $data = FALSE)
 {
-    return array(
-        'result' => $msg,
+    return [
+        'message' => $msg,
         'status' => $status,
         'data' => $data,
-    );
+    ];
 }
 
 /**
- * 搜索条件.
+ * search condition
  *
- * @author  Nezumi
  *
  * @param   $data = array(
-*                    'likearrayName' => '模糊条件',
-*                    'equalarrayName' => '等于条件'
-*                );
+ *                    'likearrayName' => 'like contition',
+ *                    'equalarrayName' => 'equal condition'
+ *                );
  *
  * @return array
  */
-function search_condition($data = array())
+function search_condition($data = [])
 {
     if( empty($data) ){
         return FALSE;
     }
     //statement
-    $likearrayName = !empty($data['likearrayName']) ? $data['likearrayName'] : array();     //模糊搜索
-    $equalarrayName = !empty($data['equalarrayName']) ? $data['equalarrayName'] : array();   //确切搜索
+    $likearrayName = !empty($data['likearrayName']) ? $data['likearrayName'] : [];     
+    $equalarrayName = !empty($data['equalarrayName']) ? $data['equalarrayName'] : []; 
     $cond = '1=1';
     $searcharray = array();
 
@@ -70,26 +75,44 @@ function search_condition($data = array())
 
     //return
     $result['cond'] = $cond;
-    $result['searcharray'] = $searcharray;
+    $result['searchArray'] = $searcharray;
 
     return $result;
 }
 
 /**
- * 返回经过addslashes处理过得函数
+ * return to be handle  each elements of array  via  addslashes function
  * @param sring or array $params  
  * @return  sring or array
  */
 function new_addslashes($params)
 {
-	if(!is_array($params)){
-		return addslashes($string);
-	}
-	if( empty($params) ){
-		return FALSE;
-	}
-	foreach ($params as $key => $value) {
-		$params[$key] = addslashes($value);			
-	}
-	return $params;
+    if(!is_array($params)){
+        return addslashes($string);
+    }
+    if( empty($params) ){
+        return FALSE;
+    }
+    foreach ($params as $key => $value) {
+        $params[$key] = addslashes($value);         
+    }
+    return $params;
+}
+
+function go_url($url)
+{
+    return '<script type="text/javascript">location.href="'.$url.'"</script>';
+}
+
+/**
+ *  AdminMember to admin_member  
+ * 
+ */
+function to_underscore($str)
+{
+    $dstr = preg_replace_callback('/([A-Z]{1})/',function($matchs)
+    {
+        return '_'.strtolower($matchs[0]);
+    },$str);
+    return ltrim($dstr, '_');
 }
