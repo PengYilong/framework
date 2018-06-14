@@ -1,8 +1,9 @@
 <?php
 namespace App\Common\Decorators;
 use Zero\library\Controller;
+use App\Common\Controller\Backend;
 
-class Template extends Controller
+class Template extends Backend
 {
 
 	public function before_request()
@@ -17,8 +18,8 @@ class Template extends Controller
 				foreach ($result as $key => $value) {
 					$this->assign($key, $value);	
 				}
+				$this->display($result['dtemplate']);
 			}
-			$this->display();
 		}	
 	}	
 }

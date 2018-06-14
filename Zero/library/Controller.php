@@ -47,8 +47,8 @@ class Controller
 		$this->template_config =  Config::get('template');
 		$this->app_config = Config::get('app');
 
-		$this->template_dir = APP_PATH.$this->module.DS.$this->template_config['template_dir'].DS.$this->style.DS.$this->controller.DS;
-		$this->compie_dir = RUNTIME_PATH.$this->template_config['compie_dir'].DS.$this->style.DS.$module.DS.$this->controller.DS;
+		$this->template_dir = APP_PATH.$this->module.DS.$this->template_config['template_dir'].DS.$this->style.DS;
+		$this->compie_dir = RUNTIME_PATH.$this->template_config['compie_dir'].DS.$this->style.DS.$module.DS;
 		$this->init_template_engine();
 	}
 

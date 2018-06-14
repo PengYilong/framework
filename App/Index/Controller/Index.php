@@ -1,21 +1,25 @@
 <?php
 namespace App\Index\Controller;
 
-use Zero\library\Controller;
+use App\Common\Controller\Frontend;
 use Zero\library\Factory;
 
-class Index extends Controller
+class Index extends Frontend
 {
 	public function index()
 	{
-		$model = Factory::getModel('Index');
+		$model = Factory::getModel('Account');
 		$result = $model->getList();
-		return [
+		$data = [
 			'name' => 'Nezumi',
 			'title' => 'HelloWorld',
 			'code'=> 1,
 			'data'=> $result,
-		];		
+		];
+		foreach ($data as $key => $value) {
+			$this->assign($key, $value);
+		}
+		$this->display('public/index.html');
 	}
 
 	public function show()
