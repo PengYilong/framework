@@ -67,6 +67,8 @@ class Route
                 }
             }
 
+            new Factory($this->module, $this->controller, $this->action);
+
             $class = '\App\\'.$this->module.'\\Controller\\'.$this->controller;
             //Add decorator
             $decorators = [];
@@ -83,7 +85,6 @@ class Route
                 }
             }
             
-            new Factory($this->module, $this->controller, $this->action);
             $object = new $class($this->module, $this->controller, $this->action);
 
             $method = $this->action;
