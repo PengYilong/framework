@@ -10,6 +10,7 @@ class Index extends Backend
 
 	public function index()
 	{
+		echo 
 		$this->assign('pageTitle', '后台管理系统');
 		$this->display('public/index.html');
 	}	

@@ -2,7 +2,7 @@
 namespace Zero\library;
 
 use Zero\library\Config;
-use Nezumi\TemplateEngine;
+use Nezumi\MySmarty;
 
 class Controller
 {
@@ -54,7 +54,7 @@ class Controller
 
 	protected function init_template_engine()
 	{
-		$this->smarty = new TemplateEngine();
+		$this->smarty = new MySmarty();
 		$this->smarty->debug = $this->app_config['app_debug'];  //debug on
 		$this->smarty->setTemplateDir($this->template_dir);
 		$this->smarty->setCompileDir($this->compie_dir);

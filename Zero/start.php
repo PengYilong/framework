@@ -4,6 +4,7 @@
 if( phpversion()<'5.4' ){
 	exit('php version must greater that 5.4');
 }
+date_default_timezone_set('PRC');
 
 //define ENV constant
 define('DS', DIRECTORY_SEPARATOR);
@@ -19,6 +20,7 @@ define('RUNTIME_PATH', ROOT_PATH.'runtime'.DS);
 
 //common constant
 define('IS_POST', $_SERVER['REQUEST_METHOD']=='POST' ? true : false);
+define('IS_GET',  $_SERVER['REQUEST_METHOD']=='GET' ? true : false);
 
 //autoloading classes
 include ZERO_PATH.'library/Loader.php';
@@ -38,10 +40,15 @@ $configs = array(
 	CONF_PATH,	
 );
 //load configs and
-new Zero\library\Config($configs, CONF_EXT);
+use Zero\library\Config;
+new Config($configs, CONF_EXT);
 
-//log init
-new Zero\library\Log();
+//to init handling error and exception class
+$config = Config::get('log');
+$path = RUNTIME_PATH.'log'.DS;
+$rule = $config['rule'];
+$app = Config::get('app');
+new \Nezumi\MyError($path, $rule, ZERO_PATH.'/template/error.php', $app['app_debug']);
 
 session_start();
 

@@ -15,7 +15,7 @@ class Loader
 			include $file;
 			self::$classMap[$class] = $class;
 		} else {
-			return false;
+			throw new \Exception($file.' doesn\'t exist');
 		}
 	}
 

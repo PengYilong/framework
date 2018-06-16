@@ -11,7 +11,8 @@
 	},
 	"require-dev":{
 		"php": ">=5.4",
-		"nezumi/template-engine": "dev-master",
+		"nezumi/myerror": "dev-master",
+		"nezumi/mysmarty": "dev-master",
 		"nezumi/cache": "dev-master",
 		"nezumi/mysql": "dev-master"
 	},

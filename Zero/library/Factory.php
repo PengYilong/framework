@@ -25,7 +25,7 @@ class Factory
                 $model = new $class();
                 Register::set($key, $model);
             } else {
-                exit('The model doesn\'t exist');
+                throw new \Exception($model.' doesn\'t exist');
             }
             
        }
