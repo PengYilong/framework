@@ -79,10 +79,11 @@ class Controller
 	}
 
 	protected function display($file = '')
-	{
+	{	
 		if( empty($file) ){	
 			$file = $this->action;
 		}
+		restore_error_handler();
 		$this->smarty->display($file);
 	}
 
