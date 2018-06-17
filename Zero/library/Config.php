@@ -15,13 +15,13 @@ class Config
 	}	
 
 	/**
-	 * 获取数组
+	 * get config of file
 	 * @var type
 	 */	
 	static function get( $offset )
 	{
 		if(empty(self::$configs[$offset])){
-			//加载前台和后台的配置文件，以前台为准
+			//loading frontend and backend config.finally result is fronted config.
 			$config = array();
 			foreach (self::$path as $key => $value) {
 				$file = $value.$offset.self::$extension;
