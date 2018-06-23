@@ -26,7 +26,7 @@ class Base extends Model
 		$this->cache = IFactory::getCache();
 	}			
 
-	public function get_list($pagesize, $fields='*', $where = '', $limit = '', $order = '', $group = '', $key = '', $having = ''){
+	public function getList($pagesize, $fields='*', $where = '', $limit = '', $order = '', $group = '', $key = '', $having = ''){
 
 		$array = $this->db->get_one('count(*) AS num', $this->table, $where, $limit = '', $order ='', $group, $key, $having);
 		$count = $array['num'];

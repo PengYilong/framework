@@ -29,7 +29,7 @@ function p($var)
  *
  * @return array
  */
-function msg($msg = 'success', $status = 0, $data = FALSE)
+function msg($msg = 'failed', $status = 0, $data = FALSE)
 {
     return [
         'message' => $msg,
@@ -42,33 +42,58 @@ function msg($msg = 'success', $status = 0, $data = FALSE)
  * search condition
  *
  *
- * @param   $data = array(
- *                    'likearrayName' => 'like contition',
- *                    'equalarrayName' => 'equal condition'
- *                );
- *
  * @return array
  */
-function search_condition($data = [])
+function searchCondition($data = [])
 {
+    $result = [];
     if( empty($data) ){
-        return FALSE;
+        return $result;
     }
     //statement
-    $likearrayName = !empty($data['likearrayName']) ? $data['likearrayName'] : [];     
-    $equalarrayName = !empty($data['equalarrayName']) ? $data['equalarrayName'] : []; 
-    $cond = '1=1';
-    $searcharray = array();
+    $conds = [
+        'equalCond',
+        'likeCond',
+        'sTimeCond',
+        'eTimeCond',
+    ];
 
-    foreach ($data as $key => $value) {
-        if ($value) {
-            if (array_key_exists($key, $equalarrayName)) {
-                $cond .= " AND $equalarrayName[$key] = '$value'";
-                $searcharray[$key] = $value;
+    $cond = '1=1';
+    $searcharray = [];
+
+    foreach ($conds as $key => $value) {
+        if (array_key_exists($value, $data)) {
+           if ( $value=='equalCond'){
+                foreach ($data[$value] as $k => $v) {
+                    if($v){
+                        $cond .= ' AND '. $k .'='.$v;
+                        $searcharray[$k] = $v;
+                    }
+                }
             }
-            if (array_key_exists($key, $likearrayName)) {
-                $cond .= " AND $likearrayName[$key] like '%$value%' ";
-                $searcharray[$key] = $value;
+           if ( $value=='likeCond'){
+                foreach ($data[$value] as $k => $v) {
+                    if($v){
+                        $cond .= ' AND '. $k.' like \'%'.$v.'%\'';
+                        $searcharray[$k] = $v;
+                    }
+                }
+            }
+           if ( $value=='sTimeCond'){
+                foreach ($data[$value] as $k => $v) {
+                    if($v){
+                        $cond .= ' AND'. $k.$v['symbol'].strtotime($v['value']);
+                        $searcharray['sTimeCond'][$k] = $v['value'];
+                    }
+                }
+            }
+           if ( $value=='eTimeCond'){
+                foreach ($data[$value] as $k => $v) {
+                    if($v){
+                        $cond .= ' AND $ke'.$v['symbol'].strtotime($v['value']);
+                        $searcharray['eTimeCond'][$k] = $v['value'];
+                    }
+                }
             }
         }
     }
@@ -80,6 +105,9 @@ function search_condition($data = [])
     return $result;
 }
 
+
+
+
 /**
  * return to be handle  each elements of array  via  addslashes function
  * @param sring or array $params  
@@ -88,18 +116,18 @@ function search_condition($data = [])
 function new_addslashes($params)
 {
     if(!is_array($params)){
-        return addslashes($string);
+        return addslashes($params);
     }
     if( empty($params) ){
         return FALSE;
     }
     foreach ($params as $key => $value) {
-        $params[$key] = addslashes($value);         
+        $params[$key] = new_addslashes($value);         
     }
     return $params;
 }
 
-function go_url($url)
+function goUrl($url)
 {
     return '<script type="text/javascript">location.href="'.$url.'"</script>';
 }
@@ -115,4 +143,15 @@ function to_underscore($str)
         return '_'.strtolower($matchs[0]);
     },$str);
     return ltrim($dstr, '_');
+}
+
+
+/**
+ * @param array $array  
+ * @param int $position position of to insert array
+ * @param to insert array 
+ */
+function array_insert ($array, $position, $insert_array) {
+    $first_array = array_splice ($array, 0, $position);
+    return array_merge ($first_array, $insert_array, $array);
 }

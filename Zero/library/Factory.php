@@ -15,12 +15,13 @@ class Factory
         self::$action = $action;    
     }   
 
-    public static function getModel($name)
+    public static function getModel($name, $type = 0)
     {
-       $key = 'app_model_'.$name;
+       $typeName = $type ==0 ? 'model' : 'business';
+       $key = 'app_'.$typeName.'_'.$name;
        $model = Register::get($key);
        if(!$model){
-            $class = 'App\\'.self::$module.'\\'.'Model\\'.$name;
+            $class = 'App\\'.self::$module.'\\'.ucwords($typeName).'\\'.$name;
             if( self::$module ){
                 $model = new $class();
                 Register::set($key, $model);
