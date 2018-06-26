@@ -16,11 +16,17 @@ class URL
 		$app = Config::get('app');	
 		switch ($app['url_model']) {
 			case 1:
-				$urlArr = explode('/', $url[0]);
-				$url_str = '/index.php?m='.self::$module.'&c='.$urlArr[0].'&a='.$urlArr[1]; 
+				$urlArr = explode('/', array_shift($url));
+				$url_str = '/index.php?m='.self::$module.'&c='.strtolower($urlArr[0]).'&a='.$urlArr[1];
+				foreach ($url as $key => $value) {
+				 	$url_str .= '&'.$key.'='.$value;
+				} 
 				break;
 			case 2:
-				$url_str = '/index.php?r='.self::$module.'/'.$url[0]; 	
+				$url_str = '/index.php?r='.self::$module.'/'.array_shift($url); 
+				foreach ($url as $key => $value) {
+				 	$url_str .= '/'.$key.'/'.$value;
+				} 	
 				break;
 			default:
 				# code...

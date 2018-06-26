@@ -22,6 +22,7 @@ class Model
 		$this->prefix = $db_config['tablepre']; 
 		$this->table = $this->get_table_name();
 		$this->db = Factory::getDatabase();
+		$this->db->options['table'] = $this->table;
 	}			
 
 	public function get_table_name()

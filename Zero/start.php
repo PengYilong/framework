@@ -9,6 +9,7 @@ require __DIR__.'/constant.php';
 
 //load functions
 include ZERO_PATH.'common'.DS.'function'.EXT;
+include ZERO_PATH.'common'.DS.'system'.EXT;
 include APP_PATH.'Common'.DS.'Function'.DS.'function'.EXT;
 
 //autoloading classes

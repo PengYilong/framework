@@ -37,6 +37,11 @@ class Controller
 	 */ 
 	protected $app_config = NULL;		
 
+	/**
+	 * @var array
+	 */ 
+	protected $language = NULL;
+
 	public function __construct($module, $controller, $action)
 	{
 		// template init
@@ -50,6 +55,11 @@ class Controller
 		$this->template_dir = APP_PATH.$this->module.DS.$this->template_config['template_dir'].DS.$this->style.DS;
 		$this->compie_dir = RUNTIME_PATH.$this->template_config['compie_dir'].DS.$this->style.DS.$module.DS;
 		$this->init_template_engine();
+        new URL($this->module);
+        new Factory($module, $controller, $action);
+		$langObj = new Language($module, strtolower($controller));
+		$languages = $langObj::$langs; 
+		$this->assign('languages', $languages);
 	}
 
 	protected function init_template_engine()
@@ -86,5 +96,6 @@ class Controller
 		restore_error_handler();
 		$this->smarty->display($file);
 	}
+
 
 }

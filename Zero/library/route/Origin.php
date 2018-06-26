@@ -29,9 +29,6 @@ class Origin extends Route
 
         $this->controller_low = strtolower($this->controller);
 
-        new URL($this->module);
-        new Factory($this->module, $this->controller, $this->action);
-
         $class = '\App\\'.$this->module.'\\Controller\\'.$this->controller;
         //Add decorator
         $decorators = [];
