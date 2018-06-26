@@ -58,7 +58,7 @@ class Controller
         new URL($this->module);
         new Factory($module, $controller, $action);
 		$langObj = new Language($module, strtolower($controller));
-		$languages = $langObj::$langs; 
+		$languages = $langObj::$langs;
 		$this->assign('languages', $languages);
 	}
 
@@ -83,12 +83,12 @@ class Controller
 		$this->smarty->caching 	  = false;
 	}
 
-	protected function assign($key, $value)
+	public function assign($key, $value)
 	{
 		$this->smarty->assign($key, $value);	
 	}
 
-	protected function display($file = '')
+	public function display($file = '')
 	{	
 		if( empty($file) ){	
 			$file = $this->action;

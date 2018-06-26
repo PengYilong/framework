@@ -11,7 +11,7 @@ class Json
 
 	}
 
-	public function after_request($result)
+	public function after_request($result, $object)
 	{
 		if( isset($_GET['app']) && $_GET['app'] == 'json' ){
 			echo json_encode($result);	
