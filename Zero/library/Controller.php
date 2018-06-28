@@ -40,7 +40,7 @@ class Controller
 	/**
 	 * @var array
 	 */ 
-	protected $language = NULL;
+	protected $languages = NULL;
 
 	public function __construct($module, $controller, $action)
 	{
@@ -58,8 +58,8 @@ class Controller
         new URL($this->module);
         new Factory($module, $controller, $action);
 		$langObj = new Language($module, strtolower($controller));
-		$languages = $langObj::$langs;
-		$this->assign('languages', $languages);
+		$this->languages = $langObj::$langs;
+		$this->assign('languages', $this->languages);
 	}
 
 	protected function init_template_engine()
