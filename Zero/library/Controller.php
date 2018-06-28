@@ -37,11 +37,6 @@ class Controller
 	 */ 
 	protected $app_config = NULL;		
 
-	/**
-	 * @var array
-	 */ 
-	protected $languages = NULL;
-
 	public function __construct($module, $controller, $action)
 	{
 		// template init
@@ -57,9 +52,8 @@ class Controller
 		$this->init_template_engine();
         new URL($this->module);
         new Factory($module, $controller, $action);
-		$langObj = new Language($module, strtolower($controller));
-		$this->languages = $langObj::$langs;
-		$this->assign('languages', $this->languages);
+		new Language($module, strtolower($controller));
+		$this->assign('languages', Language::$langs);
 	}
 
 	protected function init_template_engine()

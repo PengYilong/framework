@@ -18,7 +18,7 @@ class Language
 	}
 
 
-	public function init()
+	public static function init()
 	{
 		$languages = [
 			'system' => LANGUAGE_PATH.self::$lang_setting.'/system.lang.php',
@@ -41,4 +41,8 @@ class Language
 		self::$langs = $langs;
 	}
 
+	public static function to($key)
+	{
+		return isset(self::$langs[$key]) ? self::$langs[$key] : '';
+	}
 }
