@@ -26,22 +26,10 @@ class Route
      */
     public $action = NULL;
 
-     /**
-     * @var int
-     */
-    public $urlModel;   
-
-
-    public function __construct($urlModel)
+  
+    protected function parseUrl()
     {
-        if(!get_magic_quotes_gpc()) {
-            $_POST = new_addslashes($_POST);
-            $_GET = new_addslashes($_GET);
-            $_REQUEST = new_addslashes($_REQUEST);
-            $_COOKIE = new_addslashes($_COOKIE);
-        }
-        $this->urlModel = $urlModel;
-        switch ($urlModel) {
+        switch ($this->config['url_model']) {
              case 1:
                 $route = new Origin();     
                 break;
@@ -53,5 +41,16 @@ class Route
          } 
          $route->init();
     }
- 
+
+    protected function filterParam()
+    {
+        if(!get_magic_quotes_gpc()) {
+            $_POST = new_addslashes($_POST);
+            $_GET = new_addslashes($_GET);
+            $_REQUEST = new_addslashes($_REQUEST);
+            $_COOKIE = new_addslashes($_COOKIE);
+        }
+        return $this;
+    }
+     
 }

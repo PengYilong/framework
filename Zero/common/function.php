@@ -40,11 +40,11 @@ function msg($msg = 'failed', $status = 0, $data = FALSE)
 
 /**
  * search condition
- *
- *
+ * @param array $data
+ * @param array $subject $_GET $_POST
  * @return array
  */
-function searchCondition($data = [])
+function searchCondition($data = [], $subject = [],  $first = true)
 {
     $result = [];
     if( empty($data) ){
@@ -52,47 +52,35 @@ function searchCondition($data = [])
     }
     //statement
     $conds = [
-        'equalCond',
-        'likeCond',
-        'sTimeCond',
-        'eTimeCond',
+        'equal',
+        'like',
+        'startDate',
+        'date',
     ];
 
-    $cond = '1=1';
-    $searcharray = [];
+    $cond = '';
+    $searchArray = [];
 
     foreach ($conds as $key => $value) {
         if (array_key_exists($value, $data)) {
-           if ( $value=='equalCond'){
-                foreach ($data[$value] as $k => $v) {
-                    if($v){
-                        $cond .= ' AND '. $k .'='.$v;
-                        $searcharray[$k] = $v;
+            foreach ($data[$value] as $k => $v) {
+                if( !empty($subject[$k]) ){
+                    $link = !$first ? ' AND ' : '';
+                    switch ($value) {
+                        case 'equal':
+                            $cond .= $link. $v .'='.$subject[$k];
+                            $searchArray[$k] = $subject[$k];                   
+                            break;
+                        case 'like':
+                            $cond .= $link. $k.' like \'%'.$subject[$k].'%\'';
+                            $searchArray[$k] = $subject[$k]; 
+                            break;                         
+                        case 'date':
+                            $cond .= $link. $v['value'].$v['symbol'].strtotime( $subject[$k] );
+                            $searchArray[$k] = $subject[$k];
+                            break;                                              
                     }
-                }
-            }
-           if ( $value=='likeCond'){
-                foreach ($data[$value] as $k => $v) {
-                    if($v){
-                        $cond .= ' AND '. $k.' like \'%'.$v.'%\'';
-                        $searcharray[$k] = $v;
-                    }
-                }
-            }
-           if ( $value=='sTimeCond'){
-                foreach ($data[$value] as $k => $v) {
-                    if($v){
-                        $cond .= ' AND'. $k.$v['symbol'].strtotime($v['value']);
-                        $searcharray['sTimeCond'][$k] = $v['value'];
-                    }
-                }
-            }
-           if ( $value=='eTimeCond'){
-                foreach ($data[$value] as $k => $v) {
-                    if($v){
-                        $cond .= ' AND $ke'.$v['symbol'].strtotime($v['value']);
-                        $searcharray['eTimeCond'][$k] = $v['value'];
-                    }
+                    $first = false;
                 }
             }
         }
@@ -100,13 +88,10 @@ function searchCondition($data = [])
 
     //return
     $result['cond'] = $cond;
-    $result['searchArray'] = $searcharray;
+    $result['searchArray'] = $searchArray;
 
     return $result;
 }
-
-
-
 
 /**
  * return to be handle  each elements of array  via  addslashes function
@@ -151,7 +136,29 @@ function to_underscore($str)
  * @param int $position position of to insert array
  * @param to insert array 
  */
-function array_insert ($array, $position, $insert_array) {
+function arrayInsert ($array, $position, $insert_array) {
     $first_array = array_splice ($array, 0, $position);
     return array_merge ($first_array, $insert_array, $array);
+}
+
+/**
+ * array to select
+ * @param 
+ * @param  
+ */
+function arrayToSelect($arr = [], $default = '', $field = '')
+{
+    if( empty($arr) ){
+        return false;
+    }
+    $options = '';
+    foreach ($arr as $key => $value) {
+        $selected = $default == $key ? 'selected' : '';
+        if( $field ){
+            $options .= '<option value="'.$key.'"  '.$selected.'>'.$value[$field].'</option>';
+        } else {
+            $options .= '<option value="'.$key.'"  '.$selected.'>'.$value.'</option>';
+        }
+    }
+    return $options;
 }

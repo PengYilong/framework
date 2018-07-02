@@ -30,6 +30,9 @@ class Origin extends Route
         $this->controller_low = strtolower($this->controller);
 
         $class = '\App\\'.$this->module.'\\Controller\\'.$this->controller;
+        
+
+        new Factory($this->module, $this->controller, $this->action); 
         //Add decorator
         $decorators = [];
         $decorators_conf = Config::get('decorators');
@@ -38,7 +41,7 @@ class Origin extends Route
         //gets global object of  decorators 
         if( isset($_GET['app']) && !empty($decorators) ){
             foreach ($decorators as $key => $value) {
-                $dec_obj[] = new $value($this->module, $this->controller, $this->action);
+                $dec_obj[] = new $value;
             } 
             foreach ($dec_obj as $key => $value) {
                 $value->before_request();
@@ -48,7 +51,7 @@ class Origin extends Route
         $object = new $class($this->module, $this->controller, $this->action);
 
         $method = $this->action;
-        $result = $object->$method($this->module, $this->controller, $this->action);
+        $result = $object->$method();
 
         if( isset($_GET['app']) && !empty($dec_obj)){
             foreach ($dec_obj as $key => $value) {

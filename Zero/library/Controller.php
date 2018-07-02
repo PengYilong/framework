@@ -51,9 +51,10 @@ class Controller
 		$this->compie_dir = RUNTIME_PATH.$this->template_config['compie_dir'].DS.$this->style.DS.$module.DS;
 		$this->init_template_engine();
         new URL($this->module);
-        new Factory($module, $controller, $action);
 		new Language($module, strtolower($controller));
 		$this->assign('languages', Language::$langs);
+		$this->assign('langs', json_encode(Language::$langs));
+
 	}
 
 	protected function init_template_engine()
