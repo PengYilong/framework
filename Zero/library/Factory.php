@@ -27,38 +27,4 @@ class Factory
        return $model;
     }
 
-    public static function getDatabase( $id = 'master' )
-    {
-        $key = 'database_'.$id;
-        $database_config = Config::get('database');
-        if( empty($database_config) ){
-            return false;
-        }
-        if( $id == 'master' ){
-            $db_config = $database_config['master'];
-        } else {
-            $db_config = $database_config[array_rand($database_config['slave'])];
-        }
-        $db = Register::get($key);
-        if( !$db ){
-            switch( $db_config['type'] ){
-                case 'mysql':
-                    $db = new \Nezumi\MySQL();
-                    break;
-                case 'mysqli':
-                    $db = new \Nezumi\MySQLi();
-                    break;
-                case 'pdo':
-                    $db = new \Nezumi\PDOMySql();
-                    break;
-                default:
-                $db = new \Nezumi\MySQLi();
-            }
-            $db->open($db_config);
-            Register::set($key, $db);
-        }
-        return $db;
-    }
-
-
 }

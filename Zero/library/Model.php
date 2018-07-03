@@ -1,35 +1,40 @@
 <?php
 namespace Zero\library;
 use Nezumi\Paging;
+use Nezumi\MySQLi;
+use Zero\library\Config;
 
-class Model
+class Model extends MySQLi 
 {
 
 	/**
-	 * @var string prefix 
+	 * @var
 	 */
-	protected $prefix;
-
-	/**
-	 * @var string name of table
-	 */
-	protected $table = NULL;
-	
+	public $db;
 
 	public function __construct()
 	{
-		$db_config = Config::get('database')['master'];
-		$this->prefix = $db_config['tablepre']; 
-		$this->table = $this->get_table_name();
-		$this->db = Factory::getDatabase();
-		$this->db->options['table'] = $this->table;
-	}			
-
-	public function get_table_name()
-	{
-		$sub_arr = explode('\\', get_class($this));
-		$sub_class = end($sub_arr);
-		return 	$this->prefix.to_underscore($sub_class);
+        $this->getDatabase();
+        $this->db = $this;
 	}
+
+    public function getDatabase( $id = 'master' )
+    {
+        $key = 'database_'.$id;
+        $database_config = Config::get('database');
+        if( empty($database_config) ){
+            return false;
+        }
+        if( $id == 'master' ){
+            $db_config = $database_config['master'];
+        } else {
+            $db_config = $database_config[array_rand($database_config['slave'])];
+        }
+        $db = Register::get($key);
+        if( !$db ){
+            $db = $this->open($db_config);
+            Register::set($key, $db);
+        }
+    }
 
 }

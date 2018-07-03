@@ -121,7 +121,7 @@ function goUrl($url)
  *  AdminMember to admin_member  
  * 
  */
-function to_underscore($str)
+function toUnderscore($str)
 {
     $dstr = preg_replace_callback('/([A-Z]{1})/',function($matchs)
     {
