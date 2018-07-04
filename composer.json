@@ -1,13 +1,17 @@
 {
-	"name": "yilongpeng/zero-php",
+	"name": "nezumi/zero-php",
 	"description": "A PHP framework",
-	"minimum-stability": "alpha",
+	"minimum-stability": "dev-master",
 	"type": "Framework",
 	"keywords":[
-		"PHP","PHP Framework"	
+		"PHP",
+		"PHP Framework"	
 	],
 	"require":{
-		"php": ">=5.4"
+		"php": ">=5.4",
+		"nezumi/myerror": "dev-master",
+		"nezumi/mysmarty": "dev-master",
+		"nezumi/mysql": "dev-master"
 	},
 	"require-dev":{
 		"php": ">=5.4",
