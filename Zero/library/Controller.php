@@ -49,7 +49,7 @@ class Controller
 
 		$this->template_dir = APP_PATH.$this->module.DS.$this->template_config['template_dir'].DS.$this->style.DS;
 		$this->compie_dir = RUNTIME_PATH.$this->template_config['compie_dir'].DS.$this->style.DS.$module.DS;
-		$this->init_template_engine();
+		$this->initMySmarty();
         new URL($this->module);
 		new Language($module, strtolower($controller));
 		$this->assign('languages', Language::$langs);
@@ -57,7 +57,7 @@ class Controller
 
 	}
 
-	protected function init_template_engine()
+	protected function initMySmarty()
 	{
 		$this->smarty = new MySmarty();
 		$this->smarty->debug = $this->app_config['app_debug'];  //debug on
@@ -89,8 +89,16 @@ class Controller
 			$file = $this->action;
 		}
 		restore_error_handler();
-		$this->smarty->display($file);
+		return $this->smarty->display($file);
 	}
 
+	public function fetch($file = '')
+	{	
+		if( empty($file) ){	
+			$file = $this->action;
+		}
+		restore_error_handler();
+		return $this->smarty->fetch($file);	
+	}
 
 }

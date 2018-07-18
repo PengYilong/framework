@@ -44,7 +44,7 @@ class Origin extends Route
                 $dec_obj[] = new $value;
             } 
             foreach ($dec_obj as $key => $value) {
-                $value->before_request();
+                $value->beforeRequest();
             }
         }
         
@@ -55,7 +55,7 @@ class Origin extends Route
 
         if( isset($_GET['app']) && !empty($dec_obj)){
             foreach ($dec_obj as $key => $value) {
-                $value->after_request($result, $object);
+                $value->afterRequest($result, $object);
             }
         }
         

@@ -1,5 +1,13 @@
+# composer files
 composer-setup.php
-temp.md
+
+# composer vendor dir
 /vendor
+
+# Mac DS_Stroe fiels
+.DS_Store
+
+# other
+temp.md
 configs/database.php
 issue.md

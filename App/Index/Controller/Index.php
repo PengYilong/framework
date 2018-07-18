@@ -22,14 +22,4 @@ class Index extends Frontend
 		$this->display('public/index.html');
 	}
 
-	public function show()
-	{
-		$model = Factory::getModel('Index');
-		$model->getList();
-	}
-
-	public function init()
-	{
-		
-	}	
 }

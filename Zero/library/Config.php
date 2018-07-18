@@ -4,8 +4,8 @@ namespace Zero\library;
 class Config
 {
 
-	static $path = array();
-	static $configs = array(); //所有配置
+	static $path = [];
+	static $configs = []; // all of configs
 	static $extension = '';
 
 	public function __construct($path, $extension)
@@ -20,9 +20,9 @@ class Config
 	 */	
 	static function get( $offset )
 	{
-		if(empty(self::$configs[$offset])){
+		if( empty(self::$configs[$offset]) ){
 			//loading frontend and backend config.finally result is fronted config.
-			$config = array();
+			$config = [];
 			foreach (self::$path as $key => $value) {
 				$file = $value.$offset.self::$extension;
 				if( file_exists($file) ){
