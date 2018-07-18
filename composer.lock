@@ -1,0 +1,168 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "cf02c4fee023dda4ca84a8ff9d3e1347",
+    "packages": [
+        {
+            "name": "nezumi/myerror",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PengYilong/MyError.git",
+                "reference": "16f1810619dbb5894a817529c597a3a2c446c7ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PengYilong/MyError/zipball/16f1810619dbb5894a817529c597a3a2c446c7ed",
+                "reference": "16f1810619dbb5894a817529c597a3a2c446c7ed",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nezumi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yilong Peng",
+                    "email": "948800401@qq.com",
+                    "homepage": "https://github.com/PengYilong",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error and exception",
+            "time": "2018-06-17T13:32:11+00:00"
+        },
+        {
+            "name": "nezumi/mysmarty",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PengYilong/MySmarty.git",
+                "reference": "3638cbe8f08fd54bb876248b8fa683d4f1ae912d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PengYilong/MySmarty/zipball/3638cbe8f08fd54bb876248b8fa683d4f1ae912d",
+                "reference": "3638cbe8f08fd54bb876248b8fa683d4f1ae912d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nezumi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yilong Peng",
+                    "email": "948800401@qq.com",
+                    "homepage": "https://github.com/PengYilong",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A template engine which imitate smarty for php",
+            "time": "2018-07-12T08:32:08+00:00"
+        },
+        {
+            "name": "nezumi/mysql",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PengYilong/PHP-MySQL.git",
+                "reference": "a4480b4995ddb79475893088f5d124b535b7042d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PengYilong/PHP-MySQL/zipball/a4480b4995ddb79475893088f5d124b535b7042d",
+                "reference": "a4480b4995ddb79475893088f5d124b535b7042d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nezumi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yilong Peng",
+                    "email": "948800401@qq.com",
+                    "homepage": "https://github.com/YilongPeng",
+                    "role": "Developer"
+                }
+            ],
+            "description": "the database driver",
+            "time": "2018-07-11T02:54:16+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "nezumi/cache",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PengYilong/cache.git",
+                "reference": "ecae4bcac04ba9a84c3f243207e8bd6fc62bb3c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PengYilong/cache/zipball/ecae4bcac04ba9a84c3f243207e8bd6fc62bb3c6",
+                "reference": "ecae4bcac04ba9a84c3f243207e8bd6fc62bb3c6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nezumi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yilong Peng",
+                    "email": "948800401@qq.com",
+                    "homepage": "https://github.com/YilongPeng",
+                    "role": "Developer"
+                }
+            ],
+            "description": "a PHP cache classes",
+            "time": "2018-06-07T12:22:22+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "nezumi/myerror": 20,
+        "nezumi/mysmarty": 20,
+        "nezumi/mysql": 20,
+        "nezumi/cache": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.4"
+    },
+    "platform-dev": {
+        "php": ">=5.4"
+    }
+}
