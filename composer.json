@@ -1,7 +1,7 @@
 {
 	"name": "nezumi/zero-php",
 	"description": "A PHP framework",
-	"minimum-stability": "dev-master",
+	"minimum-stability": "dev",
 	"type": "Framework",
 	"keywords":[
 		"PHP",
