@@ -30,11 +30,14 @@ class Base extends Model
 	public function __construct()
 	{	
 		parent::__construct();
-		$db_config = Config::get('database')['master'];	
-		$this->prefix = $db_config['tablepre']; 
-		$this->table = $this->getModelName();
-		$this->options['table'] = $this->table;
-		$this->cache = IFactory::getCache();
+		$db_config = Config::get('database');
+		if( $db_config ){
+			$db_config = $db_config['master'];
+			$this->prefix = $db_config['tablepre']; 
+			$this->table = $this->getModelName();
+			$this->options['table'] = $this->table;
+			$this->cache = IFactory::getCache();
+		}
 	}			
 
     public function getModelName()

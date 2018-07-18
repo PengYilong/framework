@@ -5,7 +5,9 @@
 	{elseif $code == 2}
 	{else}
 	{/if}
-	{foreach $data as $key=>$value}
-	{$value['name']}
-	{/foreach}
+	{if !empty($data)}
+		{foreach $data as $key=>$value}
+		{$value['name']}
+		{/foreach}
+	{/if}
 {include file="public/footer.html"}
