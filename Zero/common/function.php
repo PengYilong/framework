@@ -162,3 +162,54 @@ function arrayToSelect($arr = [], $default = '', $field = '')
     }
     return $options;
 }
+
+
+if (!function_exists('array_no_repeat_merge'))
+{
+    /**
+     * 索引数组合并，没有重复值
+     * @param $array
+     * @return array
+     *
+     */
+    function arrayNoRepeatMerge($array){
+        $result = [];
+        if( !empty($array) ){
+            foreach ($array as $key=>$value) {
+                $result = array_merge($result, $value);
+            }
+            $result = array_unique($result);
+        }
+        return $result;
+    }
+}
+
+
+if (!function_exists('in_multi_array'))
+{
+    /**
+     * 获取所有数组里面都有的值
+     * @param $array
+     * @return array
+     *
+     */
+    function inMultiArray($array) {
+        $result = [];
+        $merge_array = arrayNoRepeatMerge($array);
+        if( !empty($merge_array) ){
+            foreach ($merge_array as $key=>$value){
+                $exist = true;
+                foreach($array as $k=>$v){
+                    if( !in_array($value, $v) ){
+                        $exist = false;
+                        break;
+                    }
+                }
+                if($exist){
+                    $result[] = $value;
+                }
+            }
+        }
+        return $result;
+    }
+}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf02c4fee023dda4ca84a8ff9d3e1347",
+    "content-hash": "d2aa90af602ddcd43e1e80dec8d32d29",
     "packages": [
         {
             "name": "nezumi/myerror",
@@ -47,12 +47,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PengYilong/MySmarty.git",
-                "reference": "3638cbe8f08fd54bb876248b8fa683d4f1ae912d"
+                "reference": "4bb88a32664b9f1dea471249b4226541b529fe28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/MySmarty/zipball/3638cbe8f08fd54bb876248b8fa683d4f1ae912d",
-                "reference": "3638cbe8f08fd54bb876248b8fa683d4f1ae912d",
+                "url": "https://api.github.com/repos/PengYilong/MySmarty/zipball/4bb88a32664b9f1dea471249b4226541b529fe28",
+                "reference": "4bb88a32664b9f1dea471249b4226541b529fe28",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "A template engine which imitate smarty for php",
-            "time": "2018-07-12T08:32:08+00:00"
+            "time": "2018-07-28T15:15:25+00:00"
         },
         {
             "name": "nezumi/mysql",
@@ -147,6 +147,42 @@
             ],
             "description": "a PHP cache classes",
             "time": "2018-06-07T12:22:22+00:00"
+        },
+        {
+            "name": "topthink/think-template",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-template.git",
+                "reference": "4437741ca41fe99452d1b667df242cd8ca63120c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-template/zipball/4437741ca41fe99452d1b667df242cd8ca63120c",
+                "reference": "4437741ca41fe99452d1b667df242cd8ca63120c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "think\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "the php template engine",
+            "time": "2018-04-20T05:41:47+00:00"
         }
     ],
     "aliases": [],

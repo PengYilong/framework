@@ -7,6 +7,12 @@ composer-setup.php
 # Mac DS_Stroe fiels
 .DS_Store
 
+# php-cs-fixer files
+.php_cs.cache
+
+# phpstorm files
+/.idea
+
 # other
 temp.md
 configs/database.php

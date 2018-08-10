@@ -18,12 +18,13 @@
 		"nezumi/myerror": "dev-master",
 		"nezumi/mysmarty": "dev-master",
 		"nezumi/cache": "dev-master",
-		"nezumi/mysql": "dev-master"
+		"nezumi/mysql": "dev-master",
+		"topthink/think-template": "*"
 	},
 	"repositories": {
 	    "packagist": {
 	        "type": "composer",
-	        "url": "https://packagist.org"
+	        "url": "https://packagist.phpcomposer.com"
 	    }
 	}
 }
