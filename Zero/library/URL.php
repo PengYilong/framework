@@ -23,7 +23,7 @@ class URL
 				} 
 				break;
 			case 2:
-				$url_str = '/index.php?r='.self::$module.'/'.array_shift($url); 
+				$url_str = '/'.self::$module.'/'.array_shift($url);
 				foreach ($url as $key => $value) {
 				 	$url_str .= '/'.$key.'/'.$value;
 				} 	

@@ -1,7 +1,7 @@
 <?php
 $array = [
 	'app_debug' => true,
-	'url_model' => 1,
+	'url_model' => 2,
 	'language' => 'zh-cn',
 	'conponents' => [
 		'decorators' => require __DIR__.'/decorators.php',

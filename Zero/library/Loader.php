@@ -24,6 +24,7 @@ class Loader
 			include $file;
 			self::$classMap[$class] = $class;
 		} else {
+            header('HTTP/1.1 404 Not Found');
 			throw new \Exception($file.' doesn\'t exist');
 		}
 	}

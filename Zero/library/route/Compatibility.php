@@ -15,9 +15,9 @@ class Compatibility extends Route
 
     public function init()
     {
-        $this->url = isset($_GET['r']) ? $_GET['r'] : NULL;
-        $url = $this->url;
-        if(  $url !== NULL || $_SERVER['SCRIPT_NAME']=='/index.php'){
+
+        $url = $_SERVER['PATH_INFO'];
+        if(  $url !== NULL ){
             //gets default config of route
             $route_conf = Config::get('route')['default'];
             $url = trim($url, '/'); //去掉左右两边的/
@@ -43,33 +43,32 @@ class Compatibility extends Route
                 }
             }
 
-            new URL($this->module);
+            $class = '\App\\'.$this->module.'\\Controller\\'.$this->controller;
             new Factory($this->module, $this->controller, $this->action);
 
-            $class = '\App\\'.$this->module.'\\Controller\\'.$this->controller;
             //Add decorator
             $decorators = [];
             $decorators_conf = Config::get('decorators');
             $decorators = $decorators_conf['output_decorators'];
             $dec_obj = [];
-            //gets global object of  decorators 
+            //gets global object of  decorators
             if( isset($_GET['app']) && !empty($decorators) ){
                 foreach ($decorators as $key => $value) {
-                    $dec_obj[] = new $value($this->module, $this->controller, $this->action);
-                } 
+                    $dec_obj[] = new $value;
+                }
                 foreach ($dec_obj as $key => $value) {
-                    $value->before_request();
+                    $value->beforeRequest();
                 }
             }
-            
+
             $object = new $class($this->module, $this->controller, $this->action);
 
             $method = $this->action;
-            $result = $object->$method($this->module, $this->controller, $this->action);
+            $result = $object->$method();
 
             if( isset($_GET['app']) && !empty($dec_obj)){
                 foreach ($dec_obj as $key => $value) {
-                    $value->after_request($result);
+                    $value->afterRequest($result, $object);
                 }
             }
         }
