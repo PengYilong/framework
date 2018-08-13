@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2aa90af602ddcd43e1e80dec8d32d29",
+    "content-hash": "c2e12a42d8398274802fc85c29d1660e",
     "packages": [
         {
             "name": "nezumi/myerror",
@@ -47,12 +47,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PengYilong/MySmarty.git",
-                "reference": "4bb88a32664b9f1dea471249b4226541b529fe28"
+                "reference": "3638cbe8f08fd54bb876248b8fa683d4f1ae912d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/MySmarty/zipball/4bb88a32664b9f1dea471249b4226541b529fe28",
-                "reference": "4bb88a32664b9f1dea471249b4226541b529fe28",
+                "url": "https://api.github.com/repos/PengYilong/MySmarty/zipball/3638cbe8f08fd54bb876248b8fa683d4f1ae912d",
+                "reference": "3638cbe8f08fd54bb876248b8fa683d4f1ae912d",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "A template engine which imitate smarty for php",
-            "time": "2018-07-28T15:15:25+00:00"
+            "time": "2018-07-12T08:32:08+00:00"
         },
         {
             "name": "nezumi/mysql",
@@ -149,6 +149,45 @@
             "time": "2018-06-07T12:22:22+00:00"
         },
         {
+            "name": "topthink/think-orm",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-orm.git",
+                "reference": "419fb2a701d01356fa35369decf30a7fa3ef3212"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-orm/zipball/419fb2a701d01356fa35369decf30a7fa3ef3212",
+                "reference": "419fb2a701d01356fa35369decf30a7fa3ef3212",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "think\\": "src"
+                },
+                "files": [
+                    "src/config.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "think orm",
+            "time": "2018-06-12T07:08:58+00:00"
+        },
+        {
             "name": "topthink/think-template",
             "version": "dev-master",
             "source": {
@@ -183,6 +222,43 @@
             ],
             "description": "the php template engine",
             "time": "2018-04-20T05:41:47+00:00"
+        },
+        {
+            "name": "topthink/think-validate",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-validate.git",
+                "reference": "6422f1a9c68996dd66171a28a15506aeee139b89"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-validate/zipball/6422f1a9c68996dd66171a28a15506aeee139b89",
+                "reference": "6422f1a9c68996dd66171a28a15506aeee139b89",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "think\\": "src"
+                },
+                "files": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "think validate",
+            "time": "2018-03-09T09:48:11+00:00"
         }
     ],
     "aliases": [],

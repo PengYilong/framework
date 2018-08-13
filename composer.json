@@ -19,7 +19,9 @@
 		"nezumi/mysmarty": "dev-master",
 		"nezumi/cache": "dev-master",
 		"nezumi/mysql": "dev-master",
-		"topthink/think-template": "*"
+		"topthink/think-template": "*",
+		"topthink/think-validate": "*",
+		"topthink/think-orm": "*"
 	},
 	"repositories": {
 	    "packagist": {

@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('PRC');
 //define ENV constant
 define('DS', DIRECTORY_SEPARATOR);
 define('SITE_PATH', dirname($_SERVER['SCRIPT_FILENAME']).DS);

@@ -16,5 +16,6 @@ $array = [
         '__IMG__'      => '/static/images',
         '__JS__'       => '/static/js',
     ],
+    'default_timezone' => 'PRC',
 ];
 return $array;
