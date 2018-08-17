@@ -2,7 +2,7 @@
 namespace Zero\library;
 use Nezumi\MyError;
 
-class Application extends Route
+class Application
 {
 
 	/**
@@ -33,8 +33,8 @@ class Application extends Route
 
 		new MyError($path, $rule, ZERO_PATH.'/template/error.php', $this->config['app_debug']);
 
-		session_start();
-		$this->filterParam()->parseUrl();
+		$route = new Route($this->config);
+        $route->filterParam()->chooseRoute();
 	}
 
 }
