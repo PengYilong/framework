@@ -43,11 +43,12 @@ class Controller
 	 */ 
 	protected $app_config = NULL;		
 
-	public function __construct($module, $controller, $action)
+	public function __construct($module, $directory, $controller, $action)
 	{
 		// template init
 		$this->module = $module;
-		$this->controller = $controller;
+        $this->directory = $directory;
+        $this->controller = $controller;
 		$this->action = $action; 
 
 		$this->template_config =  Config::get('template');

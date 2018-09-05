@@ -8,9 +8,10 @@ class Factory
     static $controller;
     static $action;
 
-    public function __construct($module, $controller, $action)
+    public function __construct($module, $directory, $controller, $action)
     {
-        self::$module = $module;    
+        self::$module = $module;
+        self::$controller = $directory;
         self::$controller = $controller;
         self::$action = $action;    
     }   
@@ -28,7 +29,6 @@ class Factory
             } else {
                 throw new \Exception($model.' doesn\'t exist');
             }
-            
         }
         return $model;
     }

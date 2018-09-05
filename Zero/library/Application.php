@@ -23,7 +23,6 @@ class Application
 			CONF_PATH,	
 		);
 		//load configs and
-
 		new Config($configs, CONF_EXT);
 
 		//to init handling error and exception class
@@ -32,7 +31,7 @@ class Application
 		$rule = $config['rule'];
 
 		new MyError($path, $rule, ZERO_PATH.'/template/error.php', $this->config['app_debug']);
-
+        session_start();
 		$route = new Route($this->config);
         $route->filterParam()->chooseRoute();
 	}

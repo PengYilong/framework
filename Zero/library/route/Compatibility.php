@@ -18,6 +18,26 @@ class Compatibility
      */
     protected $bindModule;
 
+    /**
+     * @var string
+     */
+    public $module;
+
+    /**
+     * @var string
+     */
+    public $directory = [];
+
+    /**
+     * @var string
+     */
+    public $controller;
+
+    /**
+     * @var string
+     */
+    public $action;
+
     public function __construct($config = [])
     {
         $this->config = $config;
@@ -28,19 +48,58 @@ class Compatibility
 
         $url = $_SERVER['PATH_INFO'];
         if(  $url !== NULL ){
-            $this->parseUrl($url);
+            //$this->parseUrl($url);
 
-            $moduleArr = explode('.', $_SERVER['HTTP_HOST']);
-            $currentModule = array_shift($moduleArr);
-
+            $domainArr = explode('.', $_SERVER['HTTP_HOST']);
+            $currentModule = array_shift($domainArr);
             //比对绑定的模块
-            if( in_array($currentModule, $this->config['bind_modules']) ){
-                $this->bindModul = $currentModule;
+            if( in_array($currentModule, array_keys($this->config['bind_modules'])) ){
+                $this->bindModule = $currentModule;
             }
-            
-            $class = '\App\\'.$this->module.'\\'.$this->config['url_controller_layer'].'\\'.$this->controller;
-            new Factory($this->module, $this->controller, $this->action);
+            $this->module = strtolower($this->config['bind_modules'][$currentModule]);
+            //自动查找文件
+            //去除两边的/防止生成多余的数组元素
+            $url = trim($url, '/');
+            $path = explode('/', $url);
+            $file = APP_PATH.ucfirst($this->module).'/'.$this->config['url_controller_layer'];
 
+            foreach ($path as $key=>$value){
+                $file .= '/'.ucfirst($value);
+                if( file_exists($file.EXT) ){
+                    $this->controller = strtolower(array_shift($path));
+                    break;
+                }
+                array_push($this->directory, array_shift($path));
+            }
+            $this->action = strtolower(array_shift($path));
+            $directory = implode('\\', $this->directory);
+            if( !empty($directory) ){
+                $classArr = [
+                    'App',
+                    ucfirst($this->module),
+                    $this->config['url_controller_layer'],
+                    ucfirst($directory),
+                    ucfirst($this->controller),
+                ];
+            } else {
+                $classArr = [
+                    'App',
+                    ucfirst($this->module),
+                    $this->config['url_controller_layer'],
+                    ucfirst($this->controller),
+                ];
+            }
+            $class = '\\'.implode('\\',$classArr);
+            new Factory($this->module, $this->directory, $this->controller, $this->action);
+
+            //gets params after action
+            if( !empty($path) ){
+                for($i=0; $i<count($path); $i+=2){
+                    if(isset($path[$i+1])){
+                        $_GET[$path[$i]] = $path[$i+1];
+                    }
+                }
+            }
             //Add decorator
             $decorators = [];
             $decorators_conf = Config::get('decorators');
@@ -56,11 +115,9 @@ class Compatibility
                 }
             }
 
-            $object = new $class($this->module, $this->controller, $this->action);
-
+            $object = new $class($this->module, $this->directory, $this->controller, $this->action);
             $method = $this->action;
             $result = $object->$method();
-
             if( isset($_GET['app']) && !empty($dec_obj)){
                 foreach ($dec_obj as $key => $value) {
                     $value->afterRequest($result, $object);

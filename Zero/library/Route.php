@@ -18,20 +18,7 @@ class Route extends Application
      */
     public $url = NULL;
 
-    /**
-     * @var string
-     */
-    public $module = NULL;
 
-    /**
-     * @var string
-     */
-    public $controller = NULL;
-
-    /**
-     * @var string
-     */
-    public $action = NULL;
 
     public function __construct($config = [])
     {
