@@ -32,8 +32,8 @@ function p($var)
 function msg($msg = 'failed', $status = 0, $data = FALSE)
 {
     return [
+        'code' => $status,
         'message' => $msg,
-        'status' => $status,
         'data' => $data,
     ];
 }
@@ -131,14 +131,18 @@ function toUnderscore($str)
 }
 
 
-/**
- * @param array $array  
- * @param int $position position of to insert array
- * @param to insert array 
- */
-function arrayInsert ($array, $position, $insert_array) {
-    $first_array = array_splice ($array, 0, $position);
-    return array_merge ($first_array, $insert_array, $array);
+if (!function_exists('arrayInsert')) {
+    /**
+     * @param array $array
+     * @param int $position position of to insert array
+     * @param $insert_array to insert array
+     * @return array
+     */
+    function arrayInsert($array, $position, $insert_array)
+    {
+        $first_array = array_splice($array, 0, $position);
+        return array_merge($first_array, $insert_array, $array);
+    }
 }
 
 /**
@@ -164,7 +168,7 @@ function arrayToSelect($arr = [], $default = '', $field = '')
 }
 
 
-if (!function_exists('array_no_repeat_merge'))
+if (!function_exists('arrayNoRepeatMerge'))
 {
     /**
      * 索引数组合并，没有重复值

@@ -5,30 +5,44 @@ class Factory
 {
 
     static $module;
+    static $directory;
     static $controller;
     static $action;
 
     public function __construct($module, $directory, $controller, $action)
     {
         self::$module = $module;
-        self::$controller = $directory;
+        self::$directory = $directory;
         self::$controller = $controller;
         self::$action = $action;    
-    }   
+    }
 
-    public static function getModel($name, $type = 0)
+    /**
+     * @param $name
+     * @param int $type
+     * @param array $haveDirectory
+     * @return bool
+     * @throws \Exception
+     */
+    public static function getModel($name, $type = 0, $haveDirectory = [])
     {
         $typeName = $type ==0 ? 'model' : 'business';
         $key = 'app_'.$typeName.'_'.$name;
         $model = Register::get($key);
         if(!$model){
-            $class = 'App\\'.self::$module.'\\'.ucwords($typeName).'\\'.$name;
-            if( self::$module ){
-                $model = new $class();
-                Register::set($key, $model);
-            } else {
-                throw new \Exception($model.' doesn\'t exist');
+            $classArr = [
+                'App',
+                'Common',
+                $typeName,
+                $name,
+            ];
+            if( !empty($haveDirectory) ){
+                $classArr = arrayInsert($classArr, 3, $haveDirectory);
             }
+            $classArr = array_map("ucfirst", $classArr);
+            $class = '\\'.implode('\\', $classArr);
+            $model = new $class();
+            Register::set($key, $model);
         }
         return $model;
     }

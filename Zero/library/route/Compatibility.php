@@ -45,9 +45,8 @@ class Compatibility
 
     public function init()
     {
-
         $url = $_SERVER['PATH_INFO'];
-        if(  $url !== NULL ){
+        if( $url !== NULL ){
             //$this->parseUrl($url);
 
             $domainArr = explode('.', $_SERVER['HTTP_HOST']);
@@ -72,24 +71,20 @@ class Compatibility
                 array_push($this->directory, array_shift($path));
             }
             $this->action = strtolower(array_shift($path));
-            $directory = implode('\\', $this->directory);
-            if( !empty($directory) ){
-                $classArr = [
-                    'App',
-                    ucfirst($this->module),
-                    $this->config['url_controller_layer'],
-                    ucfirst($directory),
-                    ucfirst($this->controller),
-                ];
-            } else {
-                $classArr = [
-                    'App',
-                    ucfirst($this->module),
-                    $this->config['url_controller_layer'],
-                    ucfirst($this->controller),
-                ];
+
+            //get new $class
+            $classArr = [
+                'App',
+                $this->module,
+                $this->config['url_controller_layer'],
+                $this->controller,
+            ];
+            if( !empty($this->directory) ){
+                $classArr = arrayInsert($classArr, 3, $this->directory);
             }
+            $classArr = array_map("ucfirst", $classArr);
             $class = '\\'.implode('\\',$classArr);
+
             new Factory($this->module, $this->directory, $this->controller, $this->action);
 
             //gets params after action
@@ -114,7 +109,6 @@ class Compatibility
                     $value->beforeRequest();
                 }
             }
-
             $object = new $class($this->module, $this->directory, $this->controller, $this->action);
             $method = $this->action;
             $result = $object->$method();

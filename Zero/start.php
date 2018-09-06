@@ -21,12 +21,5 @@ if( file_exists(ROOT_PATH.'vendor/autoload.php') ){
 	require ROOT_PATH.'vendor/autoload.php';
 }
 
-
 $config = require CONF_PATH.'app.php';
-(new Zero\library\Application($config))->run(); 
-
-
-
-
-
-
+(new Zero\library\Application($config))->run();
