@@ -86,7 +86,6 @@ class Controller
 		$this->view->setCompileDir($this->compie_dir);
 		$this->view->left_delimiter = $this->template_config['left_delimiter'];
 		$this->view->right_delimiter = $this->template_config['right_delimiter'];
-
 	}
 
     /**

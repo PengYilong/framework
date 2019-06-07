@@ -3,7 +3,7 @@ namespace Zero\library;
 
 class Loader
 {
-	static $classMap = array();  //to load class
+	public static $classMap = [];  //to load class
 
 	static function _autoload($class)
 	{
@@ -19,7 +19,6 @@ class Loader
 		} else {
 			$file = ROOT_PATH.str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
 		}
-		
 		if( file_exists($file) ){
 			include $file;
 			self::$classMap[$class] = $class;
