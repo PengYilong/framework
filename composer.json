@@ -11,7 +11,8 @@
 		"php": ">=5.4",
 		"nezumi/myerror": "dev-master",
 		"nezumi/mysmarty": "dev-master",
-		"nezumi/mysql": "dev-master"
+		"nezumi/mysql": "dev-master",
+		"nezimi/myfunctions": "dev-master"
 	},
 	"require-dev":{
 		"php": ">=5.4",
@@ -20,13 +21,10 @@
 		"nezumi/cache": "dev-master",
 		"nezumi/mysql": "dev-master",
 		"topthink/think-template": "*",
-		"topthink/think-validate": "*",
-		"topthink/think-orm": "*"
+		"topthink/think-validate": "*"
 	},
-	"repositories": [
-		{
-	        "type": "composer",
-	        "url": "https://packagist.phpcomposer.com"
-		}
-	]
+	"autoload": {
+        "psr-4": {
+            "app\\": "app"
+        }}
 }

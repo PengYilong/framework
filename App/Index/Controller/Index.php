@@ -1,5 +1,5 @@
 <?php
-namespace App\Index\Controller;
+namespace app\index\controller;
 
 use App\Common\Controller\Frontend;
 use Zero\library\Factory;
