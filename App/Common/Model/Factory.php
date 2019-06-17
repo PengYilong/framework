@@ -1,8 +1,8 @@
 <?php
 namespace App\Common\Model;
 
-use Zero\library\Register;
-use Zero\library\Config;
+use zero\Register;
+use zero\Config;
 
 class Factory
 {

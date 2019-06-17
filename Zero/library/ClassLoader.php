@@ -58,7 +58,8 @@ class ClassLoader
 			}
 		}
 		self::loadComposerAutoLoadFiles();
-		self::addNameSpace('zero\\', __DIR__);	
+		self::addNameSpace('zero\\', __DIR__);
+		self::addNameSpace('zero\\', __DIR__.'22');
 		self::addAutoLoadDir($rootPath . 'extend');
 	}
 
@@ -67,12 +68,8 @@ class ClassLoader
 	 */
 	public static function autoload($class)
 	{
-		if( isset(self::$classMap[$class]) ){
-			return true;
-		}
 		if( $file = self::findFile($class) ){
 			include $file;
-			self::$classMap[$class] = $class;
 		} 
 	}
 	
@@ -83,10 +80,10 @@ class ClassLoader
 	{
 		if( is_array($namespaces) ){
 			foreach ($namespaces as $namespace => $path) {
-				self::addPsr4($namespace, $path);
+				self::addPsr4($namespace, $path, true);
 			}
 		} else {
-			self::addPsr4($namespaces, $path);	
+			self::addPsr4($namespaces, $path, true);	
 		}
 	}
 
@@ -127,7 +124,9 @@ class ClassLoader
 				throw new \InvalidArgumentException('A non-empty PSR-4 prefix must end with a namespace separator!');
 			}
 			self::$prefixLengthsPsr4[$prefix[0]][$prefix] = $length;
-			self::$prefixDirsPsr4[$prefix] = $paths;
+			self::$prefixDirsPsr4[$prefix][] = $paths;
+		} elseif ( $prepend ) {
+			self::$prefixDirsPsr4[$prefix][] = $paths;
 		}	
 	}
 

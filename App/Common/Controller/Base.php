@@ -5,7 +5,7 @@
  */
 namespace App\Common\Controller;
 
-use Zero\library\Controller;
+use zero\Controller;
 
 class Base extends Controller
 {

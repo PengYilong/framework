@@ -5,8 +5,8 @@
  */
 namespace App\Common\Controller;
 
-use Zero\library\Controller;
-use Zero\library\Factory;
+use zero\Controller;
+use zero\Factory;
 
 class Backend extends Base
 {	

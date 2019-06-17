@@ -1,8 +1,8 @@
 <?php
-namespace Zero\library;
+namespace zero;
 
-use Zero\library\route\Compatibility;
-use Zero\library\route\Origin;
+use zero\route\Compatibility;
+use zero\route\Origin;
 
 class Route extends Application
 {

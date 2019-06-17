@@ -1,5 +1,5 @@
 <?php
-namespace Zero\library;
+namespace zero;
 
 class URL
 {

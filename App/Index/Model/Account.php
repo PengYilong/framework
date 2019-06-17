@@ -1,7 +1,7 @@
 <?php
 namespace App\Index\Model;
 
-use Zero\library\Model;
+use zero\Model;
 use App\Common\Model\Base;
 
 class Account extends Base

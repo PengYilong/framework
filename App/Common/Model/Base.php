@@ -2,11 +2,11 @@
 namespace App\Common\Model;
 
 use Nezumi\Paging;
-use Zero\library\Model;
-use Zero\library\Factory;
+use zero\Model;
+use zero\Factory;
 use App\Common\Model\Factory as IFactory;
-use Zero\library\Register;
-use Zero\library\Config;
+use zero\Register;
+use zero\Config;
 
 class Base extends Model
 {

@@ -1,6 +1,6 @@
 <?php
 namespace App\Common\Decorators;
-use Zero\library\Controller;
+use zero\Controller;
 use App\Common\Controller\Backend;
 
 class Template

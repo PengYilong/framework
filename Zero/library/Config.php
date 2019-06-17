@@ -1,5 +1,5 @@
 <?php
-namespace Zero\library;
+namespace zero;
 
 class Config
 {
@@ -18,7 +18,7 @@ class Config
 	 * get config of file
 	 * @var type
 	 */	
-	static function get( $offset )
+	public static function get( $offset )
 	{
 		if( empty(self::$configs[$offset]) ){
 			//loading frontend and backend config.finally result is fronted config.

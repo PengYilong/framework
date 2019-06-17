@@ -2,7 +2,7 @@
 namespace app\index\controller;
 
 use App\Common\Controller\Frontend;
-use Zero\library\Factory;
+use zero\Factory;
 
 class Index extends Frontend
 {

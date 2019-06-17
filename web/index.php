@@ -1,2 +1,2 @@
 <?php
-require __DIR__ . '/../Zero/start.php';
+require __DIR__ . '/../zero/start.php';

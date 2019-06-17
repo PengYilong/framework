@@ -1,7 +1,7 @@
 <?php
-namespace Zero\library;
+namespace zero;
 
-use Zero\library\Config;
+use zero\Config;
 use Nezumi\MySmarty;
 
 class Controller

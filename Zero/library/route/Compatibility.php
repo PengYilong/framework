@@ -1,10 +1,10 @@
 <?php
-namespace Zero\library\route;
+namespace zero\route;
 
-use Zero\library\Route;
-use Zero\library\Config;
-use Zero\library\Factory;
-use Zero\library\URL;
+use zero\Route;
+use zero\Config;
+use zero\Factory;
+use zero\URL;
 
 class Compatibility
 {

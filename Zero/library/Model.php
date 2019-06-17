@@ -1,8 +1,8 @@
 <?php
-namespace Zero\library;
+namespace zero;
 use Nezumi\Paging;
 use Nezumi\MySQLi;
-use Zero\library\Config;
+use zero\Config;
 
 class Model extends MySQLi 
 {

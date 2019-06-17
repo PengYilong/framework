@@ -1,5 +1,5 @@
 <?php
-namespace Zero\library;
+namespace zero;
 use Nezumi\MyError;
 
 class Application
@@ -12,12 +12,13 @@ class Application
 
 	function __construct($config = [])
 	{
-		$this->config = $config;
 	}
 
 	public function run()
 	{
-        date_default_timezone_set($this->config['default_timezone']);
+		exit('run here!');
+		date_default_timezone_set($this->config['default_timezone']);
+		
 		$configs = array(
 			CORE_CONF_PATH,
 			CONF_PATH,	
