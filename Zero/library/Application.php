@@ -12,10 +12,12 @@ class Application
 
 	function __construct($config = [])
 	{
+		$this->config = $config;
 	}
 
 	public function run()
 	{
+		p($this->config);
 		exit('run here!');
 		date_default_timezone_set($this->config['default_timezone']);
 		
