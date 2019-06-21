@@ -10,11 +10,11 @@ classLoader::addClassAlias([
     'Application' => facade\Application::class,
 ]);
 
-// $class = new \Application();
-// echo $class->test();
+(Container::get('\Application'))::init('22');
 
-echo Container::get('\Application')->test();
 // $ref = new \ReflectionClass('zero\classLoader');
 // $arr = $ref->getStaticProperties();
 // p($arr);
-Container::get('Application', [22])->run();
+// Container::get('Application', [22])->run();
+
+

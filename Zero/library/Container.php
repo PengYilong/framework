@@ -37,7 +37,7 @@ class Container implements ArrayAccess, Countable{
     /**
      * @return new instance 
      */
-    public function make($class, $args)
+    public function make($class, $args = [])
     {
         $realClass = $this->bind[$class] ?? $class;
         try {

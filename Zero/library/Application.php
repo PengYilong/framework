@@ -39,4 +39,9 @@ class Application
         $route->filterParam()->chooseRoute();
 	}
 
+	public function init($a)
+	{
+		p($a);
+	}
+
 }
