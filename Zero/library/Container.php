@@ -19,7 +19,7 @@ class Container implements ArrayAccess, Countable{
     protected $instances;
 
     protected $bind = [
-        'app' => Application::class,
+        'Application' => Application::class,
     ];
 
     private function __construct()

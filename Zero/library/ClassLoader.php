@@ -10,7 +10,7 @@ class ClassLoader
 	 * @var array 
 	 * 
 	 */
-	private static $classMap = [];  
+	protected static $classMap = [];  
 
 	/**
 	 * PSR-4
@@ -68,6 +68,10 @@ class ClassLoader
 	 */
 	public static function autoload($class)
 	{
+		if( isset( self::$classMap[$class] ) ) {
+			return class_alias(self::$classMap[$class], $class);
+		}
+
 		if( $file = self::findFile($class) ){
 			include $file;
 		} 
@@ -190,6 +194,20 @@ class ClassLoader
 					include $value;
 				}
 			}
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public static function addClassAlias($class, $map = '')
+	{
+		if( is_array($class) ){
+			foreach( $class as $key => $value ){
+				self::$classMap[$key] = $value;
+			}
+		} else {
+			self::$classMap[$class] = $map;
 		}
 	}
 
