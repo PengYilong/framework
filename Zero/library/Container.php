@@ -3,8 +3,10 @@ namespace zero;
 
 use ArrayAccess;
 use ReflectionClass;
+use InvalidArgumentException;
+use Countable;
 
-class Container implements ArrayAccess{
+class Container implements ArrayAccess, Countable{
 
     /**
      * @var container
@@ -33,7 +35,7 @@ class Container implements ArrayAccess{
     }
 
     /**
-     * 
+     * @return new instance 
      */
     public function make($class, $args)
     {
@@ -42,7 +44,21 @@ class Container implements ArrayAccess{
             $ref = new ReflectionClass($realClass);
             $constructor = $ref->getConstructor();
             if( $constructor ){
-                return $ref->newInstanceArgs($args);
+                $params = $constructor->getParameters();
+                if( !empty( $params ) ){
+                    foreach($params as $key=>$value ){
+                        if( isset($args[$key]) ){
+                            $realArgs[] = $args[$key];
+                        } else if( $value->isDefaultValueAvailable() ){
+                            $realArgs[] = $value->getDefaultValue();
+                        } else {
+                            throw new InvalidArgumentException('The param of the method is missed:'. $value->getName());
+                        } 
+                    }
+                } else {
+                    $realArgs = $params;
+                }
+                return $ref->newInstanceArgs($realArgs);
             } else {
                 return $ref->newInstance();
             }
@@ -86,4 +102,9 @@ class Container implements ArrayAccess{
     {
         unset($this->instances[$offset]); 
     } 
+
+    public function count()
+    {
+        return count($this->instances);
+    }
 }
