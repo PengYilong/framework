@@ -2,7 +2,7 @@
 namespace App\Index\Model;
 
 use zero\Model;
-use App\Common\Model\Base;
+use app\common\model\Base;
 
 class Account extends Base
 {

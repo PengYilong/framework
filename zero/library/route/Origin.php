@@ -29,7 +29,7 @@ class Origin extends Route
 
         $this->controller_low = strtolower($this->controller);
 
-        $class = '\App\\'.$this->module.'\\Controller\\'.$this->controller;
+        $class = '\app\\'.$this->module.'\\controller\\'.$this->controller;
         
 
         new Factory($this->module, $this->controller, $this->action); 

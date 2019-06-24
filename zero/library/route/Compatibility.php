@@ -60,8 +60,7 @@ class Compatibility
             //去除两边的/防止生成多余的数组元素
             $url = trim($url, '/');
             $path = explode('/', $url);
-            $file = APP_PATH.ucfirst($this->module).'/'.$this->config['url_controller_layer'];
-
+            $file = APP_PATH.$this->module.'/'.$this->config['url_controller_layer'];
             foreach ($path as $key=>$value){
                 $file .= '/'.ucfirst($value);
                 if( file_exists($file.EXT) ){
@@ -74,17 +73,15 @@ class Compatibility
 
             //get new $class
             $classArr = [
-                'App',
+                'app',
                 $this->module,
                 $this->config['url_controller_layer'],
-                $this->controller,
+                ucfirst($this->controller),
             ];
             if( !empty($this->directory) ){
-                $classArr = arrayInsert($classArr, 3, $this->directory);
+                $classArr = array_insert($classArr, 3, $this->directory);
             }
-            $classArr = array_map("ucfirst", $classArr);
             $class = '\\'.implode('\\',$classArr);
-
             new Factory($this->module, $this->directory, $this->controller, $this->action);
 
             //gets params after action
@@ -110,6 +107,7 @@ class Compatibility
                 }
             }
             $object = new $class($this->module, $this->directory, $this->controller, $this->action);
+
             $method = $this->action;
             $result = $object->$method();
             if( isset($_GET['app']) && !empty($dec_obj)){
@@ -136,7 +134,7 @@ class Compatibility
 
         //gets controller
         $this->controller = !empty($url_array[0])  ? ucwords(array_shift($url_array)) : $route_conf['controller'];
-
+        
         //gets action
         $this->action = !empty($url_array[0])  ? strtolower(array_shift($url_array)) : $route_conf['action'];
         $this->controller_low = strtolower($this->controller);

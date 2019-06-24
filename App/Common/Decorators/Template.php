@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Decorators;
 use zero\Controller;
-use App\Common\Controller\Backend;
+use app\common\controller\Backend;
 
 class Template
 {

@@ -3,7 +3,7 @@
  * frontend controller init
  * 
  */
-namespace App\Common\Controller;
+namespace app\common\controller;
 
 use zero\Controller;
 use zero\Factory;

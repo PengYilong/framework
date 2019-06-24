@@ -15,7 +15,7 @@ class Config
 	}	
 
 	/**
-	 * get config of file
+	 * gets the config of the file
 	 * @var type
 	 */	
 	public static function get( $offset )

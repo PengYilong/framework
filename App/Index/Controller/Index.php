@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 
-use App\Common\Controller\Frontend;
+use app\common\controller\Frontend;
 use zero\Factory;
 
 class Index extends Frontend

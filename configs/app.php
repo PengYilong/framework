@@ -2,7 +2,8 @@
 $array = [
 	'app_debug' => true,
 	'url_model' => 2,
-	'language' => 'zh-cn',
+    'language' => 'zh-cn',
+    'enable_myerror' => true,
 	'conponents' => [
 		'database' => require __DIR__.'/database.php',
 		'decorators' => require __DIR__.'/decorators.php',
@@ -24,9 +25,9 @@ $array = [
         '__plug__'     => 'js/plugins',
     ],
     // 默认的访问控制器层文件夹
-    'url_controller_layer'=> 'Controller',
-    'url_controller_bussiness'=> 'Bussiness',
-    'url_controller_model'=> 'Model',
+    'url_controller_layer'=> 'controller',
+    'url_controller_bussiness'=> 'bussiness',
+    'url_controller_model'=> 'model',
     'default_timezone' => 'PRC',
     'bind_modules' => [
         'admin'=>'admin',

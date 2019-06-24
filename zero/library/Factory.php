@@ -31,15 +31,14 @@ class Factory
         $model = Register::get($key);
         if(!$model){
             $classArr = [
-                'App',
-                'Common',
+                'app',
+                'common',
                 $typeName,
                 $name,
             ];
             if( !empty($haveDirectory) ){
                 $classArr = arrayInsert($classArr, 3, $haveDirectory);
             }
-            $classArr = array_map("ucfirst", $classArr);
             $class = '\\'.implode('\\', $classArr);
             $model = new $class();
             Register::set($key, $model);

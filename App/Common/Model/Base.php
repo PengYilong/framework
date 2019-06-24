@@ -4,7 +4,7 @@ namespace App\Common\Model;
 use Nezumi\Paging;
 use zero\Model;
 use zero\Factory;
-use App\Common\Model\Factory as IFactory;
+use app\common\model\Factory as IFactory;
 use zero\Register;
 use zero\Config;
 

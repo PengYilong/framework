@@ -10,15 +10,19 @@ class Application
 	 */
 	protected  $config;
 
-	function __construct($config = [])
+	/**
+	 * 
+	 */
+	public $appPath;
+
+	function __construct($appPath = '')
 	{
-		$this->config = $config;
+		$this->path($appPath);
 	}
 
 	public function run()
 	{
-		p($this->config);
-		exit('run here!');
+		$this->config = require CONF_PATH.'app.php';;
 		date_default_timezone_set($this->config['default_timezone']);
 		
 		$configs = array(
@@ -33,7 +37,10 @@ class Application
 		$path = RUNTIME_PATH.'log'.DS;
 		$rule = $config['rule'];
 
-		new MyError($path, $rule, ZERO_PATH.'/template/error.php', $this->config['app_debug']);
+		if( $this->config['enable_myerror'] ){
+			new MyError($path, $rule, ZERO_PATH.'/template/error.php', $this->config['app_debug']);
+		}
+		
         session_start();
 		$route = new Route($this->config);
         $route->filterParam()->chooseRoute();
@@ -41,7 +48,20 @@ class Application
 
 	public function init($a)
 	{
-		p($a);
+
+	}
+
+	public function path($appPath)
+	{
+		$this->appPath = $appPath ?: $this->getAppPath();
+	}
+
+	public function getAppPath()
+	{
+		if( is_null($this->appPath) ){
+			$this->appPath = ClassLoader::getRootPath().'app';
+		}
+		return $this->appPath;
 	}
 
 }

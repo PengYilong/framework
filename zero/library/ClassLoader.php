@@ -59,7 +59,6 @@ class ClassLoader
 		}
 		self::loadComposerAutoLoadFiles();
 		self::addNameSpace('zero\\', __DIR__);
-		self::addNameSpace('zero\\', __DIR__.'22');
 		self::addAutoLoadDir($rootPath . 'extend');
 	}
 

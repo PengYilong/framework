@@ -2,7 +2,7 @@
 //define ENV constant
 define('DS', DIRECTORY_SEPARATOR);
 define('SITE_PATH', dirname($_SERVER['SCRIPT_FILENAME']).DS);
-defined('APP_PATH') or define('APP_PATH', SITE_PATH.'App');
+defined('APP_PATH') or define('APP_PATH', SITE_PATH.'app');
 define('ROOT_PATH', dirname(realpath(APP_PATH)).DS);
 define("ZERO_PATH", __DIR__.DS);
 define('EXT', '.php');
