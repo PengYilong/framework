@@ -19,7 +19,8 @@ class Container implements ArrayAccess, Countable{
     protected $instances;
 
     protected $bind = [
-        'Application' => Application::class,
+        'application' => Application::class,
+        'config' => Config::class
     ];
 
     private function __construct()
@@ -29,17 +30,22 @@ class Container implements ArrayAccess, Countable{
     /**
      *  
      */
-    public static function get($class, $args = [])
+    public static function get($class, $args = [], $newInstance = false)
     {
-       return static::getInstance()->make($class, $args);
+       return static::getInstance()->make($class, $args, $newInstance);
     }
 
     /**
      * @return new instance 
      */
-    public function make($class, $args = [])
+    public function make($class, $args = [], $newInstance = false)
     {
         $realClass = $this->bind[$class] ?? $class;
+
+        if( isset($this->instances[$class]) && !$newInstance ){
+            return $this->instances[$class]; 
+        }
+
         try {
             $ref = new ReflectionClass($realClass);
             $constructor = $ref->getConstructor();
@@ -58,11 +64,16 @@ class Container implements ArrayAccess, Countable{
                 } else {
                     $realArgs = $params;
                 }
-                return $ref->newInstanceArgs($realArgs);
+                $object = $ref->newInstanceArgs($realArgs);
             } else {
-                return $ref->newInstance();
+                $object = $ref->newInstance();
             }
-             
+
+            if(!$newInstance){
+                $this->instances[$class] = $object;
+            }
+
+            return $object;
         } catch (ReflectionException $e) {
             throw ClassNotFoundException('Class Not Found:'. $e->getMessage());
         }
@@ -106,5 +117,10 @@ class Container implements ArrayAccess, Countable{
     public function count()
     {
         return count($this->instances);
+    }
+
+    public function __get($class)
+    {  
+        return $this->make($class);
     }
 }
