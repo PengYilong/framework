@@ -10,6 +10,6 @@ ClassLoader::register();
 classLoader::addClassAlias([
     'Application' => facade\Application::class,
 ]);
-Container::get('Application')->run();
+Container::get('application')->run();
 
 

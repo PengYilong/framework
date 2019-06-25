@@ -2,53 +2,82 @@
 namespace zero;
 use Nezumi\MyError;
 
-class Application
+class Application extends Container
 {
-
-	/**
-	 * @var array 
-	 */
-	protected  $config;
 
 	/**
 	 * 
 	 */
 	public $appPath;
 
+	/**
+	 * 
+	 */
+	public $zeroPath;
+	public $rootPath;
+	public $runtimePath;
+	public $configPath;
+	Public $configExt = '.php';
+
 	function __construct($appPath = '')
 	{
 		$this->path($appPath);
+		$this->zeroPath = dirname(__DIR__).DIRECTORY_SEPARATOR;
 	}
 
 	public function run()
 	{
-		$this->config = require CONF_PATH.'app.php';;
-		date_default_timezone_set($this->config['default_timezone']);
-		
-		$configs = array(
-			CORE_CONF_PATH,
-			CONF_PATH,	
-		);
-		//load configs and
-		new Config($configs, CONF_EXT);
-
+		$this->initialize();
 		//to init handling error and exception class
-		$config = $this->config['conponents']['log'];
-		$path = RUNTIME_PATH.'log'.DS;
-		$rule = $config['rule'];
+		$config = $this->config->config;
+		$path = $this->runtimePath.'log' . DIRECTORY_SEPARATOR;
+		$rule = $config['log']['rule'];
 
-		if( $this->config['enable_myerror'] ){
-			new MyError($path, $rule, ZERO_PATH.'/template/error.php', $this->config['app_debug']);
+		if( $config['app']['enable_myerror'] ){
+			new MyError($path, $rule, $this->zeroPath.'/template/error.php', $config['app']['app_debug']);
 		}
 		
         session_start();
-		$route = new Route($this->config);
+		$route = new Route($config);
         $route->filterParam()->chooseRoute();
 	}
 
-	public function init($a)
+	public function initialize()
 	{
+		// date_default_timezone_set($this->config['default_timezone']);
+		$this->rootPath = dirname($this->appPath).DIRECTORY_SEPARATOR;
+		$this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
+		$this->configPath = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
 
+		$this->config->set(require $this->zeroPath. 'convention.php');
+
+		$this->init();
+	}
+
+	public function init($module = '')
+	{
+		$module = $module ? $module . DIRECTORY_SEPARATOR : '';
+		$path = $this->appPath . $module;
+
+		if( is_file($path. 'common.php') ){
+			include_once $path. 'common.php';
+		}
+		
+		//loads configs
+		if( is_dir($path.'config') ){
+			$dir = $path. 'config'. DIRECTORY_SEPARATOR;
+		} else if( is_dir($this->configPath. $module) ){
+			$dir = $this->configPath. $module; 
+		}
+		$files = isset($dir) ? scandir($dir) : [];
+
+		if( !empty($files) ){
+			foreach($files as $file){
+				if($file != '.' && $file != '..'){
+					$this->config->load($dir.$file, pathinfo($file, PATHINFO_FILENAME));	
+				}
+			}
+		}
 	}
 
 	public function path($appPath)

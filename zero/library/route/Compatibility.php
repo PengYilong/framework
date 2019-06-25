@@ -47,20 +47,18 @@ class Compatibility
     {
         $url = $_SERVER['PATH_INFO'];
         if( $url !== NULL ){
-            //$this->parseUrl($url);
-
             $domainArr = explode('.', $_SERVER['HTTP_HOST']);
             $currentModule = array_shift($domainArr);
             //比对绑定的模块
-            if( in_array($currentModule, array_keys($this->config['bind_modules'])) ){
+            if( in_array($currentModule, array_keys($this->config['app']['bind_modules'])) ){
                 $this->bindModule = $currentModule;
             }
-            $this->module = strtolower($this->config['bind_modules'][$currentModule]);
+            $this->module = strtolower($this->config['app']['bind_modules'][$currentModule]);
             //自动查找文件
             //去除两边的/防止生成多余的数组元素
             $url = trim($url, '/');
             $path = explode('/', $url);
-            $file = APP_PATH.$this->module.'/'.$this->config['url_controller_layer'];
+            $file = APP_PATH.$this->module.'/'.$this->config['app']['url_controller_layer'];
             foreach ($path as $key=>$value){
                 $file .= '/'.ucfirst($value);
                 if( file_exists($file.EXT) ){
@@ -75,7 +73,7 @@ class Compatibility
             $classArr = [
                 'app',
                 $this->module,
-                $this->config['url_controller_layer'],
+                $this->config['app']['url_controller_layer'],
                 ucfirst($this->controller),
             ];
             if( !empty($this->directory) ){
@@ -94,7 +92,7 @@ class Compatibility
             }
             //Add decorator
             $decorators = [];
-            $decorators_conf = Config::get('decorators');
+            $decorators_conf = $this->config['decorators'];
             $decorators = $decorators_conf['output_decorators'];
             $dec_obj = [];
             //gets global object of  decorators

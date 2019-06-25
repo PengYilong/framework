@@ -4,34 +4,94 @@ namespace zero;
 class Config
 {
 
-	static $path = [];
-	static $configs = []; // all of configs
-	static $extension = '';
+	public $path = [];
 
-	public function __construct($path, $extension)
+	/**
+	 * the prefix of the config 
+	 */
+	public $prefix = 'app';
+
+	/**
+	 *
+	 */
+	public $config = []; 
+
+	public $extension = '';
+
+	public function __construct($path = '' , $extension = '.php')
 	{
-		self::$path = $path;
-		self::$extension = $extension;
+		$this->path = $path;
+		$this->extension = $extension;
 	}	
 
 	/**
-	 * gets the config of the file
+	 * gets the config of get(), get(app.$name), get(app.)
 	 * @var type
 	 */	
-	public static function get( $offset )
+	public function get( $name = '' )
 	{
-		if( empty(self::$configs[$offset]) ){
-			//loading frontend and backend config.finally result is fronted config.
-			$config = [];
-			foreach (self::$path as $key => $value) {
-				$file = $value.$offset.self::$extension;
-				if( file_exists($file) ){
-					$config = include $file;
-				}
-			}
-			self::$configs[$offset] = $config;
+		if( empty($name) ){
+			return $this->config;
 		}
-		return self::$configs[$offset];
+
+		if( $name && !strpos($name, '.') ){
+			$name = $this->prefix . '.' . $name;
+		}
+
+		if( '.' == substr($name, -1) ) {
+			return $this->config[$name] ?? [];
+		}
+
+		$name = explode('.', $name);
+		
+		if( isset($this->config[$name[0]]) && isset( $this->config[$name[0]][$name[1]] ) ){
+			$result = $this->config[$name[0]][$name[1]]; 
+		} else {
+			$result = [];
+		}
+
+		return $result;
 	}
 
+	/**
+	 * sets $name.$value, array, array, $value
+	 * @return $result array 
+	 */
+	public function set($name, $value = '')
+	{
+		if( is_string($name) ){
+			if( !strpos($name, '.') ) {
+				$name = $this->prefix . '.' . $name;
+			}
+			$name_arr = explode($name, '.', 3);
+			if( count($name_arr) == 2 ){
+				$this->config[$name_arr[0]][$name_arr[1]] = $value;	
+			} else {
+				$this->config[$name_arr[0]][$name_arr[1]][$name_arr[2]] = $value; 
+			}
+			$result = $value;
+		} else if( is_array($name) ){
+			if( !empty($value) ){
+				if( isset($this->config[$value]) ){
+					$this->config[$value] = array_merge($this->config[$value], $name);
+ 				} else {
+					$this->config[$value] = $name;
+				}
+				$result = $this->config[$value];
+			} else {
+				$result = $this->config = array_merge($this->config, $name);
+			}
+		}
+		return $result;
+	}
+
+	public function load($name, $value)
+	{
+		return $this->set(include $name, $value);
+	}
+
+	public function loadFile()
+	{
+
+	}
 }

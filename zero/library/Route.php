@@ -27,7 +27,7 @@ class Route extends Application
   
     protected function chooseRoute()
     {
-        switch ($this->config['url_model']) {
+        switch ($this->config['app']['url_model']) {
              case 1:
                 $route = new Origin();     
                 break;

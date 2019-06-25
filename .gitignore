@@ -15,5 +15,5 @@ composer-setup.php
 
 # other
 temp.md
-configs/database.php
+config/database.php
 issue.md

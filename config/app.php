@@ -1,18 +1,11 @@
 <?php
-$array = [
+return [
 	'app_debug' => true,
 	'url_model' => 2,
     'language' => 'zh-cn',
     'enable_myerror' => true,
-	'conponents' => [
-		'database' => require __DIR__.'/database.php',
-		'decorators' => require __DIR__.'/decorators.php',
-		'log' => require __DIR__.'/log.php',
-		'route'=> require __DIR__.'/route.php',	
-		'template'=> require __DIR__.'/template.php',	
-	],
     // 后台默认风格
-    'admin_style' => 'layui',
+    'admin_style' => 'layui2',
     // 视图输出字符串内容替换
     'view_replace_str' => [
         '__css__'      => 'css',
@@ -34,4 +27,3 @@ $array = [
         'api'=>'api',
     ],
 ];
-return $array;
