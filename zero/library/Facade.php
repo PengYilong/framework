@@ -1,7 +1,8 @@
 <?php
 namespace zero;
 
-class Facade {
+class Facade 
+{
 
     protected static function createFacade()
     {

@@ -38,12 +38,12 @@ class Container implements ArrayAccess, Countable{
     /**
      * @return new instance 
      */
-    public function make($class, $args = [], $newInstance = false)
+    public function make(string $class, $args = [], $newInstance = false)
     {
         $realClass = $this->bind[$class] ?? $class;
 
-        if( isset($this->instances[$class]) && !$newInstance ){
-            return $this->instances[$class]; 
+        if( isset($this->instances[$realClass]) && !$newInstance ){
+            return $this->instances[$realClass]; 
         }
 
         try {
@@ -55,6 +55,8 @@ class Container implements ArrayAccess, Countable{
                     foreach($params as $key=>$value ){
                         if( isset($args[$key]) ){
                             $realArgs[] = $args[$key];
+                        } else if( $value->getClass() ){
+                            $realArgs[] = $this->make($value->getClass()->getName()); 
                         } else if( $value->isDefaultValueAvailable() ){
                             $realArgs[] = $value->getDefaultValue();
                         } else {
@@ -70,7 +72,7 @@ class Container implements ArrayAccess, Countable{
             }
 
             if(!$newInstance){
-                $this->instances[$class] = $object;
+                $this->instances[$realClass] = $object;
             }
 
             return $object;

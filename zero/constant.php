@@ -11,7 +11,3 @@ define('CORE_CONF_PATH', ZERO_PATH.'configs'.DS);
 define('CONF_EXT', '.php');
 define('RUNTIME_PATH', ROOT_PATH.'runtime'.DS);
 define('LANGUAGE_PATH', ZERO_PATH.'language'.DS);
-
-//common constant
-define('IS_POST', $_SERVER['REQUEST_METHOD']=='POST' ? true : false);
-define('IS_GET',  $_SERVER['REQUEST_METHOD']=='GET' ? true : false);

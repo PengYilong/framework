@@ -37,7 +37,7 @@ class Factory
                 $name,
             ];
             if( !empty($haveDirectory) ){
-                $classArr = arrayInsert($classArr, 3, $haveDirectory);
+                $classArr = array_insert($classArr, 3, $haveDirectory);
             }
             $class = '\\'.implode('\\', $classArr);
             $model = new $class();

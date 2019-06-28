@@ -2,7 +2,6 @@
 return [
     'app' => [
         'app_debug' => true,
-        'url_model' => 2,
         'language' => 'zh-cn',
         'enable_myerror' => true,
         // 后台默认风格
