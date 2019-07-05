@@ -77,17 +77,13 @@ class Config
  				} else {
 					$this->config[$value] = $name;
 				}
+
 				$result = $this->config[$value];
 			} else {
 				$result = $this->config = array_merge($this->config, $name);
 			}
 		}
 		return $result;
-	}
-
-	public function load($name, $value)
-	{
-		return $this->set(include $name, $value);
 	}
 
 	public function loadFile()

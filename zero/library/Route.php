@@ -4,6 +4,7 @@ namespace zero;
 use zero\Config;
 use zero\Factory;
 use zero\URL;
+use zero\exceptions\HttpException;
 
 class Route
 {
@@ -43,10 +44,26 @@ class Route
      */
     public $action;
 
+    /**
+     * Application object
+     */
+    protected $app;
+
+    /**
+     * request object
+     */
+    protected $request;
+
+    /**
+     * wheteher auto search controller
+     */
+    public $autoSearchController = true;
+
     public function __construct(Application $app, Config $config)
     {
         $this->config = $config->get();
         $this->request = $app['request'];
+        $this->app = $app;
     }
   
     public function filterParam()
@@ -62,7 +79,7 @@ class Route
   
     public function init()
     {
-        $url = $_SERVER['PATH_INFO'];
+        $url = $this->request->pathinfo();
         if( $url !== NULL ){
             $domainArr = explode('.', $_SERVER['HTTP_HOST']);
             $currentModule = array_shift($domainArr);
@@ -71,20 +88,27 @@ class Route
                 $this->bindModule = $currentModule;
             }
             $this->module = strtolower($this->config['app']['bind_modules'][$currentModule]);
-            //自动查找文件
+            
             //去除两边的/防止生成多余的数组元素
             $url = trim($url, '/');
             $path = explode('/', $url);
-            $file = APP_PATH.$this->module.'/'.$this->config['app']['url_controller_layer'];
-            foreach ($path as $key=>$value){
-                $file .= '/'.ucfirst($value);
-                if( file_exists($file.EXT) ){
-                    $this->controller = strtolower(array_shift($path));
-                    break;
-                }
-                array_push($this->directory, array_shift($path));
+
+            $this->autoFindController($path);
+            
+            if( !$this->controller ){
+                throw new HttpException('The controller doesn\'t exist:'. $this->controller);
             }
-            $this->action = strtolower(array_shift($path));
+            
+            $this->action = !empty($path) ? strtolower(array_shift($path)) : NULL;
+
+            //gets params after action
+            if( !empty($path) ){
+                for($i=0; $i<count($path); $i+=2){
+                    if(isset($path[$i+1])){
+                        $_GET[$path[$i]] = $path[$i+1];
+                    }
+                }
+            }
 
             //get new $class
             $classArr = [
@@ -99,14 +123,6 @@ class Route
             $class = '\\'.implode('\\',$classArr);
             new Factory($this->module, $this->directory, $this->controller, $this->action);
 
-            //gets params after action
-            if( !empty($path) ){
-                for($i=0; $i<count($path); $i+=2){
-                    if(isset($path[$i+1])){
-                        $_GET[$path[$i]] = $path[$i+1];
-                    }
-                }
-            }
             //Add decorator
             $decorators = [];
             $decorators_conf = $this->config['decorators'];
@@ -133,4 +149,24 @@ class Route
         }
     }    
 
+    /**
+     * @return string
+     */
+    public function autoFindController(&$path)
+    {
+        $file = $this->app->appPath . $this->module . '/' . $this->config['app']['url_controller_layer'];
+        foreach ($path as $key => $value){
+            $file .= '/'.ucfirst($value);
+            if( file_exists($file . '.php') ){
+                $this->controller = strtolower(array_shift($path));
+                break;
+            }
+            array_push($this->directory, array_shift($path));
+        }
+    }
+
+    public function getBind()
+    {
+
+    }
 }

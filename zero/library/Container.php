@@ -3,8 +3,10 @@ namespace zero;
 
 use ArrayAccess;
 use ReflectionClass;
+use ReflectionException;
 use InvalidArgumentException;
 use Countable;
+use zero\exceptions\ClassNotFoundException;
 
 class Container implements ArrayAccess, Countable{
 
@@ -20,7 +22,13 @@ class Container implements ArrayAccess, Countable{
 
     protected $bind = [
         'application' => Application::class,
-        'config' => Config::class
+        'config' => Config::class,
+        'env' => Env::class,
+        'request' => Request::class,
+        'session' => Session::class,
+        'route' => Route::class,
+        'middleware' => Middleware::class,
+        'hook' => Hook::class,
     ];
 
     private function __construct()
@@ -28,7 +36,7 @@ class Container implements ArrayAccess, Countable{
     }
 
     /**
-     *  
+     * static method for the function make  
      */
     public static function get($class, $args = [], $newInstance = false)
     {
@@ -40,6 +48,10 @@ class Container implements ArrayAccess, Countable{
      */
     public function make(string $class, $args = [], $newInstance = false)
     {
+        if( true == $args ){
+            $newInstance = true;
+            $args = [];
+        }
         $realClass = $this->bind[$class] ?? $class;
 
         if( isset($this->instances[$realClass]) && !$newInstance ){
@@ -77,7 +89,7 @@ class Container implements ArrayAccess, Countable{
 
             return $object;
         } catch (ReflectionException $e) {
-            throw ClassNotFoundException('Class Not Found:'. $e->getMessage());
+            throw new ClassNotFoundException('Class Not Found:'. $e->getMessage());
         }
     }
 
@@ -99,7 +111,7 @@ class Container implements ArrayAccess, Countable{
 
     public function offsetGet( $offset )
     {
-        return $this->instances[$offset] ?? NULL;
+        return $this->__get( $offset );
     } 
 
     public function offsetSet( $offset, $value) : void

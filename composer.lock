@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98bc867561d3edb80dcdffbd8323d798",
+    "content-hash": "6fa198a1b3462f76a5627d086a2f6422",
     "packages": [
         {
             "name": "nezimi/myfunctions",
@@ -41,41 +41,6 @@
             ],
             "description": "library",
             "time": "2019-06-06T09:19:09+00:00"
-        },
-        {
-            "name": "nezumi/myerror",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PengYilong/MyError.git",
-                "reference": "16f1810619dbb5894a817529c597a3a2c446c7ed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/MyError/zipball/16f1810619dbb5894a817529c597a3a2c446c7ed",
-                "reference": "16f1810619dbb5894a817529c597a3a2c446c7ed",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Nezumi\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Yilong Peng",
-                    "email": "948800401@qq.com",
-                    "homepage": "https://github.com/PengYilong",
-                    "role": "Developer"
-                }
-            ],
-            "description": "php error and exception",
-            "time": "2018-06-17T13:32:11+00:00"
         },
         {
             "name": "nezumi/mysmarty",
@@ -149,6 +114,41 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "nezimi/myerror",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PengYilong/MyError.git",
+                "reference": "25efa793ef711b37b5eedb1ff64b39cc032b9a31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PengYilong/MyError/zipball/25efa793ef711b37b5eedb1ff64b39cc032b9a31",
+                "reference": "25efa793ef711b37b5eedb1ff64b39cc032b9a31",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nezumi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yilong Peng",
+                    "email": "948800401@qq.com",
+                    "homepage": "https://github.com/PengYilong",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error and exception",
+            "time": "2019-06-29T09:31:48+00:00"
+        },
         {
             "name": "nezumi/cache",
             "version": "dev-master",
@@ -261,11 +261,11 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "nezumi/myerror": 20,
         "nezumi/mysmarty": 20,
         "nezumi/mysql": 20,
         "nezimi/myfunctions": 20,
-        "nezumi/cache": 20
+        "nezumi/cache": 20,
+        "nezimi/myerror": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

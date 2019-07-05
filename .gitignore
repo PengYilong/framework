@@ -17,3 +17,4 @@ composer-setup.php
 temp.md
 config/database.php
 issue.md
+/web/test.php
