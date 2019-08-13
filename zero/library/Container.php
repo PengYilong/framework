@@ -13,12 +13,12 @@ class Container implements ArrayAccess, Countable{
     /**
      * @var container
      */
-    private static $instance = [];
+    protected static $instance;
 
     /**
      * the classes instantiated
      */
-    protected $instances;
+    public $instances = [];
 
     protected $bind = [
         'application' => Application::class,
@@ -40,7 +40,7 @@ class Container implements ArrayAccess, Countable{
      */
     public static function get($class, $args = [], $newInstance = false)
     {
-       return static::getInstance()->make($class, $args, $newInstance);
+       return self::getInstance()->make($class, $args, $newInstance);
     }
 
     /**
@@ -53,7 +53,7 @@ class Container implements ArrayAccess, Countable{
             $args = [];
         }
         $realClass = $this->bind[$class] ?? $class;
-
+        
         if( isset($this->instances[$realClass]) && !$newInstance ){
             return $this->instances[$realClass]; 
         }
@@ -94,14 +94,14 @@ class Container implements ArrayAccess, Countable{
     }
 
     /**
-     *  
+     * get current instance
      */
     public static function getInstance()
     {
-        if( NULL == static::$instance ){
-            static::$instance = new static;
+        if( null === static::$instance ){
+            self::$instance = new static;
         }   
-        return static::$instance;
+        return self::$instance;
     }
 
     public function offsetExists ( $offset ) : bool 
@@ -135,6 +135,6 @@ class Container implements ArrayAccess, Countable{
 
     public function __get($class)
     {  
-        return $this->make($class);
+        return self::get($class);
     }
 }
