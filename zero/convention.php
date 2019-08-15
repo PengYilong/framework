@@ -1,6 +1,7 @@
 <?php
 return [
     'app' => [
+        'app_namespace' => 'app',
         'app_debug' => true,
         'language' => 'zh-cn',
         'enable_myerror' => true,
@@ -21,11 +22,24 @@ return [
         'url_controller_layer'=> 'controller',
         'url_controller_bussiness'=> 'bussiness',
         'url_controller_model'=> 'model',
-        'default_timezone' => 'PRC',
-        'bind_modules' => [
-            'admin'=>'admin',
-            'api'=>'api',
-        ],
+        'pathinfo_depr' => '/',
+        'app_multi_module' => true,
+        //0 key/value  1 order
+        'url_param_type' => 0,
+        'app_multi_module' => true,
+        'default_return_type' => 'html',
+        'default_timezone' => 'Asia/Shanghai',
+        'pathinfo_depr' => '/',
+        'default_return_type' => 'html',
+        'default_ajax_return_type' => 'json',
+        // +-----------------------------
+        // | module settings
+        // +-----------------------------
+        'default_module' => 'index',
+        'default_controller' => 'Index',
+        'default_action' => 'index',
+        'controller_auto_search' => true,
+        'deny_module_list' => ['common'],
     ],
     'database' => [
         'master' => array (
@@ -43,8 +57,8 @@ return [
     ],
     'decorators' => [
         'output_decorators' => [
-            'App\Common\Decorators\Json',	
-            'App\Common\Decorators\Template',		
+            'app\common\decorators\Json',	
+            'app\common\decorators\Template',		
         ]
     ],
     'log' => [

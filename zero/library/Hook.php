@@ -74,6 +74,7 @@ class Hook
     public function use($key, $params = [], bool $once = false) : array
     {
         $tags = $this->tags[$key] ?? [];
+        $results = [];
         foreach($tags as $key => $value){
             $results[] = $this->execTag($value, $params);
         }

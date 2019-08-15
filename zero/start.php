@@ -9,7 +9,8 @@ ClassLoader::register();
 
 classLoader::addClassAlias([
     'Application' => facade\Application::class,
+    'Route' => facade\Route::class,
 ]);
-Container::get('application')->run();
+Container::get('application')->run()->send();
 
 

@@ -3,10 +3,10 @@ namespace zero\facade;
 
 use zero\Facade;
 
-class Application extends Facade{
+class Route extends Facade{
    
     public static function getFacadeClass()
     {
-        return 'application';
+        return 'route';
     }
 }

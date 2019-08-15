@@ -6,12 +6,12 @@ use app\common\controller\Backend;
 class Template
 {
 
-	public function before_request()
+	public function beforeRequest()
 	{
 
 	}
 
-	public function after_request($result, $object)
+	public function afterRequest($result, $object)
 	{
 		if( isset($_GET['app']) && $_GET['app'] == 'html' ){
 			if( !empty($result) ){

@@ -39,7 +39,7 @@ class Config
 		}
 
 		if( '.' == substr($name, -1) ) {
-			return $this->config[$name] ?? [];
+			return $this->config[substr($name, 0, -1)] ?? [];
 		}
 
 		$name = explode('.', $name);

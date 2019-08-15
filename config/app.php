@@ -22,8 +22,5 @@ return [
     'url_controller_bussiness'=> 'bussiness',
     'url_controller_model'=> 'model',
     'default_timezone' => 'PRC',
-    'bind_modules' => [
-        'admin'=>'admin',
-        'api'=>'api',
-    ],
+    'app_multi_module' => true,
 ];

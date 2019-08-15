@@ -1,6 +1,7 @@
 <?php
 namespace zero;
 use Nezumi\MyError;
+use zero\exceptions\ClassNotFoundException;
 
 class Application extends Container
 {
@@ -13,7 +14,8 @@ class Application extends Container
 	public $rootPath;
 	public $runtimePath;
 	public $configPath;
-	Public $configExt;
+	public $configExt;
+	public $routePath;
 
 	function __construct($appPath = '')
 	{
@@ -28,18 +30,26 @@ class Application extends Container
 
 			$this->hook->use('app_init');
 
-			$this->routeCheck();
+			$this->hook->use('app_dispatch');
 
-        	$this->route->filterParam()->init();
+			$dispatch = $this->routeCheck()->init();
 			
-			$this->middleware->register(function (){
-			});
-
-			$this->middleware->use();
-			
-		} catch(HttpResponseException $e) {
-			p($e);
+			$this->hook->use('app_begin');
+			$data = NULL;	
+		} catch(HttpResponseException $exception) {
+			$dispatch = NULL;
+			$data = $exception->response;
 		}
+		
+		$this->middleware->register(
+			function(Request $request) use ($dispatch, $data){
+				return is_null($data) ? $dispatch->run() : $data; 
+			}
+		);
+		
+		$response = $this->middleware->use([$this->request]);
+		$this->hook->use('app_end', [$response]);
+		return $response;
 		
 	}
 
@@ -48,11 +58,10 @@ class Application extends Container
 		$this->rootPath = dirname($this->appPath).DIRECTORY_SEPARATOR;
 		$this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
 		$this->configPath = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
-		$this->routePath = $this->rootPath . 'route'. DIRECTORY_SEPARATOR; 
-
+		$this->routePath = $this->rootPath . 'route'. DIRECTORY_SEPARATOR;
+		
 		$this->configExt = $this->env->get('config_ext', '.php');
 		$this->config->set(require $this->zeroPath. 'convention.php');
-
 		//to init handling error and exception class
 		$path = $this->runtimePath.'log' . DIRECTORY_SEPARATOR;
 		$rule = $this->config->get('log.rule');
@@ -74,7 +83,7 @@ class Application extends Container
 
 		$this->env->set('app_namespace', 'app');
 		$this->env->set('app_debug', $this->config->get('app.app_dubug'));
-		
+			
 		classLoader::addNameSpace('app\\', $this->appPath);
 
 		if( is_file($this->zeroPath.'helper.php') ){
@@ -94,7 +103,7 @@ class Application extends Container
 		$path = $this->appPath . $module;
 
 		if( is_file($path. 'common.php') ){
-			include_once $path. 'common.php';
+			include $path. 'common.php';
 		}
 
 		if( is_file($path. 'tags.php') ){
@@ -133,12 +142,53 @@ class Application extends Container
 
 	public function routeInit()
 	{
-		
+		if( is_file($this->routePath. 'route.php') ){
+			include $this->routePath. 'route.php';	
+		}		
 	}
 
 	public function routeCheck()
 	{
 		$path = $this->request->pathinfo();
+		return $this->route->filterParam()->check($path);
+	}
+
+	/**
+	 * @access public
+	 * @param $name  string the name of the class  
+	 * @param $layer string 
+	 * @return object
+	 * @throws ClassNotFoundException 
+	 */
+	public function controller($name, $layer = 'controller')
+	{
+		$module = $this->request->module;
+		$class = $this->parseClass($module, $layer, $name);
+		if( class_exists($class) ){
+			return parent::get($class, true);
+		} 
+		throw new ClassNotFoundException('class not exists '. $class, $class);
+	}
+
+	/**
+	 * @access public
+	 * @param $module string module name
+	 * @param $layer  string 
+	 * @param $name   string the name of the class  
+	 * @return object
+	 * @throws ClassNotFoundException 
+	 */
+	public function parseClass($module, $layer, $name)
+	{
+		$name = str_replace('.', '\\', $name);
+		$classArr = [
+            $this->config->get('app.app_namespace'),
+			$module,
+			$layer,
+			$name,
+        ];
+		$class = '\\'.implode('\\',$classArr);
+		return $class;
 	}
 
 }

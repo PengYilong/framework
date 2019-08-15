@@ -40,11 +40,16 @@ class Container implements ArrayAccess, Countable{
      */
     public static function get($class, $args = [], $newInstance = false)
     {
-       return self::getInstance()->make($class, $args, $newInstance);
+       return static::getInstance()->make($class, $args, $newInstance);
     }
 
     /**
-     * @return new instance 
+     * make a class instantiated
+     * @access public
+     * @param string $class the name of the class
+     * @param array  the args of the __cnostruct() function of the class
+     * @param boolean whether the class always is instantiated
+     * @return object new instance 
      */
     public function make(string $class, $args = [], $newInstance = false)
     {
@@ -58,40 +63,60 @@ class Container implements ArrayAccess, Countable{
             return $this->instances[$realClass]; 
         }
 
+        $object = $this->invokeClass($realClass, $args);
+
+        if(!$newInstance){
+            $this->instances[$realClass] = $object;
+        }
+
+        return $object;
+    }
+
+    public function invokeClass($class, $args = [])
+    {
         try {
-            $ref = new ReflectionClass($realClass);
+            $ref = new ReflectionClass($class);
             $constructor = $ref->getConstructor();
             if( $constructor ){
-                $params = $constructor->getParameters();
-                if( !empty( $params ) ){
-                    foreach($params as $key=>$value ){
-                        if( isset($args[$key]) ){
-                            $realArgs[] = $args[$key];
-                        } else if( $value->getClass() ){
-                            $realArgs[] = $this->make($value->getClass()->getName()); 
-                        } else if( $value->isDefaultValueAvailable() ){
-                            $realArgs[] = $value->getDefaultValue();
-                        } else {
-                            throw new InvalidArgumentException('The param of the method is missed:'. $value->getName());
-                        } 
-                    }
-                } else {
-                    $realArgs = $params;
-                }
+                $realArgs = $this->bindParams($constructor, $args);
                 $object = $ref->newInstanceArgs($realArgs);
             } else {
                 $object = $ref->newInstance();
             }
-
-            if(!$newInstance){
-                $this->instances[$realClass] = $object;
-            }
-
             return $object;
         } catch (ReflectionException $e) {
-            throw new ClassNotFoundException('Class Not Found:'. $e->getMessage());
+            throw new ClassNotFoundException('Class Not Found:'. $e->getMessage(), $realClass);
         }
     }
+
+    public function bindParams($constructor, $args = [])
+    {
+        $params = $constructor->getParameters();
+        if( !empty( $params ) ){
+            foreach($params as $value ){
+                $name = $value->getName();
+                if( isset($args[$name]) ){
+                    $realArgs[] = $args[$name];
+                } else if( $value->getClass() ){
+                    $realArgs[] = $this->make($value->getClass()->getName()); 
+                } else if( $value->isDefaultValueAvailable() ){
+                    $realArgs[] = $value->getDefaultValue();
+                } else {
+                    throw new InvalidArgumentException('The param of the method is missed:'. $value->getName());
+                } 
+            }
+        } else {
+            $realArgs = [];
+        }
+        return $realArgs;
+    }
+
+    public function invokeReflectMoethod($instance, $reflectMethod, $args = [])
+    {
+        $args = $this->bindParams($reflectMethod, $args);
+        return $reflectMethod->invokeArgs($instance, $args);
+    }
+
 
     /**
      * get current instance
@@ -99,10 +124,18 @@ class Container implements ArrayAccess, Countable{
     public static function getInstance()
     {
         if( null === static::$instance ){
-            self::$instance = new static;
+            static::$instance = new static;
         }   
-        return self::$instance;
+        return static::$instance;
     }
+
+    /**
+     * get current instance
+     */
+    public static function setInstance($instance)
+    {
+        static::$instance = $instance;
+    } 
 
     public function offsetExists ( $offset ) : bool 
     {
@@ -135,6 +168,6 @@ class Container implements ArrayAccess, Countable{
 
     public function __get($class)
     {  
-        return self::get($class);
+        return static::get($class);
     }
 }

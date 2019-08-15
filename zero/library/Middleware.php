@@ -26,6 +26,6 @@ class Middleware
     public function use($params = [], $type = 'route')
     {
         $element = array_shift($this->requeue[$type]);
-        call_user_func_array($element, $params);
+        return call_user_func_array($element, $params);
     }
 }
