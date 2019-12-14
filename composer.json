@@ -1,30 +1,23 @@
 {
-	"name": "nezumi/zero-php",
-	"description": "A PHP framework",
+	"name": "nezimi/framework",
+	"description": "The ZeroPHP framework",
 	"minimum-stability": "dev",
-	"type": "Framework",
 	"keywords":[
 		"PHP",
-		"PHP Framework"	
+		"PHP Framework"
 	],
 	"require":{
-		"php": ">=5.4",
-		"nezumi/mysmarty": "dev-master",
-		"nezumi/mysql": "dev-master",
-		"nezimi/myfunctions": "dev-master"
+		"php": ">=5.4"
 	},
 	"require-dev":{
 		"php": ">=5.4",
-		"nezumi/mysmarty": "dev-master",
-		"nezumi/cache": "dev-master",
-		"nezumi/mysql": "dev-master",
-		"topthink/think-template": "*",
-		"topthink/think-validate": "*",
-		"nezimi/myerror": "dev-master"
+		"nezimi/my-error": "dev-master",
+		"nezimi/my-functions": "dev-master"
 	},
-	"autoload": {
+    "autoload": {
+        "files": [],
         "psr-4": {
-            "app\\": "app"
-		}
-	}
+            "zero\\": "src/zero/"
+        }
+    }
 }

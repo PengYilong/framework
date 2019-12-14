@@ -4,24 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fa198a1b3462f76a5627d086a2f6422",
-    "packages": [
+    "content-hash": "8e993cf9b7624206c6d73a27f490552e",
+    "packages": [],
+    "packages-dev": [
         {
-            "name": "nezimi/myfunctions",
+            "name": "nezimi/my-error",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PengYilong/MyFunctions.git",
-                "reference": "0810d228b9ca9dbec047c811398a9f1fad2c220d"
+                "url": "https://github.com/PengYilong/my-error.git",
+                "reference": "b041f7b5d0035f53df180e1cbf5b7b4c90170619"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/MyFunctions/zipball/0810d228b9ca9dbec047c811398a9f1fad2c220d",
-                "reference": "0810d228b9ca9dbec047c811398a9f1fad2c220d",
+                "url": "https://api.github.com/repos/PengYilong/my-error/zipball/b041f7b5d0035f53df180e1cbf5b7b4c90170619",
+                "reference": "b041f7b5d0035f53df180e1cbf5b7b4c90170619",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nezimi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yilong Peng",
+                    "email": "948800401@qq.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error and exception",
+            "time": "2019-12-04T08:00:13+00:00"
+        },
+        {
+            "name": "nezimi/my-functions",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PengYilong/my-functions.git",
+                "reference": "d23eaece5cfc5561b28ae205a5eb7eb1db8183fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PengYilong/my-functions/zipball/d23eaece5cfc5561b28ae205a5eb7eb1db8183fc",
+                "reference": "d23eaece5cfc5561b28ae205a5eb7eb1db8183fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
             },
             "type": "library",
             "autoload": {
@@ -35,237 +70,18 @@
                 {
                     "name": "Yilong Peng",
                     "email": "948800401@qq.com",
-                    "homepage": "https://github.com/YilongPeng",
                     "role": "Developer"
                 }
             ],
             "description": "library",
-            "time": "2019-06-06T09:19:09+00:00"
-        },
-        {
-            "name": "nezumi/mysmarty",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PengYilong/MySmarty.git",
-                "reference": "4bb88a32664b9f1dea471249b4226541b529fe28"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/MySmarty/zipball/4bb88a32664b9f1dea471249b4226541b529fe28",
-                "reference": "4bb88a32664b9f1dea471249b4226541b529fe28",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Nezumi\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Yilong Peng",
-                    "email": "948800401@qq.com",
-                    "homepage": "https://github.com/PengYilong",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A template engine which imitate smarty for php",
-            "time": "2018-07-28T15:15:25+00:00"
-        },
-        {
-            "name": "nezumi/mysql",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PengYilong/PHP-MySQL.git",
-                "reference": "a4480b4995ddb79475893088f5d124b535b7042d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/PHP-MySQL/zipball/a4480b4995ddb79475893088f5d124b535b7042d",
-                "reference": "a4480b4995ddb79475893088f5d124b535b7042d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Nezumi\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Yilong Peng",
-                    "email": "948800401@qq.com",
-                    "homepage": "https://github.com/YilongPeng",
-                    "role": "Developer"
-                }
-            ],
-            "description": "the database driver",
-            "time": "2018-07-11T02:54:16+00:00"
-        }
-    ],
-    "packages-dev": [
-        {
-            "name": "nezimi/myerror",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PengYilong/MyError.git",
-                "reference": "25efa793ef711b37b5eedb1ff64b39cc032b9a31"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/MyError/zipball/25efa793ef711b37b5eedb1ff64b39cc032b9a31",
-                "reference": "25efa793ef711b37b5eedb1ff64b39cc032b9a31",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Nezumi\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Yilong Peng",
-                    "email": "948800401@qq.com",
-                    "homepage": "https://github.com/PengYilong",
-                    "role": "Developer"
-                }
-            ],
-            "description": "php error and exception",
-            "time": "2019-06-29T09:31:48+00:00"
-        },
-        {
-            "name": "nezumi/cache",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PengYilong/cache.git",
-                "reference": "ecae4bcac04ba9a84c3f243207e8bd6fc62bb3c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PengYilong/cache/zipball/ecae4bcac04ba9a84c3f243207e8bd6fc62bb3c6",
-                "reference": "ecae4bcac04ba9a84c3f243207e8bd6fc62bb3c6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Nezumi\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Yilong Peng",
-                    "email": "948800401@qq.com",
-                    "homepage": "https://github.com/YilongPeng",
-                    "role": "Developer"
-                }
-            ],
-            "description": "a PHP cache classes",
-            "time": "2018-06-07T12:22:22+00:00"
-        },
-        {
-            "name": "topthink/think-template",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/top-think/think-template.git",
-                "reference": "80f0d22a48b5ae4cee443dbbc319cb99c4a5e463"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-template/zipball/80f0d22a48b5ae4cee443dbbc319cb99c4a5e463",
-                "reference": "80f0d22a48b5ae4cee443dbbc319cb99c4a5e463",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "think\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "liu21st",
-                    "email": "liu21st@gmail.com"
-                }
-            ],
-            "description": "the php template engine",
-            "time": "2018-10-23T02:10:32+00:00"
-        },
-        {
-            "name": "topthink/think-validate",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/top-think/think-validate.git",
-                "reference": "6422f1a9c68996dd66171a28a15506aeee139b89"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-validate/zipball/6422f1a9c68996dd66171a28a15506aeee139b89",
-                "reference": "6422f1a9c68996dd66171a28a15506aeee139b89",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "think\\": "src"
-                },
-                "files": []
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "liu21st",
-                    "email": "liu21st@gmail.com"
-                }
-            ],
-            "description": "think validate",
-            "time": "2018-03-09T09:48:11+00:00"
+            "time": "2019-12-09T11:22:23+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "nezumi/mysmarty": 20,
-        "nezumi/mysql": 20,
-        "nezimi/myfunctions": 20,
-        "nezumi/cache": 20,
-        "nezimi/myerror": 20
+        "nezimi/my-error": 20,
+        "nezimi/my-functions": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

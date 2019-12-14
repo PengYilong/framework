@@ -10,11 +10,8 @@ composer-setup.php
 # php-cs-fixer files
 .php_cs.cache
 
-# phpstorm files
-/.idea
-
 # other
 temp.md
 config/database.php
 issue.md
-/web/test.php
+/web/

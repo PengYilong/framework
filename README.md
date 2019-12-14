@@ -1,2 +1,2 @@
 # Zero
-a php framework for learning php frame for Thinkphp 5.14.
+The php framework for learning php framework for Thinkphp 5.14.
