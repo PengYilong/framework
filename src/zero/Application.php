@@ -17,10 +17,14 @@ class Application extends Container
 	public $configExt;
 	public $routePath;
 
-	function __construct($appPath = '')
+	function __construct(string $rootPath = '')
 	{
-		$this->path($appPath);
-		$this->zeroPath = dirname(__DIR__).DIRECTORY_SEPARATOR;
+		$this->zeroPath = __DIR__.DIRECTORY_SEPARATOR;
+		$this->rootPath = $rootPath ? rtrim($rootPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR : $this->getDefaultRootPath();
+		$this->appPath = $this->rootPath . 'app' . DIRECTORY_SEPARATOR;;
+		$this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
+		$this->configPath = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
+		$this->routePath = $this->rootPath . 'route'. DIRECTORY_SEPARATOR;
 	}
 
 	public function run()
@@ -55,11 +59,6 @@ class Application extends Container
 
 	public function initialize()
 	{
-		$this->rootPath = dirname($this->appPath).DIRECTORY_SEPARATOR;
-		$this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
-		$this->configPath = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
-		$this->routePath = $this->rootPath . 'route'. DIRECTORY_SEPARATOR;
-		
 		$this->configExt = $this->env->get('config_ext', '.php');
 		$this->config->set(require $this->zeroPath. 'convention.php');
 		//to init handling error and exception class
@@ -127,19 +126,6 @@ class Application extends Container
 		}
 	}
 
-	public function path($appPath)
-	{
-		$this->appPath = $appPath ?: $this->getAppPath();
-	}
-
-	public function getAppPath()
-	{
-		if( is_null($this->appPath) ){
-			$this->appPath = Loader::getRootPath() . 'app' . DIRECTORY_SEPARATOR;
-		}
-		return $this->appPath;
-	}
-
 	public function routeInit()
 	{
 		if( is_file($this->routePath. 'route.php') ){
@@ -168,6 +154,11 @@ class Application extends Container
 			return parent::get($class, true);
 		} 
 		throw new ClassNotFoundException('class not exists '. $class, $class);
+	}
+
+	protected function getDefaultRootPath(): string
+	{
+		return dirname(dirname(dirname(dirname(dirname($this->zeroPath))))) . DIRECTORY_SEPARATOR;
 	}
 
 	/**
