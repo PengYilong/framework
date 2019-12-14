@@ -3,7 +3,7 @@ namespace zero;
 
 use zero\exceptions\ClassNotFoundException;
 
-class ClassLoader
+class Loader
 {
 	/**
 	 * to load class
@@ -38,7 +38,7 @@ class ClassLoader
 	 */
 	public static function register()
 	{
-		spl_autoload_register('zero\\ClassLoader::autoload', true, true);
+		spl_autoload_register('zero\\Loader::autoload', true, true);
 		$rootPath = self::getRootPath();
 		self::$composerPath = $rootPath . 'vendor' . DIRECTORY_SEPARATOR . 'composer'.DIRECTORY_SEPARATOR;
 		$file = self::$composerPath . 'autoload_static.php';

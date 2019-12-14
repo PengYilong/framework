@@ -66,7 +66,7 @@ class Application extends Container
 		$path = $this->runtimePath.'log' . DIRECTORY_SEPARATOR;
 		$rule = $this->config->get('log.rule');
 		if( $this->config->get('app.enable_myerror') ) {
-			new MyError($path, $rule);
+			// new MyError($path, $rule);
 		}
 		
 		$this->env->set([
@@ -84,7 +84,7 @@ class Application extends Container
 		$this->env->set('app_namespace', 'app');
 		$this->env->set('app_debug', $this->config->get('app.app_dubug'));
 			
-		classLoader::addNameSpace('app\\', $this->appPath);
+		Loader::addNameSpace('app\\', $this->appPath);
 
 		if( is_file($this->zeroPath.'helper.php') ){
 			include $this->zeroPath.'helper.php';
@@ -135,7 +135,7 @@ class Application extends Container
 	public function getAppPath()
 	{
 		if( is_null($this->appPath) ){
-			$this->appPath = ClassLoader::getRootPath() . 'app' . DIRECTORY_SEPARATOR;
+			$this->appPath = Loader::getRootPath() . 'app' . DIRECTORY_SEPARATOR;
 		}
 		return $this->appPath;
 	}
