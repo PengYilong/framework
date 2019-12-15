@@ -58,7 +58,10 @@ class Request
         return $this->server['REQUEST_METHOD'] ?: 'GET'; 
     }
 
-    public function getRootDomain()
+    /**
+     * e.g.  getRootDomain(getapi.zero.own) = zero.own
+     */
+    public function getRootDomain() :string
     {
         $root = $this->server['HTTP_HOST'];
         $array = explode('.', $root);

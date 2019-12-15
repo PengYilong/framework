@@ -14,7 +14,7 @@ class Module extends Dispatch
     public function init()
     {
         $result = $this->dispatch;
-
+        
         if( $this->rule->route->config['app_multi_module'] ){
             $module = $result[0] ?: $this->rule->route->config['default_module'];
             if( is_dir($this->app->appPath.$module) ){
@@ -30,43 +30,6 @@ class Module extends Dispatch
         $this->request->controller = ucfirst($this->controller);
         $this->request->action = $this->actionName;
         return $this;
-
-        /*
-        //get new $class
-        $classArr = [
-            'app',
-            $result[0],
-            $this->config['app']['url_controller_layer'],
-            ucfirst($result[1]),
-        ];
-        if( !empty($this->directory) ){
-            $classArr = array_insert($classArr, 3, $this->directory);
-        }
-        $class = '\\'.implode('\\',$classArr);
-        new Factory($result[0], $this->directory, $result[1], $result[2]);
-
-        //Add decorator
-        $decorators = $this->config['decorators']['output_decorators'];
-        $dec_obj = [];
-        //gets global object of  decorators
-        if( isset($_GET['app']) && !empty($decorators) ){
-            foreach ($decorators as $key => $value) {
-                $dec_obj[] = new $value;
-            }
-            foreach ($dec_obj as $key => $value) {
-                $value->beforeRequest();
-            }
-        }
-        $object = new $class($result[0], $this->directory, $result[1], $result[2]);
-
-        $method = $this->action;
-        $result = $object->$method();
-        if( isset($_GET['app']) && !empty($dec_obj)){
-            foreach ($dec_obj as $key => $value) {
-                $value->afterRequest($result, $object);
-            }
-        }
-        */
     }    
 
     public function exec()

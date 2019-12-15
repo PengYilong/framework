@@ -26,7 +26,6 @@ class Route
      */
     protected $bindModule;
 
-
     /**
      * Application object
      */
@@ -54,20 +53,21 @@ class Route
 
     public $bind;
 
+    /**
+     * 路由延迟解析
+     * @var bool
+     */
+    public $lazy = true;
+
     public function __construct(Application $app, Config $config)
     {
         $this->config = $config->get('app.');
         $this->request = $app['request'];
         $this->app = $app;
         $this->host = $this->request->server['HTTP_HOST'];
+        $this->lazy = $config->get('url_lazy_route');
+        $this->autoSearchController = $config->get('controller_auto_search'); 
         $this->setDefaultDomain();
-    }
- 
-    public function setDefaultDomain()
-    {
-        $domain = new Domain($this, $this->host);
-        $this->domains[$this->host] = $domain;
-        $this->group = $domain;
     }
 
     public function filterParam()
@@ -81,6 +81,13 @@ class Route
         return $this;
     }
 
+    public function setDefaultDomain()
+    {
+        $domain = new Domain($this, $this->host);
+        $this->domains[$this->host] = $domain;
+        $this->group = $domain;
+    }
+
     /**
      * @param string|array $name
      * @param string $rule
@@ -89,16 +96,27 @@ class Route
     public function domain($name, $rule = '')
     {
         $rootDomain = $this->request->getRootDomain();
+        if( is_array($name) ){
+            foreach($name as $value){
+                $this->domain($value, $rule);
+            }
+            return ;
+        } 
         if( '*' != $name || !strpos('.', $name) ){
             $domainName = $name. '.' . $rootDomain;
         }
-        $domain = $this->domains[$domainName];
-        $domain->parseGroupRule($rule);
+        if( !isset($this->domian[$domainName]) ){
+            $domain = (new Domain($this, $domainName, $rule))->lazy($this->lazy);
+            $this->domains[$domainName] = $domain;
+        } else {
+            $domain->parseGroupRule($rule);
+        }
     }
 
-    public function bind($domain, $name)
+    public function bind($bind, $domain = null)
     {
-        $this->bind[$domain] = $name;
+        $domain = is_null($domain) ? $this->domian : $domain;
+        $this->bind[$bind] = $domain;
     }
 
     /**

@@ -2,7 +2,7 @@
 namespace zero;
 
 use zero\Config;
-use Nezumi\MySmarty;
+use Nezimi\MySmarty;
 
 class Controller
 {
@@ -43,19 +43,13 @@ class Controller
 	 */ 
 	protected $app_config = NULL;		
 
-	public function __construct($module, $directory, $controller, $action)
+	public function __construct(Request $request = null)
 	{
-		// template init
-		$this->module = $module;
-        $this->directory = $directory;
-        $this->controller = $controller;
-		$this->action = $action; 
-
+		p($request);
+		exit();
 		$this->template_config =  Config::get('template');
 		$this->app_config = Config::get('app');
-
 		$this->style = $this->app_config['admin_style'];
-
 		$this->template_dir = APP_PATH.$this->module.DS.$this->template_config['template_dir'].DS.$this->style.DS;
 		$this->compie_dir = RUNTIME_PATH.$this->template_config['compie_dir'].DS.$this->style.DS.$module.DS;
 		//视图输出字符串内容替换
@@ -65,7 +59,7 @@ class Controller
             }
         }
 
-		$this->initThinkTemplateEngine();
+		$this->initMySmarty();
         new URL($this->module);
 		new Language($module, strtolower($controller));
 		$this->assign('languages', Language::$langs);
@@ -74,7 +68,6 @@ class Controller
 	}
 
     /**
-     *
      * init mysmarty
      *
      */
@@ -138,7 +131,7 @@ class Controller
 		if( empty($file) ){	
 			$file = $this->action;
 		}
-		restore_error_handler();
+		// restore_error_handler();
 		return $this->view->fetch($file);	
 	}
 

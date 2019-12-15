@@ -1,6 +1,5 @@
 <?php
 namespace zero;
-use Nezumi\MyError;
 use zero\exceptions\ClassNotFoundException;
 
 class Application extends Container
@@ -54,7 +53,6 @@ class Application extends Container
 		$response = $this->middleware->use([$this->request]);
 		$this->hook->use('app_end', [$response]);
 		return $response;
-		
 	}
 
 	public function initialize()
@@ -64,9 +62,6 @@ class Application extends Container
 		//to init handling error and exception class
 		$path = $this->runtimePath.'log' . DIRECTORY_SEPARATOR;
 		$rule = $this->config->get('log.rule');
-		if( $this->config->get('app.enable_myerror') ) {
-			// new MyError($path, $rule);
-		}
 		
 		$this->env->set([
 			'zero_path' => $this->zeroPath,
@@ -83,8 +78,6 @@ class Application extends Container
 		$this->env->set('app_namespace', 'app');
 		$this->env->set('app_debug', $this->config->get('app.app_dubug'));
 			
-		Loader::addNameSpace('app\\', $this->appPath);
-
 		if( is_file($this->zeroPath.'helper.php') ){
 			include $this->zeroPath.'helper.php';
 		}

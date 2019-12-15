@@ -40,6 +40,12 @@ return [
         'default_action' => 'index',
         'controller_auto_search' => true,
         'deny_module_list' => ['common'],
+        //自动搜索控制器
+        'controller_auto_search' => true,
+        // +----------------------------------------------------------------------
+        // | URL settings
+        // +----------------------------------------------------------------------
+        'url_lazy_route' => false,
     ],
     'database' => [
         'master' => array (
