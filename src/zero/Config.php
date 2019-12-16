@@ -30,20 +30,20 @@ class Config
 	 */	
 	public function get( $name = '' )
 	{
-		if( empty($name) ){
-			return $this->config;
-		}
-
 		if( $name && !strpos($name, '.') ){
 			$name = $this->prefix . '.' . $name;
 		}
 
+		if( empty($name) ){
+			return $this->config;
+		}
+
 		if( '.' == substr($name, -1) ) {
-			return $this->config[substr($name, 0, -1)] ?? [];
+			return $this->pull(substr($name, 0, -1));
 		}
 
 		$name = explode('.', $name);
-		
+			
 		if( isset($this->config[$name[0]]) && isset( $this->config[$name[0]][$name[1]] ) ){
 			$result = $this->config[$name[0]][$name[1]]; 
 		} else {
@@ -84,6 +84,11 @@ class Config
 			}
 		}
 		return $result;
+	}
+
+	public function pull($name)
+	{
+		return $this->config[$name] ?? [];
 	}
 
 	public function loadFile()

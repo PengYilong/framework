@@ -1,11 +1,16 @@
 <?php
 namespace zero;
 
-use zero\Config;
-use Nezimi\MySmarty;
+use zero\facade\Config;
+use Nezimi\Template;
 
 class Controller
 {
+	/**
+	 * object 
+	 */
+	protected $app;
+
 	/**
 	 * @var string
 	 */
@@ -15,22 +20,6 @@ class Controller
 	 * @var object
 	 */ 
 	protected $view = NULL;
-
-	/**
-	 * @var string
-	 */ 
-	protected $template_dir = NULL;
-
-	/**
-	 * @var string
-	 */ 
-	protected $compie_dir = NULL;
-
-
-	/**
-	 * @var array
-	 */ 
-	protected $template_config = NULL;
 
     /**
      * @var array
@@ -43,74 +32,41 @@ class Controller
 	 */ 
 	protected $app_config = NULL;		
 
-	public function __construct(Request $request = null)
+	public function __construct(Application $app = null)
 	{
-		p($request);
-		exit();
-		$this->template_config =  Config::get('template');
-		$this->app_config = Config::get('app');
-		$this->style = $this->app_config['admin_style'];
-		$this->template_dir = APP_PATH.$this->module.DS.$this->template_config['template_dir'].DS.$this->style.DS;
-		$this->compie_dir = RUNTIME_PATH.$this->template_config['compie_dir'].DS.$this->style.DS.$module.DS;
+		$this->app = $app;
+		$this->request = $app->request;
+		
+		$templateConfig =  $this->app->config->pull('template');
+		// $this->app_config = $this->app->config->pull('app');
+		// $this->style = $this->app_config['admin_style'];
+
+		$templateDir = $this->app->appPath . $this->request->module . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . strtolower($this->request->controller) . DIRECTORY_SEPARATOR;
+		$compieDir = $this->app->runtimePath . 'temp' . DIRECTORY_SEPARATOR . strtolower($this->request->controller) . DIRECTORY_SEPARATOR;
+
+		$this->view = $this->initMySmarty($templateDir, $compieDir, $templateConfig);
+
 		//视图输出字符串内容替换
-        if( !empty($this->app_config['view_replace_str']) ){
-            foreach ($this->app_config['view_replace_str'] as $key=>$value){
-                $this->replace[$key] = '/static/admin/'.$this->style.'/'.$value;
-            }
-        }
+        // if( !empty($this->app_config['view_replace_str']) ){
+        //     foreach ($this->app_config['view_replace_str'] as $key=>$value){
+        //         $this->replace[$key] = '/static/admin/'.$this->style.'/'.$value;
+        //     }
+        // }
 
-		$this->initMySmarty();
-        new URL($this->module);
-		new Language($module, strtolower($controller));
-		$this->assign('languages', Language::$langs);
-		$this->assign('langs', json_encode(Language::$langs));
-
+        // new URL($this->module);
+		// new Language($module, strtolower($controller));
+		// $this->assign('languages', Language::$langs);
+		// $this->assign('langs', json_encode(Language::$langs));
 	}
 
     /**
      * init mysmarty
      *
      */
-	protected function initMySmarty()
+	protected function initMySmarty($templateDir, $compileDir, $config = [])
 	{
-		$this->view = new MySmarty();
-		$this->view->debug = $this->app_config['app_debug'];  //debug on
-		$this->view->setTemplateDir($this->template_dir);
-		$this->view->setCompileDir($this->compie_dir);
-		$this->view->left_delimiter = $this->template_config['left_delimiter'];
-		$this->view->right_delimiter = $this->template_config['right_delimiter'];
+		return new Template($templateDir, $compileDir, $config);
 	}
-
-    /**
-     * init  template engine of smarty
-     */
-	protected function init_smarty()
-	{
-		include_once (ROOT_PATH . 'vendor/smarty/smarty/libs/Smarty.class.php');
-		$this->view = new \Smarty;
-		$this->view->debugging    = true;
-		$this->view->template_dir = $this->template_dir;
-		$this->view->compile_dir  = $this->compie_dir;
-		$this->view->caching 	  = false;
-	}
-
-    /**
-     *
-     * init template engine of think
-     *
-     */
-	protected  function initThinkTemplateEngine()
-    {
-        // 设置模板引擎参数
-        $config = [
-            'view_path'	=>	$this->template_dir,
-            'cache_path'	=>	$this->compie_dir,
-            'view_suffix'   =>	'html',
-        ];
-
-        $this->view = new \think\Template($config);
-        $this->view->tpl_replace_string = $this->replace;
-    }
 
 	public function assign($key, $value)
 	{
@@ -120,16 +76,16 @@ class Controller
 	public function display($file = '')
 	{	
 		if( empty($file) ){	
-			$file = $this->action;
+			$file = $this->request->action;
 		}
-		restore_error_handler();
+		// restore_error_handler();
 		return $this->view->fetch($file);
 	}
 
 	public function fetch($file = '')
 	{	
 		if( empty($file) ){	
-			$file = $this->action;
+			$file = $this->request->action;
 		}
 		// restore_error_handler();
 		return $this->view->fetch($file);	
