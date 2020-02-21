@@ -9,28 +9,30 @@ class Controller
 	/**
 	 * object 
 	 */
-	protected $app;
+	public $app;
 
 	/**
 	 * @var string
 	 */
-	protected $style = NULL;
+	protected $style;
 
 	/**
 	 * @var object
 	 */ 
-	protected $view = NULL;
+	protected $view;
 
     /**
      * @var array
      */
-    protected $replace = NULL;
+    protected $replace;
 
 	/**
      * 视图输出字符串内容替换
 	 * @var array
 	 */ 
-	protected $app_config = NULL;		
+	protected $app_config;	
+	
+	public $model;
 
 	public function __construct(Application $app = null)
 	{
@@ -41,10 +43,12 @@ class Controller
 		// $this->app_config = $this->app->config->pull('app');
 		// $this->style = $this->app_config['admin_style'];
 
-		$templateDir = $this->app->appPath . $this->request->module . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . strtolower($this->request->controller) . DIRECTORY_SEPARATOR;
-		$compieDir = $this->app->runtimePath . 'temp' . DIRECTORY_SEPARATOR . strtolower($this->request->controller) . DIRECTORY_SEPARATOR;
+		// $templateDir = $this->app->appPath . $this->request->module . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . strtolower($this->request->controller) . DIRECTORY_SEPARATOR;
+		// $compieDir = $this->app->runtimePath . 'temp' . DIRECTORY_SEPARATOR . strtolower($this->request->controller) . DIRECTORY_SEPARATOR;
 
-		$this->view = $this->initMySmarty($templateDir, $compieDir, $templateConfig);
+		// $this->view = $this->initMySmarty($templateDir, $compieDir, $templateConfig);
+
+		$this->initialize();
 
 		//视图输出字符串内容替换
         // if( !empty($this->app_config['view_replace_str']) ){
@@ -59,11 +63,14 @@ class Controller
 		// $this->assign('langs', json_encode(Language::$langs));
 	}
 
+	protected function initialize()
+	{}
+
     /**
      * init mysmarty
      *
      */
-	protected function initMySmarty($templateDir, $compileDir, $config = [])
+	protected function initMySmarty(string $templateDir, string $compileDir, array $config = [])
 	{
 		return new Template($templateDir, $compileDir, $config);
 	}

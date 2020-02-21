@@ -14,18 +14,20 @@ class Url extends Dispatch
 
     public function parseUrl($url)
     {
-        $bind = $this->rule->route->getBind();
-        $depr = $this->rule->route->config['pathinfo_depr'];
-        $url = ltrim($url, $depr);
+        $depr = $this->rule->router->config['pathinfo_depr'];
+        $bind = $this->rule->router->getBind();
+
         if( !empty($bind) && preg_match('/^[a-z]/is', $bind) ){
             $url = $bind . (!empty($url) ? $depr . $url : ''); 
         }
-        $path = explode($depr, $url);
-        $var = [];
+
+        $url = ltrim($url, $depr);
+        list($path, $var) = $this->rule->parseUrlPath($url);
         if( empty($path) ){
             return [NULL, NULL, NULL];
         }
-        $module = $this->rule->route->config['app_multi_module'] ?  array_shift($path) : NULL;
+
+        $module = $this->rule->router->config['app_multi_module'] ?  array_shift($path) : NULL;
 
         $find = true;
         if( empty($path) ){
@@ -44,7 +46,7 @@ class Url extends Dispatch
 
         //gets params
         if( !empty($path) ){
-            if( $this->rule->route->config['url_param_type'] ){
+            if( $this->rule->router->config['url_param_type'] ){
                 $var += $path;
             } else {
                 for($i=0; $i<count($path); $i+=2){
@@ -70,7 +72,7 @@ class Url extends Dispatch
      */
     protected function autoFindController($module, &$path)
     {
-        $dir = $this->app->appPath . ($module ? $module.'/' : '') . $this->rule->route->config['url_controller_layer'];
+        $dir = $this->app->appPath . ($module ? $module.'/' : '') . $this->rule->router->config['url_controller_layer'];
         $item = [];
         $find = false;
 

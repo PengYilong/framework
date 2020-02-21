@@ -2,30 +2,39 @@
 namespace zero\route;
 
 use zero\Route;
+use zero\Request;
 
 class Domain extends RuleGroup
 {
 
     /**
-     * @var string the name of the domain
+     * struct function
+     *
+     * @param Route $route
+     * @param string $name
+     * @param mixed $rule
+     * @param array $options
+     * @param array $pattern
      */
-    public $name;
-
-    /**
-     * @var string|array
-     */
-    public $rule;
-
-    /**
-     * @var object $route
-     */
-    public $route;
-
-    public function __construct(Route $route, $name = '', $rule = [])
+    public function __construct(Route $router, $name = '', $rule = null, array $option = [], array $pattern = [])
     {
-        $this->route = $route;
-        $this->name = $name;
+        $this->router = $router;
+        $this->domain = $name;
         $this->rule = $rule;
+        $this->option = $option;
+        $this->pattern = $pattern;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param [type] $url
+     * @return void
+     */
+    public function check(Request $request, string $url, bool $completeMatch = false)
+    {
+        return parent::check($request, $url);
     }
 
 }

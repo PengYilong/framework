@@ -6,19 +6,56 @@ class Application extends Container
 {
 
 	/**
-	 * 
+	 * app path
+	 * @var string
 	 */
 	public $appPath;
-	public $zeroPath;
-	public $rootPath;
-	public $runtimePath;
-	public $configPath;
-	public $configExt;
-	public $routePath;
+
+	/**
+	 * zero path
+	 *
+	 * @var string
+	 */
+	protected $zeroPath;
+
+	/**
+	 * root path
+	 *
+	 * @var string
+	 */
+	protected $rootPath;
+
+	/**
+	 * runtime path
+	 *
+	 * @var string
+	 */
+	protected $runtimePath;
+
+	/**
+	 * config path
+	 *  
+	 * @var string
+	 */
+	protected $configPath;
+
+	/**
+	 * the extension of the config
+	 *
+	 * @var string
+	 */
+	protected $configExt;
+
+	/**
+	 * the config of the route  
+	 *
+	 * @var string
+	 */
+	protected $routePath;
 
 	function __construct(string $rootPath = '')
 	{
-		$this->zeroPath = __DIR__.DIRECTORY_SEPARATOR;
+		$this->zeroPath = dirname(__DIR__) . DIRECTORY_SEPARATOR;
 		$this->rootPath = $rootPath ? rtrim($rootPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR : $this->getDefaultRootPath();
 		$this->appPath = $this->rootPath . 'app' . DIRECTORY_SEPARATOR;;
 		$this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
@@ -32,15 +69,15 @@ class Application extends Container
 			$this->initialize();
 
 			$this->hook->use('app_init');
-
 			$this->hook->use('app_dispatch');
 
 			$dispatch = $this->routeCheck()->init();
-			
+			// p($dispatch);	
 			$this->hook->use('app_begin');
-			$data = NULL;	
+
+			$data = null;	
 		} catch(HttpResponseException $exception) {
-			$dispatch = NULL;
+			$dispatch = null;
 			$data = $exception->response;
 		}
 		
@@ -58,6 +95,7 @@ class Application extends Container
 	public function initialize()
 	{
 		$this->configExt = $this->env->get('config_ext', '.php');
+		//加载惯例配置
 		$this->config->set(require $this->zeroPath. 'convention.php');
 		//to init handling error and exception class
 		$path = $this->runtimePath.'log' . DIRECTORY_SEPARATOR;
@@ -86,6 +124,9 @@ class Application extends Container
 
 		date_default_timezone_set($this->config->get('app.default_timezone'));
 
+		//load database config
+		Db::setConfig($this->config->pull('database'));	
+
 		$this->routeInit();
 	}
 
@@ -102,20 +143,25 @@ class Application extends Container
 			$this->hook->set(include $path. 'tags.php');
 		}
 		
-		//loads configs
+		//加载应用配置和模块配置
 		if( is_dir($path.'config') ){
 			$dir = $path. 'config'. DIRECTORY_SEPARATOR;
 		} else if( is_dir($this->configPath. $module) ){
 			$dir = $this->configPath. $module; 
 		}
+		
 		$files = isset($dir) ? scandir($dir) : [];
 
 		if( !empty($files) ){
 			foreach($files as $file){
-				if($file != '.' && $file != '..'){
+				if('.' . pathinfo($file, PATHINFO_EXTENSION) == $this->configExt ){
 					$this->config->set(include $dir.$file, pathinfo($file, PATHINFO_FILENAME));	
 				}
 			}
+		}
+		if( $module ){
+			//更新配置
+			Db::setConfig($this->config->pull('database'));
 		}
 	}
 
@@ -151,7 +197,7 @@ class Application extends Container
 
 	protected function getDefaultRootPath(): string
 	{
-		return dirname(dirname(dirname(dirname(dirname($this->zeroPath))))) . DIRECTORY_SEPARATOR;
+		return dirname(dirname(dirname(dirname($this->zeroPath)))) . DIRECTORY_SEPARATOR;
 	}
 
 	/**

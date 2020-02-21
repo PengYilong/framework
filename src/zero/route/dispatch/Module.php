@@ -7,7 +7,6 @@ use zero\exceptions\ClassNotFoundException;
 
 class Module extends Dispatch
 {
-
     protected $controller;
     protected $actionName;
 
@@ -15,8 +14,12 @@ class Module extends Dispatch
     {
         $result = $this->dispatch;
         
-        if( $this->rule->route->config['app_multi_module'] ){
-            $module = $result[0] ?: $this->rule->route->config['default_module'];
+        if( is_string($result) ) {
+            $result = explode('/', $result);
+        }
+        
+        if( $this->rule->router->config['app_multi_module'] ){
+            $module = $result[0] ?: $this->rule->router->config['default_module'];
             if( is_dir($this->app->appPath.$module) ){
                 $this->request->module = $module;
                 $this->app->init($module);
@@ -24,8 +27,8 @@ class Module extends Dispatch
                 throw new HttpException(404, 'Module not exist : '. $module);
             }
         }
-        $this->controller = $result[1] ?: $this->rule->route->config['default_controller'];
-        $this->actionName = $result[2] ?: $this->rule->route->config['default_action'];
+        $this->controller = $result[1] ?: $this->rule->router->config['default_controller'];
+        $this->actionName = $result[2] ?: $this->rule->router->config['default_action'];
 
         $this->request->controller = ucfirst($this->controller);
         $this->request->action = $this->actionName;
@@ -35,7 +38,7 @@ class Module extends Dispatch
     public function exec()
     {
         try {
-            $instance = $this->app->controller($this->controller, $this->rule->route->config['url_controller_layer']);
+            $instance = $this->app->controller($this->controller, $this->rule->router->config['url_controller_layer']);
         } catch(classNotFoundException $e ){
             throw new HttpException(404, 'controller not exists '. $e->class);
         }

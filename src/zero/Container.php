@@ -17,6 +17,7 @@ class Container implements ArrayAccess, Countable{
 
     /**
      * the classes instantiated
+     * @var array
      */
     public $instances = [];
 
@@ -36,6 +37,17 @@ class Container implements ArrayAccess, Countable{
     }
 
     /**
+     * get current instance
+     */
+    public static function getInstance()
+    {
+        if( null === static::$instance ){
+            static::$instance = new static;
+        }   
+        return static::$instance;
+    }
+
+    /**
      * static method for the function make  
      */
     public static function get($class, $args = [], $newInstance = false)
@@ -46,17 +58,18 @@ class Container implements ArrayAccess, Countable{
     /**
      * make a class instantiated
      * @access public
-     * @param string $class the name of the class
-     * @param array  the args of the __cnostruct() function of the class
-     * @param boolean whether the class always is instantiated
+     * @param  string $class the name of the class
+     * @param  boolean|array  the args of the __cnostruct() function of the class
+     * @param  boolean whether the class always is instantiated
      * @return object new instance 
      */
-    public function make(string $class, $args = [], $newInstance = false)
+    public function make(string $class, $args = [], bool $newInstance = false)
     {
         if( true == $args ){
             $newInstance = true;
             $args = [];
         }
+
         $realClass = $this->bind[$class] ?? $class;
         
         if( isset($this->instances[$realClass]) && !$newInstance ){
@@ -85,7 +98,7 @@ class Container implements ArrayAccess, Countable{
             }
             return $object;
         } catch (ReflectionException $e) {
-            throw new ClassNotFoundException('Class Not Found:'. $e->getMessage(), $realClass);
+            throw new ClassNotFoundException('Class Not Found:'. $e->getMessage(), $class);
         }
     }
 
@@ -115,18 +128,6 @@ class Container implements ArrayAccess, Countable{
     {
         $args = $this->bindParams($reflectMethod, $args);
         return $reflectMethod->invokeArgs($instance, $args);
-    }
-
-
-    /**
-     * get current instance
-     */
-    public static function getInstance()
-    {
-        if( null === static::$instance ){
-            static::$instance = new static;
-        }   
-        return static::$instance;
     }
 
     /**

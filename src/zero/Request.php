@@ -3,6 +3,18 @@ namespace zero;
 
 class Request
 {
+    /**
+     * 请求类型
+     * @var string
+     */
+    protected $method;
+
+    /**
+     * current URL
+     *
+     * @var string
+     */
+    protected $url;
 
     /**
      * @var array $_SERVER object 
@@ -32,6 +44,8 @@ class Request
      */
     public $route = [];
 
+    protected $pathinfo;
+
     public function __construct(Application $app, Config $config)
     {
         $this->server = $_SERVER;
@@ -39,7 +53,9 @@ class Request
 
     public function pathinfo()
     {
-        return $this->server['PATH_INFO']; 
+        $pathinfo = $this->server['PATH_INFO']; 
+        $this->pathinfo = empty($pathinfo) || '/' == $pathinfo ? '' : ltrim($pathinfo, '/');
+        return $this->pathinfo; 
     }
 
     /**
@@ -52,10 +68,18 @@ class Request
 
     /**
      * gets request method 
+     *
+     * @param boolean $origin
+     * @return void
      */
-    public function method()
+    public function method($origin = false)
     {
-        return $this->server['REQUEST_METHOD'] ?: 'GET'; 
+        if($origin){
+            return $this->server['REQUEST_METHOD'] ?: 'GET'; 
+        } elseif(!$this->method) {
+            return $this->server['REQUEST_METHOD'] ?: 'GET'; 
+        }
+        return $this->method;
     }
 
     /**

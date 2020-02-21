@@ -23,10 +23,9 @@ return [
         'url_controller_bussiness'=> 'bussiness',
         'url_controller_model'=> 'model',
         'pathinfo_depr' => '/',
-        'app_multi_module' => true,
+        
         //0 key/value  1 order
         'url_param_type' => 0,
-        'app_multi_module' => true,
         'default_return_type' => 'html',
         'default_timezone' => 'Asia/Shanghai',
         'pathinfo_depr' => '/',
@@ -35,6 +34,8 @@ return [
         // +-----------------------------
         // | module settings
         // +-----------------------------
+        //是否支持多模块
+        'app_multi_module' => true,
         'default_module' => 'index',
         'default_controller' => 'Index',
         'default_action' => 'index',
@@ -43,23 +44,48 @@ return [
         //自动搜索控制器
         'controller_auto_search' => true,
         // +----------------------------------------------------------------------
-        // | URL settings
+        // | Route Settings
         // +----------------------------------------------------------------------
+        'pathinfo_depr' => '/',
         'url_lazy_route' => false,
+        //强制路由(路由是否完全匹配)
+        'route_complete_match'   => false,
+        'default_route_pattern' => '\w+',
     ],
     'database' => [
-        'master' => array (
-            'hostname' => 'localhost',
-            'database' => 'myadmin',
-            'username' => 'root',
-            'password' => 'pyl',
-            'tablepre' => 'cms_',
-            'charset' => 'utf8',
-            'type' => 'mysqli',
-            'debug' => true,
-            'pconnect' => 0,
-            'autoconnect' => 0,
-        ),
+        // 数据库库类型
+        'type' => 'mysql',
+        // 服务器地址
+        'hostname' => 'localhost',
+        // 数据库名
+        'database' => 'english',
+        // 用户名
+        'username' => 'root',
+        // 密码
+        'password' => 'pyl',
+        // 端口
+        'hostport' => '',
+        // 连接DSN
+        'dsn' => '',
+        // 数据库连接参数
+        'params' => '',
+        // 数据库编码默认采用utf8
+        'charset' => 'utf8',
+        // 数据库表前缀
+        'prefix' => '',
+        // 数据库调试模式
+        'debug' => false,
+        // 是否长链接
+        'pconnect' => 0,
+        'autoconnect' => 0,
+        // 是否严格检查字段是否存在
+        'fields_strict' => true,
+        // 数据集返回类型
+        'resultset_type' => 'array',
+        // 开启自动写入时间戳字段
+        'auto_timestamp' => false,
+        // 0-单一服务器 1-分布式服务器
+        'deploy' => 0,
     ],
     'decorators' => [
         'output_decorators' => [

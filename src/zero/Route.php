@@ -5,68 +5,87 @@ use zero\Config;
 use zero\Factory;
 use zero\URL;
 use zero\exceptions\HttpException;
+use zero\exceptions\RouteNotFoundException;
 use zero\route\Domain;
 use zero\route\dispatch\Url as UrlDispatch;
+use zero\route\RuleGroup;
 
 class Route
 {
 
     /**
-     * @var array
-     */
-    public  $config;
-
-    /**
-     * @var string
-     */
-    public $url = NULL;
-
-    /*
-     * @var
-     */
-    protected $bindModule;
-
-    /**
-     * Application object
+     * @var Application
      */
     protected $app;
 
     /**
      * request object
+     * @var Request
      */
-    public $request;
+    protected $request;
 
     /**
-     * wheteher auto search controller
-     */
-    public $autoSearchController = true;
-
-    /**
+     * current HOST
+     *
      * @var string
      */
-    public $domain;
+    protected $host;
 
     /**
-     * @var
+     * current domain
+     * @var string
      */
-    public $domains;
+    protected $domain;
 
-    public $bind;
+    /**
+     * 当前分组对象
+     * @var RuleGroup
+     */
+    public $group;
+
+    /**
+     * @var array
+     */
+    public $config = [];
+
+    /**
+     * 路由绑定
+     * @var array
+     */
+    protected $bind = [];
+
+    /**
+     * @var array 
+     */
+    protected $domains = [];
+
+    /**
+     * 路由别名
+     * @var array 
+     */
+    protected $alias = [];
 
     /**
      * 路由延迟解析
      * @var bool
      */
-    public $lazy = true;
+    protected $lazy = true;
+
+    /**
+     * wheteher auto search controller
+     */
+    protected $autoSearchController = true;
 
     public function __construct(Application $app, Config $config)
     {
-        $this->config = $config->get('app.');
-        $this->request = $app['request'];
         $this->app = $app;
+        $this->request = $app['request'];
+        $this->config = $config->get('app.');
+
         $this->host = $this->request->server['HTTP_HOST'];
         $this->lazy = $config->get('url_lazy_route');
         $this->autoSearchController = $config->get('controller_auto_search'); 
+        
         $this->setDefaultDomain();
     }
 
@@ -78,13 +97,26 @@ class Route
             $_REQUEST = new_addslashes($_REQUEST);
             $_COOKIE = new_addslashes($_COOKIE);
         }
+
         return $this;
     }
 
-    public function setDefaultDomain()
+    /**
+     * 初始化默认域名
+     *
+     * @return void
+     */
+    protected function setDefaultDomain(): void
     {
+        // 默认域名
+        $this->domain = $this->host;
+
+        // 注册默认域名
         $domain = new Domain($this, $this->host);
+
         $this->domains[$this->host] = $domain;
+
+        //default group
         $this->group = $domain;
     }
 
@@ -93,29 +125,50 @@ class Route
      * @param string $rule
      * @return object Domain
      */
-    public function domain($name, $rule = '')
+    /**
+     * 注册域名路由
+     *
+     * @param string|array $name
+     * @param string $rule
+     * @param array $options
+     * @param array $pattern
+     * @return void
+     */
+    public function domain($name, $rule = '', array $options = [], array $pattern = [])
     {
-        $rootDomain = $this->request->getRootDomain();
-        if( is_array($name) ){
-            foreach($name as $value){
-                $this->domain($value, $rule);
-            }
-            return ;
-        } 
+        $domainName = is_array($name) ? array_shift($name) : $name;
+
         if( '*' != $name || !strpos('.', $name) ){
-            $domainName = $name. '.' . $rootDomain;
+            $domainName = $name. '.' . $this->request->getRootDomain();
         }
+
         if( !isset($this->domian[$domainName]) ){
-            $domain = (new Domain($this, $domainName, $rule))->lazy($this->lazy);
+            $domain = (new Domain($this, $domainName, $rule, $options, $pattern))
+                ->lazy($this->lazy);
+
             $this->domains[$domainName] = $domain;
         } else {
+            $domain = $this->domains[$domainName];
             $domain->parseGroupRule($rule);
         }
+
+        if( is_array($name) && !empty($mame) ){
+            $root = $this->request->rootDomain();
+            foreach($name as $item){
+                if(false === strpos($item, '.')) {
+                    $item .= '.' . $root;
+                }
+
+                $this->domains[$item] = $omainName;
+            }
+        } 
+
+        return $domain;
     }
 
-    public function bind($bind, $domain = null)
+    public function bind(string $domain = null, string $bind): void
     {
-        $domain = is_null($domain) ? $this->domian : $domain;
+        $domain = is_null($domain) ? $this->domain : $domain;
         $this->bind[$bind] = $domain;
     }
 
@@ -127,13 +180,73 @@ class Route
         if( is_null($domain) ){
             $domain = $this->host;
         }
-        return $this->bind[$domain];
+
+        if( isset($this->bind[$domain]) ) {
+            $result = $this->bind[$domain];
+        } else {
+            $result = null;
+        }
+
+        return $result;
     }
 
-    public function check($url)
+    /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @param boolean $must 强制路由
+     * @return void
+     */
+    public function check(string $url, bool $must = false)
     {
+        //自动检测域名路由
+        $domain = $this->checkDomain();
+        $url = str_replace($this->config['pathinfo_depr'], '|', $url);
+
+        $completeMatch = $this->config['route_complete_match'];
+        
+        //进行路由匹配
+        $result = $domain->check($this->request, $url, $completeMatch);
+
+        if( false !== $result ){
+            return $result;
+        } elseif( $must ){
+            //开启强制使用路由，这种方式下面必须严格给每一个访问地址定义路由规则（包括首页），否则将抛出异常
+            throw new RouteNotFoundException();
+        }
+
+        //默认路由解析
         return new UrlDispatch($this->request, $this->group, $url, [
             'auto_search' => $this->autoSearchController,
-        ]);
+        ]);    
+    }
+
+    public function checkDomain()
+    {
+        $item = $this->domains[$this->host];
+        return $item;
+    }
+
+    /**
+     * register route
+     * @access public
+     * @param  mixed $rule    路由规则
+     * @param  mixed  $route   路由地址
+     * @param  string $method  请求方法
+     * @param  array  $options 路由参数
+     * @param  array  $pattern 变量规则
+     * @return RuleItem
+     */
+    public function rule($rule, $route, string $method = '*', array $options = [], array $pattern = [])
+    {
+        return $this->group->addRule($rule, $route, $method, $options, $pattern);
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app'], $data['request']);
+
+        return $data;
     }
 }

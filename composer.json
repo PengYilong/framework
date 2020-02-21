@@ -12,10 +12,9 @@
 	"require-dev":{
 		"php": ">=5.4",
 		"nezimi/my-error": "dev-master",
-		"nezimi/my-functions": "dev-master"
+		"nezimi/zero-helper": "dev-master"
 	},
     "autoload": {
-        "files": [],
         "psr-4": {
             "zero\\": "src/zero/"
         }
