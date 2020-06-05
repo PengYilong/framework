@@ -11,8 +11,8 @@
 	},
 	"require-dev":{
 		"php": ">=5.4",
-		"nezimi/my-error": "dev-master",
-		"nezimi/zero-helper": "dev-master"
+		"zero-systems/zero-error": "dev-master",
+		"zero-systems/zero-helper": "dev-master"
 	},
     "autoload": {
         "psr-4": {

@@ -1,8 +1,8 @@
 # Zero
-The php framework for learning php framework for Thinkphp 5.14.
+The framework of Zero for studying Thinkphp
 
 ## Installation
 
 ```
-composer create-project nezimi/zero
+composer create-project zero-systems/framework
 ```
