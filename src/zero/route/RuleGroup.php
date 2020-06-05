@@ -48,10 +48,14 @@ class RuleGroup extends Rule
     /**
      * 
      */
-    public function __construct(Route $router, RuleGroup $parent = null)
+    public function __construct(Route $router, RuleGroup $parent = NUll)
     {
         $this->router = $router;
         $this->parent = $parent;
+
+        if( $this->parent ) {
+            $this->parent->addRuleItem($this);
+        }
     }
 
     public function parseGroupRule($rule)
@@ -77,11 +81,11 @@ class RuleGroup extends Rule
      * @param  array  $pattern 变量规则
      * @return 
      */
-    public function addRule($rule, $route, string $method = '*', array $options, array $pattern)
+    public function addRule($rule, $route, string $method = '*', array $option = [], array $pattern = [])
     {
         $name = $route;
         $method = strtolower($method);
-        $ruleItem = new RuleItem($this->router, $this, $name, $rule, $route, $method, $options, $pattern);
+        $ruleItem = new RuleItem($this->router, $this, $name, $rule, $route, $method, $option, $pattern);
 
         $this->addRuleItem($ruleItem, $method);
 
@@ -110,17 +114,28 @@ class RuleGroup extends Rule
      */
     public function check(Request $request, string $url, bool $completeMatch = false)
     {
+
+        if( $this instanceof Resource ) {
+            $this->buildResourceRule();
+        }
+
         // 获取当前路由规则
         $method = strtolower($request->method());
         $rules = $this->getMethodRules($method);
 
+        $completeMatch = $this->option['complete_match'] ?? $completeMatch;
+
         foreach($rules as $key => $item) {
             $result = $item->check($request, $url, $completeMatch);
-            
+
             if( false !== $result ) {
                 return $result;
             }
         }
+
+        $result = false;
+
+        return $result;
     }
 
     /**

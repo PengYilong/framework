@@ -9,9 +9,22 @@ use zero\exceptions\RouteNotFoundException;
 use zero\route\Domain;
 use zero\route\dispatch\Url as UrlDispatch;
 use zero\route\RuleGroup;
+use zero\route\Resource;
 
 class Route
 {
+    /**
+     * REST
+     */
+    protected $rest = [
+        'index' => ['get', '', 'index'],
+        'create' => ['get', '/create', 'create'],
+        'read' => ['get', '/<id>', 'read'],
+        'save' => ['post', '', 'save'],
+        'edit' => ['get', '/<id>/edit', 'edit'],
+        'update' => ['put', '/<id>', 'update'],
+        'delete' => ['delete', '/<id>', 'delete'], 
+    ];
 
     /**
      * @var Application

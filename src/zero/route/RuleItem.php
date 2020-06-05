@@ -81,7 +81,7 @@ class RuleItem extends Rule
      * @param boolean $completeMatch
      * @return false|array
      */
-    public function match(string $url, array $option, bool $completeMatch)
+    private function match(string $url, array $option, bool $completeMatch)
     {
         if( isset($option['complete_match']) ) {
             $completeMatch = $option['complete_match'];
@@ -94,6 +94,13 @@ class RuleItem extends Rule
         $rule = $depr . str_replace('/', $depr, $this->rule);
         $pattern = [];
 
+        if( false === strpos($rule, '<') ) {
+            if( 0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule . $depr, $url . $depr, strlen($rule . $depr) ) ) ) {
+                return $var;
+            } 
+            return false;
+        }
+
         $slash = preg_quote('/-' . $depr, '/');
         $regex = '/['. $slash .']?<\w+\??>/';
         if( $matchRule = preg_split($regex, $rule, 2) ) {
@@ -101,9 +108,9 @@ class RuleItem extends Rule
                 return false;
             }
         }
+        
         if( preg_match_all('/['. $slash .']?<?\w+\??>?/', $rule, $matches) ) {
             $regex = $this->buildRuleRegex($rule, $matches[0], $pattern, $option, $completeMatch);
-
             try {
                 $urlRegex = '/^'. $regex . ($completeMatch ? '$' : '') .'/u';
                 if( !preg_match($urlRegex, $url, $match) ) {
