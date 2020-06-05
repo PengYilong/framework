@@ -3,6 +3,9 @@ namespace zero;
 
 class Request
 {
+
+    protected $config = [];
+
     /**
      * 请求类型
      * @var string
@@ -49,6 +52,7 @@ class Request
     public function __construct(Application $app, Config $config)
     {
         $this->server = $_SERVER;
+        $this->config = $config->pull('app');
     }
 
     public function pathinfo()
@@ -77,7 +81,17 @@ class Request
         if($origin){
             return $this->server['REQUEST_METHOD'] ?: 'GET'; 
         } elseif(!$this->method) {
-            return $this->server['REQUEST_METHOD'] ?: 'GET'; 
+            if( isset($_POST[$this->config['var_method']]) ) {
+                $method = strtolower($_POST[$this->config['var_method']]);
+                if( in_array($method, ['get', 'post', 'put', 'patch', 'delete']) ) {
+                    $this->method = strtoupper($method);
+                } else {
+                    $this->method = 'POST';
+                }
+                unset($_POST[$this->config['var_method']]);
+            } else {
+                $this->method = $this->server['REQUEST_METHOD'] ?: 'GET'; 
+            }
         }
         return $this->method;
     }

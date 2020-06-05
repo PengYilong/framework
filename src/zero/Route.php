@@ -237,9 +237,14 @@ class Route
      * @param  array  $pattern 变量规则
      * @return RuleItem
      */
-    public function rule($rule, $route, string $method = '*', array $options = [], array $pattern = [])
+    public function rule($rule, $route, string $method = '*', array $option = [], array $pattern = [])
     {
-        return $this->group->addRule($rule, $route, $method, $options, $pattern);
+        return $this->group->addRule($rule, $route, $method, $option, $pattern);
+    }
+
+    public function resource($rule, $route, string $method = '*', array $option = [], array $pattern = [])
+    {
+        return new Resource($this, $this->group, $rule, $route, $option, $pattern, $this->rest);
     }
 
     public function __debugInfo()

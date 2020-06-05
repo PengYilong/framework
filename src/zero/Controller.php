@@ -98,4 +98,13 @@ class Controller
 		return $this->view->fetch($file);	
 	}
 
+	public function success()
+	{
+
+	}
+
+	public function error()
+	{
+		
+	}
 }

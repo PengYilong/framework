@@ -1,4 +1,6 @@
 <?php
+use zero\facade\Env;
+
 return [
     'app' => [
         'app_namespace' => 'app',
@@ -26,7 +28,6 @@ return [
         
         //0 key/value  1 order
         'url_param_type' => 0,
-        'default_return_type' => 'html',
         'default_timezone' => 'Asia/Shanghai',
         'pathinfo_depr' => '/',
         'default_return_type' => 'html',
@@ -43,6 +44,13 @@ return [
         'deny_module_list' => ['common'],
         //自动搜索控制器
         'controller_auto_search' => true,
+
+        // +----------------------------------------------------------------------
+        // | URL Settings
+        // +----------------------------------------------------------------------
+        'var_method' => '_method',
+        'dispatch_success_tmpl' => __DIR__ . 'tpl/dispatch_jump.tpl',
+        'dispatch_fail_tmpl' => __DIR__ . 'tpl/dispatch_jump.tpl',
         // +----------------------------------------------------------------------
         // | Route Settings
         // +----------------------------------------------------------------------

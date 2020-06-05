@@ -16,3 +16,11 @@ if(!function_exists('app')) {
         return Container::get($name, $args, $newInstance);
     }
 }
+
+if(!function_exists('request')) {
+
+    function request()
+    {
+        return app('request');
+    }
+}
