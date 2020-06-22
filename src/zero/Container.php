@@ -6,7 +6,7 @@ use ReflectionClass;
 use ReflectionException;
 use InvalidArgumentException;
 use Countable;
-use zero\exceptions\ClassNotFoundException;
+use zero\exception\ClassNotFoundException;
 
 class Container implements ArrayAccess, Countable{
 

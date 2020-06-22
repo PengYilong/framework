@@ -1,6 +1,6 @@
 <?php
 namespace zero;
-use zero\exceptions\ClassNotFoundException;
+use zero\exception\ClassNotFoundException;
 
 class Application extends Container
 {

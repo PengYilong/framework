@@ -2,8 +2,8 @@
 namespace zero\route\dispatch;
 
 use zero\route\Dispatch;
-use zero\exceptions\HttpException;
-use zero\exceptions\ClassNotFoundException;
+use zero\exception\HttpException;
+use zero\exception\ClassNotFoundException;
 
 class Module extends Dispatch
 {

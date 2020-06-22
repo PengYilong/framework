@@ -2,7 +2,7 @@
 namespace zero\route\dispatch;
 
 use zero\route\Dispatch;
-use zero\exceptions\HttpException;
+use zero\exception\HttpException;
 
 class Url extends Dispatch
 {

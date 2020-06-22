@@ -1,5 +1,5 @@
 <?php
-namespace zero\exceptions;
+namespace zero\exception;
 
 use zero\Response;
 
