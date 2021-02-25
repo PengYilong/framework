@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title>Jump</title>
+    <style type="text/css">
+        *{padding: 0; margin:0; box-sizing: border-box;}
+        body{ background: #fff; font-family: "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif; color: #333; font-size: 16px; }
+        .system-message{ padding: 24px 48px;}
+        .system-message h1 {font-size: 100px; line-height: 100px; font-weight: normal; margin-bottom: 12px;}
+        .system-message .jump a{ color: #333; }
+        .system-message .success, .system-message .error{line-height: 1.8em; font-size: 36px;} 
+
+    </style>
+</head>
+<body>
+    <div class="system-message">
+        <h1>:)</h1>
+        <p class="success"></p>
+        <p class="detail"></p>
+        <p class="jump">
+            Auto jump <a id="href" href="">跳转</a> waiting time: <b id="wait"></b>
+        </p>
+    </div>
+    <script>
+        (function(){
+            var wait = document.getElementById('wait'),
+                href = document.getElementById('href').href;
+            // var interval = setInterval(function(){
+            //     var time = --wait.innerHTML;
+            //     if(time <= 0) {
+            //         location.href = href;
+            //         clearInterval(interval);
+            //     }
+            // }, 1000);
+        })();
+    </script>
+</body>
+</html>

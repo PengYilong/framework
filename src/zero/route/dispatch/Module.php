@@ -27,6 +27,7 @@ class Module extends Dispatch
                 throw new HttpException(404, 'Module not exist : '. $module);
             }
         }
+        
         $this->controller = $result[1] ?: $this->rule->router->config['default_controller'];
         $this->actionName = $result[2] ?: $this->rule->router->config['default_action'];
 

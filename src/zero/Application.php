@@ -86,9 +86,10 @@ class Application extends Container
 				return is_null($data) ? $dispatch->run() : $data; 
 			}
 		);
-		
 		$response = $this->middleware->use([$this->request]);
+
 		$this->hook->use('app_end', [$response]);
+
 		return $response;
 	}
 

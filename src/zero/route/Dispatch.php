@@ -42,9 +42,14 @@ abstract class Dispatch
 
     public function autoResponse($data)
     {
-        $isAjax = $this->request->isAjax();
-        $type = $isAjax ? $this->rule->router->config['default_ajax_return_type'] : $this->rule->router->config['default_return_type']; 
-        $response = new Response($data, $type);
+        if( $data instanceof Response ) {
+            $response = $data;
+        } else {
+            $isAjax = $this->request->isAjax();
+            $type = $isAjax ? $this->rule->router->config['default_ajax_return_type'] : $this->rule->router->config['default_return_type']; 
+            $response = new Response($data, $type);
+        }
+
         return $response; 
     }
 
