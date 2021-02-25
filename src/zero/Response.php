@@ -48,9 +48,9 @@ class Response
      */
     public static function create($data, string $type, int $code = 200, array $header = [], $options = [])
     {
-        $class = false !== strpos($type, '\\') ? $type : '\\zero\\repsonse\\' . ucfirst(strlower($type));
+        $class = false !== strpos($type, '\\') ? $type : '\\zero\\response\\' . ucfirst(strtolower($type));
 
-        if(class_exists($class)) {
+        if( class_exists($class) ) {
             return new $class($data, $code, $header, $options);
         }
 
