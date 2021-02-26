@@ -26,8 +26,6 @@ return [
         'url_controller_model'=> 'model',
         'pathinfo_depr' => '/',
         
-        //0 key/value  1 order
-        'url_param_type' => 0,
         'default_timezone' => 'Asia/Shanghai',
         'pathinfo_depr' => '/',
         'default_return_type' => 'html',

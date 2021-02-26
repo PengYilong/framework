@@ -40,6 +40,17 @@ abstract class Dispatch
         return $this->autoResponse($data);
     }
 
+    public function init()
+    {
+        // 执行路由后置操作
+        $this->doRouteAfter();
+    }
+
+    public function doRouteAfter()
+    {
+        $this->request->setRouteVars($this->rule->getVars());
+    }
+
     public function autoResponse($data)
     {
         if( $data instanceof Response ) {

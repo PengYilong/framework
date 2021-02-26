@@ -80,7 +80,29 @@ abstract class Rule
      */
     public function parseRule(Request $request, $rule, $route, $url, array $option = [], array $matches = [])
     {
+        // 解析额外参数
+        $count = substr_count($rule, '/');
+        $url = array_slice(explode('|', $url), $count+1);
+        $this->parseUrlparams( implode('|', $url), $matches);
+        $this->vars = $matches;
+
         return $this->dispatch($request, $route, $option);
+    }
+
+    /**
+     * 解析URL地址中的参数
+     *
+     * @param string $url
+     * @param array $var
+     * @return void
+     */
+    protected function parseUrlparams(string $url, array &$var = []) : void
+    {
+        if($url){
+            preg_replace_callback('/(\w+)\|([^\|]+)/', function($match) use (&$var) {
+                $var[$match[1]] = strip_tags($match[2]);
+            }, $url);
+        }
     }
 
     public function dispatch(Request $request, $route, array $option)
@@ -141,6 +163,16 @@ abstract class Rule
         }
 
         return $this->option;
+    }
+
+    /**
+     * 获得当前路由的变量
+     *
+     * @return array
+     */
+    public function getVars(): array
+    {
+        return $this->vars;
     }
 
     public function __debugInfo()

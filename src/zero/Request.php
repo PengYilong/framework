@@ -49,10 +49,53 @@ class Request
 
     protected $pathinfo;
 
+    /**
+     * current get params
+     * @var array 
+     */
+    protected $get = [];
+
+    /**
+     * current post params
+     * @var array 
+     */
+    protected $post = [];
+
+    /**
+     * current put params
+     * @var array 
+     */
+    protected $put = [];
+
+    /**
+     * current request params
+     * @var array 
+     */
+    protected $request = [];
+
+    /**
+     * 是否合并过Param
+     *
+     * @var boolean
+     */
+    protected $mergeParam = false;
+
+    /**
+     * 合并的参数
+     *
+     * @var array
+     */
+    protected $param = [];
+
     public function __construct(Application $app, Config $config)
     {
         $this->server = $_SERVER;
         $this->config = $config->pull('app');
+
+        $this->get = $_GET;
+        $this->psot = $_POST;
+        $this->request = $_REQUEST;
+        $this->input = '';
     }
 
     public function pathinfo()
@@ -120,5 +163,177 @@ class Request
     {
         $this->route = array_merge($this->route, $route);
         return $this;
+    }
+
+    /**
+     * 强制类型转换
+     *
+     * @param [type] $data
+     * @param string $type
+     * @return void
+     */
+    private function typeCast(&$data, string $type)
+    {
+        switch( strtolower($type) ) {
+            //数组
+            case 'a':
+                $data = (array) $data;
+                break;
+            //数字
+            case 'd':
+                $data = (int) $data;
+                break;
+            // 浮点
+            case 'f':
+                $data = (float) $data;
+            // 布尔
+            case 'b':
+                $data = (boolean) $data;
+            // 字符串
+            case 's':
+                if ( is_scalar($data) ) {
+                    $data = (string) $data;
+                } else {
+                    throw new \InvalidArgumentException('The variable type is error: ' . gettype($data));
+                }
+                break;
+        }
+    }
+
+    /**
+     * Get the value of the get params 
+     *
+     * @param string|array $name 变量名
+     * @param mixed $default 默认值
+     * @param string|array $filter 过滤方法
+     * @return void
+     */
+    public function get($name = '', $default = null)
+    {
+        return $this->input($this->get, $name, $default);
+    }
+
+    /**
+     * Get the value of the post params 
+     *
+     * @param string|array $name 变量名
+     * @param mixed $default 默认值
+     * @param string|array $filter 过滤方法
+     * @return void
+     */
+    public function post($name = '', $default = null)
+    {
+        return $this->input($this->post, $name, $default);
+    }
+
+    /**
+     * Get the value of the put params 
+     *
+     * @param string|array $name 变量名
+     * @param mixed $default 默认值
+     * @param string|array $filter 过滤方法
+     * @return void
+     */
+    public function put($name = '', $default = null)
+    {
+        return $this->input($this->put, $name, $default);
+    }
+
+    /**
+     * Get the value of the put params 
+     *
+     * @param string|array $name 变量名
+     * @param mixed $default 默认值
+     * @param string|array $filter 过滤方法
+     * @return void
+     */
+    public function route($name = '', $default = null)
+    {
+        return $this->input($this->route, $name, $default);
+    }
+
+    /**
+     * Get the value
+     *
+     * @param string|array $name 变量名
+     * @param mixed $default 默认值
+     * @param string|array $filter 过滤方法
+     * @return void
+     */
+    public function param($name = '', $default = null)
+    {
+        $method = $this->method(true);
+
+        // 第一次获取全部函数, 第二次不合并
+        if( empty($this->mergeParam) ) {
+            // 自动获取请求变量
+            switch($method) {
+                case 'POST':
+                    $vars = $this->post(false);
+                    break;
+                case 'PUT':
+                case 'DELETE':
+                case 'PATCH':
+                    // $var = $this->put(false);
+                    default:
+                    $vars = [];
+            }
+
+            // 当前请求参数和URL地址中的参数合并
+            $this->param = array_merge($this->param, $this->get(false), $vars);
+
+            $this->mergeParam = true;
+        }
+
+        return $this->input($this->param, $name, $default);
+    }
+
+    /**
+     * get the param value of methods(get,post,put)
+     *
+     * @param array $data
+     * @param string $name
+     * @param [type] $default
+     * @param string $filter
+     * @return void
+     */
+    public function input(array $data = [], $name = '', $default = null)
+    {
+        if( false === $name ) {
+            return $data;
+        }
+
+        $name = (string) $name;
+
+        if('' != $name) {
+
+            if( strpos($name, '/') ) {
+                list($name, $type) = explode('/', $name);
+            }
+
+            $data = $this->getData($data, $name);
+
+            if( is_null($data) ) {
+                return $default;
+            }
+        }
+
+        if( isset($type) && $data !== $default ) {
+            $this->typeCast($data, $type);
+        }
+
+        return $data;
+    }
+    
+    /**
+     * get the name value of methods(get,post,put);
+     *
+     * @param array $data
+     * @param [type] $name
+     * @return void
+     */
+    protected function getData(array $data, $name)
+    {
+        return $data[$name] ?? '';
     }
 }

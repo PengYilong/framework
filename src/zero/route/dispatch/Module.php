@@ -12,6 +12,8 @@ class Module extends Dispatch
 
     public function init()
     {
+        parent::init();
+        
         $result = $this->dispatch;
         
         if( is_string($result) ) {

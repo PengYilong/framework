@@ -44,17 +44,13 @@ class Url extends Dispatch
         
         $action = !empty($path) ? array_shift($path) : NULL;
 
-        //gets params
-        if( !empty($path) ){
-            if( $this->rule->router->config['url_param_type'] ){
-                $var += $path;
-            } else {
-                for($i=0; $i<count($path); $i+=2){
-                    if(isset($path[$i+1])){
-                        $var[$path[$i]] = $path[$i+1];
-                    }
-                }
-            }
+        $var = [];
+
+        //解析额外参数
+        if( $path ){
+            preg_replace_callback('/(\w+)\|([^\|]+)/', function($match) use (&$var) {
+                $var[$match[1]] = strip_tags($match[2]);
+            }, implode('|', $path));
         }
 
         $this->request->setRouteVars($var);
