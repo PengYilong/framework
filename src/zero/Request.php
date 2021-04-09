@@ -87,15 +87,88 @@ class Request
      */
     protected $param = [];
 
+    /**
+     * header params
+     *
+     * @var array
+     */
+    protected $header = [];
+
     public function __construct(Application $app, Config $config)
     {
         $this->server = $_SERVER;
         $this->config = $config->pull('app');
+        
+        $this->input = file_get_contents('php://input');
+
+        if( function_exists('apache_request_header') && $result = apache_request_header() ) {
+            $header = $result;
+        } else {
+            $server = $this->server;
+            $header = [];
+
+            foreach($server as $key => $val) {
+                if(0 === strpos($key, 'HTTP_')) {
+                    $key = str_replace('_', '-', strtolower(substr($key, 5)));
+                    $header[$key] = $val;
+                }
+            }
+
+            if( isset($server['CONTENT_TYPE']) ) {
+                $header['content-type'] = $server['CONTENT_TYPE']; 
+            }
+
+            if( isset($server['CONTENT_LENGTH']) ) {
+                $header['content-length'] = $server['CONTENT_LENGTH']; 
+            }
+
+            $this->header = array_change_key_case($header);
+        }
 
         $this->get = $_GET;
-        $this->psot = $_POST;
+        $this->post = $_POST;
         $this->request = $_REQUEST;
-        $this->input = '';
+        $this->put = $this->getInputData($this->input);
+    }
+
+    public function getInputData($content): array
+    {
+        $contentType = $this->contentType();
+        
+        if('application/x-www-form-urlencoded' == $contentType) {
+            parse_str($content, $data);
+            return $data;
+        }
+        return [];
+    }
+
+    public function contentType(): string
+    {
+        $contentType = $this->header('Content-Type');
+
+        if($contentType) {
+            return trim($contentType);
+        }
+
+        return '';
+    }
+
+    /**
+     * setting or getting current header
+     *
+     * @param string $name
+     * @param string $default
+     * @return void
+     */
+    public function header(string $name = '', string $default = null)
+    {
+        if('' === $name) {
+            return $this->header;
+        }
+
+        $name = str_replace('_', '-', strtolower($name));
+
+        return $this->header[$name] ?? $default;
     }
 
     public function pathinfo()
@@ -274,13 +347,14 @@ class Request
                 case 'PUT':
                 case 'DELETE':
                 case 'PATCH':
-                    // $var = $this->put(false);
-                    default:
+                    $vars = $this->put(false);
+                    break;
+                default:
                     $vars = [];
             }
-
+            
             // 当前请求参数和URL地址中的参数合并
-            $this->param = array_merge($this->param, $this->get(false), $vars);
+            $this->param = array_merge($this->param, $this->get(false), $vars, $this->route);
 
             $this->mergeParam = true;
         }
@@ -310,7 +384,7 @@ class Request
             if( strpos($name, '/') ) {
                 list($name, $type) = explode('/', $name);
             }
-
+        
             $data = $this->getData($data, $name);
 
             if( is_null($data) ) {
@@ -332,8 +406,8 @@ class Request
      * @param [type] $name
      * @return void
      */
-    protected function getData(array $data, $name)
+    protected function getData(array $data, string $name, $default = null)
     {
-        return $data[$name] ?? '';
+        return $data[$name] ?? $default;
     }
 }

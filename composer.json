@@ -7,10 +7,10 @@
 		"PHP Framework"
 	],
 	"require":{
-		"php": ">=5.4"
+		"php": ">=7.0"
 	},
 	"require-dev":{
-		"php": ">=5.4",
+		"php": ">=7.0",
 		"zero-systems/zero-error": "dev-master",
 		"zero-systems/zero-helper": "dev-master"
 	},

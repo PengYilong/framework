@@ -32,8 +32,6 @@ class Controller
 	 */ 
 	protected $app_config;	
 	
-	public $model;
-
 	public function __construct(Application $app = null)
 	{
 		$this->app = $app;

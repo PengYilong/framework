@@ -8,7 +8,7 @@ use zero\route;
  */
 class Resource extends RuleGroup
 {
-    public function __construct(Route $router, RuleGroup $parent = NULL, string $name = '', string $route = '', array $option, array $pattern = [], array $rest = [])
+    public function __construct(Route $router, RuleGroup $parent = NULL, string $name = '', string $route = '', array $option, array $pattern = [], array $rest = [], $completeMatch = true)
     {
         $this->router = $router;
         $this->parent = $parent;
@@ -19,7 +19,7 @@ class Resource extends RuleGroup
         $this->rest = $rest;
 
         // 资源路由默认为完全匹配
-        $this->option['complete_match'] = true;
+        $this->option['complete_match'] = $completeMatch;
 
         if($this->parent) {
             $this->parent->addRuleItem($this);

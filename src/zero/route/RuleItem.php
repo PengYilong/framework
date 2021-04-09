@@ -93,7 +93,7 @@ class RuleItem extends Rule
         $url = $depr . str_replace('|', $depr, $url);
         $rule = $depr . str_replace('/', $depr, $this->rule);
         $pattern = [];
-
+         
         if( false === strpos($rule, '<') ) {
             if( 0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule . $depr, $url . $depr, strlen($rule . $depr) ) ) ) {
                 return $var;
@@ -113,6 +113,7 @@ class RuleItem extends Rule
             $regex = $this->buildRuleRegex($rule, $matches[0], $pattern, $option, $completeMatch);
             try {
                 $urlRegex = '/^'. $regex . ($completeMatch ? '$' : '') .'/u';
+                
                 if( !preg_match($urlRegex, $url, $match) ) {
                     return false;
                 }

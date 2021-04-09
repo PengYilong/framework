@@ -42,3 +42,21 @@ if(!function_exists('json')) {
         return Response::create($data, 'json', $code);
     }
 }
+
+if(!function_exists('response')) {
+
+    /**
+     * 创建普通 Response对象
+     *
+     * @param mixed $data       输出数据
+     * @param int|string $code  状态码
+     * @param array $header     头信息
+     * @param string $type      输出类型
+     * @return Response
+     */
+    function response($data = '', $code = 200, $header = [], $type = 'html'): Response
+    {  
+        $res = Response::create($data, $type, $code, $header);
+        return $res;
+    }
+}

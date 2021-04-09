@@ -85,6 +85,7 @@ class RuleGroup extends Rule
     {
         $name = $route;
         $method = strtolower($method);
+        
         $ruleItem = new RuleItem($this->router, $this, $name, $rule, $route, $method, $option, $pattern);
 
         $this->addRuleItem($ruleItem, $method);

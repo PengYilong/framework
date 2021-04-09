@@ -49,23 +49,26 @@ class Response
     public static function create($data, string $type, int $code = 200, array $header = [], $options = [])
     {
         $class = false !== strpos($type, '\\') ? $type : '\\zero\\response\\' . ucfirst(strtolower($type));
-
+        
         if( class_exists($class) ) {
-            return new $class($data, $code, $header, $options);
+            $res  =  new $class($data, $code, $header, $options);
+            return $res;
         }
-
+        
         return new static($data, $code, $header, $options);
     }
 
     public function send()
-    {   
+    {  
         $data = $this->getContent();
         $this->sendData($data);
     }
 
     public function getContent()
     {
-        return $this->output($this->data);
+        $res = $this->output($this->data);
+        // p($res);
+        return $res;
     }
 
     public function output($data)
@@ -81,7 +84,7 @@ class Response
     public function __debugInfo()
     {
         $data = get_object_vars($this);
-        uset($data['app']);
+        unset($data['app']);
 
         return $data;
     }

@@ -27,6 +27,19 @@ class Route
     ];
 
     /**
+     * 不完全匹配REST 
+     */
+    protected $completeMatchRest = [
+        'edit' => ['get', '/<id>/edit', 'edit'],
+        'create' => ['get', '/create', 'create'],
+        'read' => ['get', '/<id>', 'read'],
+        'index' => ['get', '', 'index'],
+        'save' => ['post', '', 'save'],
+        'update' => ['put', '/<id>', 'update'],
+        'delete' => ['delete', '/<id>', 'delete'], 
+    ];
+
+    /**
      * @var Application
      */
     protected $app;
@@ -255,9 +268,10 @@ class Route
         return $this->group->addRule($rule, $route, $method, $option, $pattern);
     }
 
-    public function resource($rule, $route, string $method = '*', array $option = [], array $pattern = [])
+    public function resource($rule, $route, string $method = '*', array $option = [], array $pattern = [], $completeMatch = true)
     {
-        return new Resource($this, $this->group, $rule, $route, $option, $pattern, $this->rest);
+        $rest = $completeMatch ? $this->rest : $this->completeMatchRest;
+        return new Resource($this, $this->group, $rule, $route, $option, $pattern, $rest, $completeMatch);
     }
 
     public function __debugInfo()
