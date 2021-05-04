@@ -20,8 +20,8 @@ class Module extends Dispatch
             $result = explode('/', $result);
         }
         
+        $module = $result[0] ?: $this->rule->router->config['default_module'];
         if( $this->rule->router->config['app_multi_module'] ){
-            $module = $result[0] ?: $this->rule->router->config['default_module'];
             if( is_dir($this->app->appPath.$module) ){
                 $this->request->module = $module;
                 $this->app->init($module);
@@ -58,7 +58,7 @@ class Module extends Dispatch
                 } 
             }
             , 'controller');
-        return $this->app->middleware->use([], 'controller');
+        return $this->app->middleware->handle([], 'controller');
     }
 
 }

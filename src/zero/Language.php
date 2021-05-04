@@ -17,7 +17,6 @@ class Language
 		$this->init();
 	}
 
-
 	public static function init()
 	{
 		$languages = [

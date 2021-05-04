@@ -1,8 +1,11 @@
 <?php
+declare(strict_types = 1);
+
 namespace zero\route;
 
 use zero\Route;
 use zero\Request;
+use zero\Container;
 
 class RuleGroup extends Rule
 {
@@ -46,12 +49,19 @@ class RuleGroup extends Rule
     protected $domain;
 
     /**
-     * 
+     * constructor
+     *
+     * @param Route $router
+     * @param RuleGroup $parent
+     * @param string 分组名称
+     * @param array|Clouse 分组路由
      */
-    public function __construct(Route $router, RuleGroup $parent = NUll)
+    public function __construct(Route $router, RuleGroup $parent = null, string $name = '', $rule = null)
     {
         $this->router = $router;
         $this->parent = $parent;
+        $this->name = $name;
+        $this->rule = $rule;
 
         if( $this->parent ) {
             $this->parent->addRuleItem($this);
@@ -60,7 +70,15 @@ class RuleGroup extends Rule
 
     public function parseGroupRule($rule)
     {
-        $this->router->bind($rule, $this->domain);
+        $origin = $this->router->getGroup();
+        $this->router->setGroup($this);
+        if( $rule instanceof \Closure ) {
+           Container::getInstance()::invokeFunction($rule);
+        } else {
+            foreach($rule as $key => $value) {
+                $this->addRule($key, $value);
+            }
+        }
     }
    
     public function lazy($lazy = true)
@@ -102,7 +120,7 @@ class RuleGroup extends Rule
      */
     public function addRuleItem($ruleItem, $method = '*')
     {
-        $this->rules[$method][] = $ruleItem;   
+        $this->rules[$method][] = $ruleItem;
     }
 
     /**
@@ -118,6 +136,8 @@ class RuleGroup extends Rule
 
         if( $this instanceof Resource ) {
             $this->buildResourceRule();
+        } elseif($this->rule) {
+            $this->parseGroupRule($this->rule);
         }
 
         // 获取当前路由规则
@@ -125,7 +145,7 @@ class RuleGroup extends Rule
         $rules = $this->getMethodRules($method);
 
         $completeMatch = $this->option['complete_match'] ?? $completeMatch;
-
+        
         foreach($rules as $key => $item) {
             $result = $item->check($request, $url, $completeMatch);
 
@@ -155,6 +175,11 @@ class RuleGroup extends Rule
         return array_merge($this->rules[$method], $this->rules['*']);
     }
 
+    public function prefix(string $prefix)
+    {
+        return $this;
+    }
+
     /**
      * 清空路由分组下的规则
      * @access public
@@ -171,4 +196,5 @@ class RuleGroup extends Rule
             'delete' => [],
         ]; 
     }
+
 }

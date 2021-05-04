@@ -5,7 +5,7 @@ use Closure;
 
 class Middleware
 {
-    public $queue = [];
+    protected $queue = [];
 
     /**
      * @param $key 
@@ -23,7 +23,7 @@ class Middleware
         return true;
     }
 
-    public function use($params = [], $type = 'route')
+    public function handle($params = [], $type = 'route')
     {
         $element = array_shift($this->requeue[$type]);
         return call_user_func_array($element, $params);

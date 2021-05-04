@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace zero;
 
 use zero\Config;
@@ -147,11 +149,6 @@ class Route
     }
 
     /**
-     * @param string|array $name
-     * @param string $rule
-     * @return object Domain
-     */
-    /**
      * 注册域名路由
      *
      * @param string|array $name
@@ -217,7 +214,7 @@ class Route
     }
 
     /**
-     * Undocumented function
+     * check route 
      *
      * @param string $url
      * @param boolean $must 强制路由
@@ -227,8 +224,8 @@ class Route
     {
         //自动检测域名路由
         $domain = $this->checkDomain();
+       
         $url = str_replace($this->config['pathinfo_depr'], '|', $url);
-
         $completeMatch = $this->config['route_complete_match'];
         
         //进行路由匹配
@@ -253,6 +250,16 @@ class Route
         return $item;
     }
 
+    public function setGroup(RuleGroup $group)
+    {
+        $this->group = $group;
+    }
+
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
     /**
      * register route
      * @access public
@@ -272,6 +279,18 @@ class Route
     {
         $rest = $completeMatch ? $this->rest : $this->completeMatchRest;
         return new Resource($this, $this->group, $rule, $route, $option, $pattern, $rest, $completeMatch);
+    }
+
+    /**
+     * 路由分组
+     *
+     * @param [type] $name
+     * @param [type] $route
+     * @return RuleGroup
+     */
+    public function group($name, $route = null): RuleGroup
+    {
+       return new RuleGroup($this, $this->group, $name, $route);
     }
 
     public function __debugInfo()

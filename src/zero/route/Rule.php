@@ -175,6 +175,11 @@ abstract class Rule
         return $this->vars;
     }
 
+    public function middleware(string $midlleware)
+    {
+        return $this;
+    }
+
     public function __debugInfo()
     {
         $data = get_object_vars($this);
@@ -182,4 +187,5 @@ abstract class Rule
 
         return $data;
     }
+
 }

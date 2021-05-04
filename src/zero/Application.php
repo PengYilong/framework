@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace zero;
 use zero\exception\ClassNotFoundException;
 
@@ -72,7 +74,7 @@ class Application extends Container
 			$this->hook->use('app_dispatch');
 
 			$dispatch = $this->routeCheck()->init();
-			// p($dispatch);	
+			
 			$this->hook->use('app_begin');
 
 			$data = null;	
@@ -86,7 +88,7 @@ class Application extends Container
 				return is_null($data) ? $dispatch->run() : $data; 
 			}
 		);
-		$response = $this->middleware->use([$this->request]);
+		$response = $this->middleware->handle([$this->request]);
 
 		$this->hook->use('app_end', [$response]);
 
@@ -189,6 +191,7 @@ class Application extends Container
 	public function controller($name, $layer = 'controller')
 	{
 		$module = $this->request->module;
+		
 		$class = $this->parseClass($module, $layer, $name);
 		if( class_exists($class) ){
 			return parent::get($class, true);

@@ -8,7 +8,6 @@ use Exception;
 
 class RuleItem extends Rule
 {
-
     /**
      * struct function
      *
@@ -93,7 +92,7 @@ class RuleItem extends Rule
         $url = $depr . str_replace('|', $depr, $url);
         $rule = $depr . str_replace('/', $depr, $this->rule);
         $pattern = [];
-         
+    
         if( false === strpos($rule, '<') ) {
             if( 0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule . $depr, $url . $depr, strlen($rule . $depr) ) ) ) {
                 return $var;
