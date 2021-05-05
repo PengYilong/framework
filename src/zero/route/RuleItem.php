@@ -29,12 +29,15 @@ class RuleItem extends Rule
         $this->route = $route;
         $this->method = $method;
         $this->options = $options;
-        $this->pattern = $pattern;
         $this->rule = $this->setRule($rule);
     }
 
     public function setRule(string $rule) : string
     {
+        if($this->parent) {
+            $rule = $this->parent->prefix . $rule;
+        }
+
         if(false !== strpos($rule, ':') ) {
             $rule = preg_replace(['/\[\:(\w+)\]/', '/\:(\w+)/'], ['<\1?>', '<\1>'], $rule);
         } 
@@ -61,12 +64,12 @@ class RuleItem extends Rule
     {
         // 合并分组参数
         $option = $this->mergeGroupOptions();
-
+        
         if( is_null($match) ){
             $match = $this->match($url, $option, $completeMatch);
         }
         if( false !== $match ){
-            return $this->parseRule($request, $this->rule, $this->route, $url, $option,$match);
+            return $this->parseRule($request, $this->rule, $this->route, $url, $option, $match);
         }
 
         return false;

@@ -8,7 +8,7 @@ use zero\route;
  */
 class Resource extends RuleGroup
 {
-    public function __construct(Route $router, RuleGroup $parent = NULL, string $name = '', string $route = '', array $option, array $pattern = [], array $rest = [], $completeMatch = true)
+    public function __construct(Route $router, RuleGroup $parent = NULL, string $name = '', string $route = '', array $option = [], array $pattern = [], array $rest = [], $completeMatch = true)
     {
         $this->router = $router;
         $this->parent = $parent;

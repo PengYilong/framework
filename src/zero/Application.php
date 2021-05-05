@@ -84,11 +84,11 @@ class Application extends Container
 		}
 		
 		$this->middleware->register(
-			function(Request $request) use ($dispatch, $data){
+			function(Request $request, $next) use ($dispatch, $data){
 				return is_null($data) ? $dispatch->run() : $data; 
 			}
 		);
-		$response = $this->middleware->handle([$this->request]);
+		$response = $this->middleware->dispatch($this->request);
 
 		$this->hook->use('app_end', [$response]);
 

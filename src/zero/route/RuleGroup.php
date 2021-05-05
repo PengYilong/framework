@@ -49,6 +49,13 @@ class RuleGroup extends Rule
     protected $domain;
 
     /**
+     * 分组前缀
+     *
+     * @var string
+     */
+    public $prefix;
+
+    /**
      * constructor
      *
      * @param Route $router

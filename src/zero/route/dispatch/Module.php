@@ -58,7 +58,7 @@ class Module extends Dispatch
                 } 
             }
             , 'controller');
-        return $this->app->middleware->handle([], 'controller');
+        return $this->app->middleware->dispatch($this->request, 'controller');
     }
 
 }

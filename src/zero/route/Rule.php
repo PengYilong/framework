@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace zero\route;
 
 use zero\Request;
@@ -52,7 +54,7 @@ abstract class Rule
      * 路由参数
      * @var array
      */
-    protected $option = [];
+    public $options = [];
 
     /**
      * 变量规则
@@ -159,10 +161,12 @@ abstract class Rule
     public function mergeGroupOptions()
     {
         if(!$this->lockOption) {
-
+            $this->parentOptions = $this->parent->options;
+            $this->options = array_merge($this->options, $this->parentOptions);
+            $this->lockOption = true;
         }
 
-        return $this->option;
+        return $this->options;
     }
 
     /**
@@ -175,8 +179,9 @@ abstract class Rule
         return $this->vars;
     }
 
-    public function middleware(string $midlleware)
+    public function middleware($middleware)
     {
+        $this->options['middleware'] = (array)$middleware;
         return $this;
     }
 

@@ -48,7 +48,12 @@ abstract class Dispatch
 
     public function doRouteAfter()
     {
+        $options = $this->rule->options;
         $this->request->setRouteVars($this->rule->getVars());
+        
+        if( !empty($options['middleware']) ) {
+            $this->app->middleware->import($options['middleware']);
+        }
     }
 
     public function autoResponse($data)
