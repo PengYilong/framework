@@ -82,12 +82,16 @@ abstract class Rule
      */
     public function parseRule(Request $request, $rule, $route, $url, array $option = [], array $matches = [])
     {
+        if(is_string($route) && $this->parent->prefix ) {
+            $route = $this->parent->prefix.$route;
+        }
+       
         // 解析额外参数
         $count = substr_count($rule, '/');
         $url = array_slice(explode('|', $url), $count+1);
         $this->parseUrlparams( implode('|', $url), $matches);
         $this->vars = $matches;
-
+        
         return $this->dispatch($request, $route, $option);
     }
 
@@ -116,11 +120,11 @@ abstract class Rule
     public function dispatchModule(Request $request, string $route)
     {
         list($path, $var) = $this->parseUrlPath($route);
-
+    
         $action = array_pop($path);
         $controller = !empty($path) ? array_pop($path) : NULL;
         $module = $this->router->config['app_multi_module'] && !empty($path) ? array_pop($path) : NULL;
-
+         
         $dispatch = [$module, $controller, $action];
         $param = ['convert' => false];
         return new ModuleDispatch($request, $this, $dispatch, $param);

@@ -35,9 +35,9 @@ class RuleItem extends Rule
     public function setRule(string $rule) : string
     {
         if($this->parent) {
-            $rule = $this->parent->prefix . $rule;
+            $rule = $this->parent->name . $rule;
         }
-
+        
         if(false !== strpos($rule, ':') ) {
             $rule = preg_replace(['/\[\:(\w+)\]/', '/\:(\w+)/'], ['<\1?>', '<\1>'], $rule);
         } 
@@ -94,6 +94,7 @@ class RuleItem extends Rule
         $var = [];
         $url = $depr . str_replace('|', $depr, $url);
         $rule = $depr . str_replace('/', $depr, $this->rule);
+        
         $pattern = [];
     
         if( false === strpos($rule, '<') ) {

@@ -33,10 +33,12 @@ class Resource extends RuleGroup
      */
     protected function buildResourceRule()
     {
+        $this->router->setGroup($this);
+
         $rule = $this->resource;
 
         if ( strpos($rule, '.') ) {
-
+            
         }
 
         foreach ($this->rest as $key => $val) {

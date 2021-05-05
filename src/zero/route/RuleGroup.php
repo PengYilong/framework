@@ -77,7 +77,6 @@ class RuleGroup extends Rule
 
     public function parseGroupRule($rule)
     {
-        $origin = $this->router->getGroup();
         $this->router->setGroup($this);
         if( $rule instanceof \Closure ) {
            Container::getInstance()::invokeFunction($rule);
@@ -140,7 +139,6 @@ class RuleGroup extends Rule
      */
     public function check(Request $request, string $url, bool $completeMatch = false)
     {
-
         if( $this instanceof Resource ) {
             $this->buildResourceRule();
         } elseif($this->rule) {
@@ -184,6 +182,7 @@ class RuleGroup extends Rule
 
     public function prefix(string $prefix)
     {
+        $this->prefix = $prefix;
         return $this;
     }
 
