@@ -16,13 +16,11 @@ class Domain extends RuleGroup
      * @param array $options
      * @param array $pattern
      */
-    public function __construct(Route $router, $name = '', $rule = null, array $option = [], array $pattern = [])
+    public function __construct(Route $router, string $name = '', $rule = null)
     {
         $this->router = $router;
         $this->domain = $name;
         $this->rule = $rule;
-        $this->option = $option;
-        $this->pattern = $pattern;
     }
 
     /**

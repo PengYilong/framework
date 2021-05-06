@@ -270,21 +270,21 @@ class Route
      * @param  array  $pattern 变量规则
      * @return RuleItem
      */
-    public function rule($rule, $route, string $method = '*', array $option = [], array $pattern = [])
+    public function rule($rule, $route, string $method = '*')
     {
-        return $this->group->addRule($rule, $route, $method, $option, $pattern);
+        return $this->group->addRule($rule, $route, $method);
     }
 
-    public function resource($rule, $route, string $method = '*', array $option = [], array $pattern = [], $completeMatch = true)
+    public function resource(string $rule, string $route, bool $completeMatch = true): Resource
     {
         $rest = $completeMatch ? $this->rest : $this->completeMatchRest;
-        return new Resource($this, $this->group, $rule, $route, $option, $pattern, $rest, $completeMatch);
+        return new Resource($this, $this->group, $rule, $route, $rest, $completeMatch);
     }
 
     /**
      * 路由分组
      *
-     * @param [type] $name
+     * @param string|\Closure $name
      * @param [type] $route
      * @return RuleGroup
      */

@@ -37,9 +37,9 @@ class RuleGroup extends Rule
     /**
      * 完整名称
      *
-     * @var [type]
+     * @var string
      */
-    protected $fullName;
+    public $fullName;
 
     /**
      * 所在域名
@@ -70,8 +70,19 @@ class RuleGroup extends Rule
         $this->name = $name;
         $this->rule = $rule;
 
+        $this->setFullName();
+
         if( $this->parent ) {
             $this->parent->addRuleItem($this);
+        }
+    }
+
+    public function setFullName()
+    {
+        if($this->parent && $this->parent->fullName) {
+            $this->fullName = $this->parent->fullName . ($this->name ?  '/' . $this->name : '');
+        } else {
+            $this->fullName = $this->name;
         }
     }
 
@@ -101,16 +112,14 @@ class RuleGroup extends Rule
      * @param  mixed  $rule    路由规则
      * @param  mixed  $route   路由地址
      * @param  string $method  请求方法
-     * @param  array  $options 路由参数
-     * @param  array  $pattern 变量规则
      * @return 
      */
-    public function addRule($rule, $route, string $method = '*', array $option = [], array $pattern = [])
+    public function addRule($rule, $route, string $method = '*'): RuleItem
     {
         $name = $route;
         $method = strtolower($method);
         
-        $ruleItem = new RuleItem($this->router, $this, $name, $rule, $route, $method, $option, $pattern);
+        $ruleItem = new RuleItem($this->router, $this, $name, $rule, $route, $method);
 
         $this->addRuleItem($ruleItem, $method);
 

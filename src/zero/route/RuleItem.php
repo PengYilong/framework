@@ -17,25 +17,23 @@ class RuleItem extends Rule
      * @param [type] $rule   路由规则
      * @param [type] $route  路由地址
      * @param string $method 请求方法
-     * @param array $options 路由参数
-     * @param array $pattern 变量规则
      * 
      */
-    public function __construct(Route $router, RuleGroup $parent, string $name, $rule, $route, string $method = '*', array $options = [], array $pattern = [])
+    public function __construct(Route $router, RuleGroup $parent, string $name, $rule, $route, string $method = '*')
     {
         $this->router = $router;
         $this->parent = $parent;
         $this->name = $name;
         $this->route = $route;
         $this->method = $method;
-        $this->options = $options;
+
         $this->rule = $this->setRule($rule);
     }
 
     public function setRule(string $rule) : string
     {
-        if($this->parent) {
-            $rule = $this->parent->name . $rule;
+        if($this->parent && $this->parent->fullName) {
+            $rule = $this->parent->fullName . ($rule ? '/' . $rule : '');
         }
         
         if(false !== strpos($rule, ':') ) {
@@ -68,6 +66,7 @@ class RuleItem extends Rule
         if( is_null($match) ){
             $match = $this->match($url, $option, $completeMatch);
         }
+    
         if( false !== $match ){
             return $this->parseRule($request, $this->rule, $this->route, $url, $option, $match);
         }
