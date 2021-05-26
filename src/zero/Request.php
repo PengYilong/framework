@@ -100,7 +100,7 @@ class Request
         $this->config = $config->pull('app');
         
         $this->input = file_get_contents('php://input');
-
+        
         if( function_exists('apache_request_header') && $result = apache_request_header() ) {
             $header = $result;
         } else {
@@ -125,10 +125,12 @@ class Request
             $this->header = array_change_key_case($header);
         }
 
+        $inputData = $this->getInputData($this->input);
+
         $this->get = $_GET;
-        $this->post = $_POST;
+        $this->post = $_POST ?: $inputData;
         $this->request = $_REQUEST;
-        $this->put = $this->getInputData($this->input);
+        $this->put = $inputData;
     }
 
     public function getInputData($content): array
@@ -137,6 +139,9 @@ class Request
         
         if('application/x-www-form-urlencoded' == $contentType) {
             parse_str($content, $data);
+            return $data;
+        } elseif( false !== strpos($contentType, 'json')) {
+            $data = json_decode($content, true);
             return $data;
         }
         return [];
