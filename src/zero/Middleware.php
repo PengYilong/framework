@@ -39,7 +39,7 @@ class Middleware
         $middleware = $this->buildMiddleware($middleware, $type);
         
         if($middleware) {
-            $this->requeue[$type][] = $middleware;
+            $this->queue[$type][] = $middleware;
         }   
 
         return true;
@@ -113,7 +113,7 @@ class Middleware
     public function reslove(string $type = 'route')
     {
         return function(Request $request) use ($type) {
-            $middleware = array_shift($this->requeue[$type]);
+            $middleware = array_shift($this->queue[$type]);
             list($call, $params) = $middleware;
             
             return call_user_func_array($call, [$request, $this->reslove($type), $params]);  

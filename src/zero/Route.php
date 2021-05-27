@@ -21,7 +21,7 @@ class Route
     protected $rest = [
         'index' => ['get', '', 'index'],
         'create' => ['get', '/create', 'create'],
-        'read' => ['get', '/<id>', 'read'],
+        'info' => ['get', '/<id>', 'read'],
         'save' => ['post', '', 'save'],
         'edit' => ['get', '/<id>/edit', 'edit'],
         'update' => ['put', '/<id>', 'update'],
@@ -34,7 +34,7 @@ class Route
     protected $completeMatchRest = [
         'edit' => ['get', '/<id>/edit', 'edit'],
         'create' => ['get', '/create', 'create'],
-        'read' => ['get', '/<id>', 'read'],
+        'info' => ['get', '/<id>', 'info'],
         'index' => ['get', '', 'index'],
         'save' => ['post', '', 'save'],
         'update' => ['put', '/<id>', 'update'],
@@ -275,7 +275,7 @@ class Route
         return $this->group->addRule($rule, $route, $method);
     }
 
-    public function resource(string $rule, string $route, bool $completeMatch = true): Resource
+    public function resource(string $rule, string $route, bool $completeMatch = false): Resource
     {
         $rest = $completeMatch ? $this->rest : $this->completeMatchRest;
         return new Resource($this, $this->group, $rule, $route, $rest, $completeMatch);

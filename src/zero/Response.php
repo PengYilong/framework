@@ -17,6 +17,8 @@ class Response
 
     protected $contentType = 'text/html';
 
+    protected $code = 200;
+
     /**
      * Undocumented function
      *
@@ -28,6 +30,7 @@ class Response
     public function __construct($data, $code = 200, array $header = [], array $options = [])
     {
         $this->data = $data;
+        $this->code = $code;
         $this->app = Container::get('application');
     }
 
@@ -61,6 +64,7 @@ class Response
     public function send()
     {  
         $data = $this->getContent();
+        http_response_code($this->code);
         $this->sendData($data);
     }
 

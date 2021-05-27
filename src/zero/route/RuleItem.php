@@ -33,7 +33,7 @@ class RuleItem extends Rule
     public function setRule(string $rule) : string
     {
         if($this->parent && $this->parent->fullName) {
-            $rule = $this->parent->fullName . ($rule ? '/' . $rule : '');
+            $rule = $this->parent->fullName . ($rule ? '/' . ltrim($rule, '/') : '');
         }
         
         if(false !== strpos($rule, ':') ) {
@@ -95,7 +95,7 @@ class RuleItem extends Rule
         $rule = $depr . str_replace('/', $depr, $this->rule);
         
         $pattern = [];
-    
+        
         if( false === strpos($rule, '<') ) {
             if( 0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule . $depr, $url . $depr, strlen($rule . $depr) ) ) ) {
                 return $var;
