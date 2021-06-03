@@ -19,6 +19,10 @@ class Response
 
     protected $code = 200;
 
+    protected $charset = 'utf-8';
+
+    protected $header;
+
     /**
      * Undocumented function
      *
@@ -31,6 +35,8 @@ class Response
     {
         $this->data = $data;
         $this->code = $code;
+
+        $this->contentType($this->contentType, $this->charset);
 
         $this->app = Container::get('application');
     }
@@ -58,8 +64,6 @@ class Response
             $res  =  new $class($data, $code, $header, $options);
             return $res;
         }
-
-        $this->code = $code;
         
         return new static($data, $code, $header, $options);
     }
@@ -68,9 +72,14 @@ class Response
     {  
         $data = $this->getContent();
         
-        // if(!is_string($this->code)) {
-            http_response_code($this->code);
-        // }
+        http_response_code($this->code);
+        
+        if( $this->header ) {
+            
+            foreach($this->header as $key => $value) {
+                header($key . ':' . $value);
+            }
+        }
        
         $this->sendData($data);
     }
@@ -78,7 +87,7 @@ class Response
     public function getContent()
     {
         $res = $this->output($this->data);
-        // p($res);
+        
         return $res;
     }
 
@@ -90,6 +99,11 @@ class Response
     public function sendData($data)
     {
         echo $data;
+    }
+
+    public function contentType(string $contentType, string $charset)
+    {
+        $this->header['Content-Type'] = $contentType . ';' . $charset;
     }
 
     public function __debugInfo()

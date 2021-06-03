@@ -6,6 +6,8 @@ use zero\Response;
 class Json extends Response
 {
 
+    protected $contentType = 'application/json';
+
     public function output($data)
     {
         $res = json_encode($data);
