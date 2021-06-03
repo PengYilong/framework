@@ -9,5 +9,6 @@ class ClassNotFoundException extends \RuntimeException{
     {
         $this->message = $message;
         $this->class = $class;
+        $this->code = 0;
     }
 } 

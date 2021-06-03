@@ -156,6 +156,7 @@ class RuleGroup extends Rule
 
         // 获取当前路由规则
         $method = strtolower($request->method());
+        
         $rules = $this->getMethodRules($method);
 
         $completeMatch = $this->option['complete_match'] ?? $completeMatch;

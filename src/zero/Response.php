@@ -31,6 +31,7 @@ class Response
     {
         $this->data = $data;
         $this->code = $code;
+
         $this->app = Container::get('application');
     }
 
@@ -57,6 +58,8 @@ class Response
             $res  =  new $class($data, $code, $header, $options);
             return $res;
         }
+
+        $this->code = $code;
         
         return new static($data, $code, $header, $options);
     }
@@ -64,7 +67,11 @@ class Response
     public function send()
     {  
         $data = $this->getContent();
-        http_response_code($this->code);
+        
+        // if(!is_string($this->code)) {
+            http_response_code($this->code);
+        // }
+       
         $this->sendData($data);
     }
 

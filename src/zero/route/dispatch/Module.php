@@ -21,6 +21,7 @@ class Module extends Dispatch
         }
         
         $module = $result[0] ?: $this->rule->router->config['default_module'];
+        
         if( $this->rule->router->config['app_multi_module'] ){
             if( is_dir($this->app->appPath.$module) ){
                 $this->request->module = $module;
