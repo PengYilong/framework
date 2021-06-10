@@ -44,7 +44,7 @@ class Module extends Dispatch
         try {
             $instance = $this->app->controller($this->controller, $this->rule->router->config['url_controller_layer']);
         } catch(classNotFoundException $e ){
-            throw new HttpException(404, 'controller not exists '. $e->class);
+            throw new HttpException(404, 'The controller not exists: '. $e->class);
         }
         $this->app->middleware->register(
             function () use ($instance){

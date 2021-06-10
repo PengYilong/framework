@@ -193,10 +193,11 @@ class Application extends Container
 		$module = $this->request->module;
 		
 		$class = $this->parseClass($module, $layer, $name);
+       
 		if( class_exists($class) ){
 			return parent::get($class, true);
 		} 
-		throw new ClassNotFoundException('class not exists '. $class, $class);
+		throw new ClassNotFoundException('The class not exists '. $class, $class);
 	}
 
 	protected function getDefaultRootPath(): string
@@ -212,16 +213,22 @@ class Application extends Container
 	 * @return object
 	 * @throws ClassNotFoundException 
 	 */
-	public function parseClass($module, $layer, $name)
+	public function parseClass($module, $layer, $name): string
 	{
 		$name = str_replace('.', '\\', $name);
+        $nameArr = explode('\\', $name);
+        $className = ucfirst(array_pop($nameArr));
+        array_push($nameArr, $className);
+
 		$classArr = [
             $this->config->get('app.app_namespace'),
 			$module,
 			$layer,
-			$name,
         ];
-		$class = '\\'.implode('\\',$classArr);
+       
+        $classArr = array_merge($classArr, $nameArr);
+       
+		$class = '\\'.implode('\\', $classArr);
 		return $class;
 	}
 
