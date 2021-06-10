@@ -32,7 +32,7 @@ class Resource extends RuleGroup
      *
      * @return void
      */
-    protected function buildResourceRule(): void
+    protected function buildResourceRule()
     {  
         $this->router->setGroup($this);
          

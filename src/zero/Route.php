@@ -134,7 +134,7 @@ class Route
      *
      * @return void
      */
-    protected function setDefaultDomain(): void
+    protected function setDefaultDomain()
     {
         // 默认域名
         $this->domain = $this->host;
@@ -189,7 +189,7 @@ class Route
         return $domain;
     }
 
-    public function bind(string $domain = null, string $bind): void
+    public function bind(string $domain = null, string $bind)
     {
         $domain = is_null($domain) ? $this->domain : $domain;
         $this->bind[$bind] = $domain;
