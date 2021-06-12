@@ -35,7 +35,7 @@ return [
         // +-----------------------------
         //是否支持多模块
         'app_multi_module' => true,
-        'default_module' => 'api',
+        'default_module' => 'http',
         'default_controller' => 'Index',
         'default_action' => 'index',
         'controller_auto_search' => true,
