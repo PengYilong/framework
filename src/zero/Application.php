@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace zero;
 use zero\exception\ClassNotFoundException;
+use zero\facade\Log;
 
 class Application extends Container
 {
@@ -128,7 +129,8 @@ class Application extends Container
 		date_default_timezone_set($this->config->get('app.default_timezone'));
 
 		//load database config
-		Db::setConfig($this->config->pull('database'));	
+		Db::setConfig($this->config->pull('database'));
+		Log::init($this->config->pull('log'));
 
 		$this->routeInit();
 	}
@@ -162,9 +164,11 @@ class Application extends Container
 				}
 			}
 		}
+		
 		if( $module ){
 			//更新配置
 			Db::setConfig($this->config->pull('database'));
+			Log::init($this->config->pull('log'));
 		}
 	}
 

@@ -102,7 +102,7 @@ abstract class Rule
      * @param array $var
      * @return void
      */
-    protected function parseUrlparams(string $url, array &$var = []) : void
+    protected function parseUrlparams(string $url, array &$var = [])
     {
         if($url){
             preg_replace_callback('/(\w+)\|([^\|]+)/', function($match) use (&$var) {
