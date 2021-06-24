@@ -7,22 +7,9 @@ return [
         'app_debug' => true,
         'language' => 'zh-cn',
         'enable_myerror' => true,
-        // 后台默认风格
-        'admin_style' => 'layui',
-        // 视图输出字符串内容替换
-        'view_replace_str' => [
-            '__css__'      => 'css',
-            '__img__'      => 'images',
-            '__js__'       => 'js',
-            '__boot__'     => 'bootstrap',
-            '__font__'     => 'font',
-            '__lay__'      => 'layui',
-            '__lib__'      => 'js/lib',
-            '__plug__'     => 'js/plugins',
-        ],
+        
         // 默认的访问控制器层文件夹
         'url_controller_layer'=> 'controller',
-        'url_controller_bussiness'=> 'bussiness',
         'url_controller_model'=> 'model',
         'pathinfo_depr' => '/',
         
@@ -33,9 +20,8 @@ return [
         // +-----------------------------
         // | module settings
         // +-----------------------------
-        //是否支持多模块
         'app_multi_module' => true,
-        'default_module' => 'http',
+        'default_module' => 'api',
         'default_controller' => 'Index',
         'default_action' => 'index',
         'controller_auto_search' => true,
@@ -92,13 +78,7 @@ return [
         'auto_timestamp' => false,
         // 0-单一服务器 1-分布式服务器
         'deploy' => 0,
-    ],
-    'decorators' => [
-        'output_decorators' => [
-            'app\common\decorators\Json',	
-            'app\common\decorators\Template',		
-        ]
-    ],
+    ], 
     'log' => [
         // 日志记录方式
         'type' => 'File',

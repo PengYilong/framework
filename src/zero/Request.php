@@ -137,6 +137,8 @@ class Request
     {
         $contentType = $this->contentType();
         
+        $data = [];
+
         if('application/x-www-form-urlencoded' == $contentType) {
             parse_str($content, $data);
             return $data;
@@ -144,18 +146,21 @@ class Request
             $data = json_decode($content, true);
             return $data;
         }
-        return [];
+
+        return $data;
     }
 
     public function contentType(): string
     {
         $contentType = $this->header('Content-Type');
-
+        
         if($contentType) {
-            return trim($contentType);
+             $contentType = trim($contentType);
+        } else {
+            $contentType = ''; 
         }
 
-        return '';
+        return $contentType;
     }
 
     /**
@@ -176,7 +181,7 @@ class Request
         return $this->header[$name] ?? $default;
     }
 
-    public function pathinfo()
+    public function pathinfo(): string
     {
         $pathinfo = $this->server['PATH_INFO']; 
         $this->pathinfo = empty($pathinfo) || '/' == $pathinfo ? '' : ltrim($pathinfo, '/');
@@ -186,7 +191,7 @@ class Request
     /**
      * @return bool
      */
-    public function isMethod(string $method) : bool
+    public function isMethod(string $method): bool
     {
         return $this->method() == $method;
     }
@@ -197,7 +202,7 @@ class Request
      * @param boolean $origin
      * @return void
      */
-    public function method($origin = false)
+    public function method($origin = false): string
     {
         if($origin){
             return $this->server['REQUEST_METHOD'] ?: 'GET'; 
@@ -220,7 +225,7 @@ class Request
     /**
      * e.g.  getRootDomain(getapi.zero.own) = zero.own
      */
-    public function getRootDomain() :string
+    public function getRootDomain(): string
     {
         $root = $this->server['HTTP_HOST'];
         $array = explode('.', $root);

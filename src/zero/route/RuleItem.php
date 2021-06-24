@@ -93,15 +93,15 @@ class RuleItem extends Rule
         $var = [];
         $url = $depr . str_replace('|', $depr, $url);
         $rule = $depr . str_replace('/', $depr, $this->rule);
-        
+        // print_r($rule); 
         $pattern = [];
         
-        if( false === strpos($rule, '<') ) {
-            if( 0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule . $depr, $url . $depr, strlen($rule . $depr) ) ) ) {
-                return $var;
-            } 
-            return false;
-        }
+        // if( false === strpos($rule, '<') ) {
+        //     if( 0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule . $depr, $url . $depr, strlen($rule . $depr) ) ) ) {
+        //         return $var;
+        //     } 
+        //     return false;
+        // }
 
         $slash = preg_quote('/-' . $depr, '/');
         $regex = '/['. $slash .']?<\w+\??>/';
@@ -111,18 +111,19 @@ class RuleItem extends Rule
             }
         }
         
-        if( preg_match_all('/['. $slash .']?<?\w+\??>?/', $rule, $matches) ) {
+        $urlPattern = '/['. $slash .']?<?\w+\??>?/';
+        if( preg_match_all($urlPattern, $rule, $matches) ) {
             $regex = $this->buildRuleRegex($rule, $matches[0], $pattern, $option, $completeMatch);
             try {
-                $urlRegex = '/^'. $regex . ($completeMatch ? '$' : '') .'/u';
-                
+                $urlRegex = '/^'. $regex . ($completeMatch ? '$' : '') .'/U';
+               
                 if( !preg_match($urlRegex, $url, $match) ) {
                     return false;
                 }
             } catch (Exception $e) {
                 throw new Exception('route pattern error');
             }
-
+            
             foreach($match as $key => $val) {
                 if(is_string($key)) {
                     $var[$key] = $val;

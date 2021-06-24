@@ -19,15 +19,15 @@ class Module extends Dispatch
         if( is_string($result) ) {
             $result = explode('/', $result);
         }
-        
-        $module = $result[0] ?: $this->rule->router->config['default_module'];
+  
+        $module = $result[0] ?? $this->rule->router->config['default_module'];
         
         if( $this->rule->router->config['app_multi_module'] ){
             if( is_dir($this->app->appPath.$module) ){
                 $this->request->module = $module;
                 $this->app->init($module);
             } else {
-                throw new HttpException(404, 'Module not exist : '. $module);
+                throw new HttpException(404, 'The module not exist : '. $module . '('. $this->app->appPath.$module .')');
             }
         }
         
